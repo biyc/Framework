@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31307f276108458d981bbcbbf46fb78a, type: 3}
+  m_Name: EditorOSXDev
+  m_EditorClassIdentifier: 
+  ResServerList:
+  - http://192.168.8.202:8088/EditorOSXDev
+  - http://172.168.8.151:8088/EditorOSXDev
+  Channel: EditorOSXDev
+  MotherVersion: 1
+  FixVersion: 0
+  BuildNum: 0
+  IsForceCheckVersion: 0
+  UseILRuntime: 1
+  UseDev: 1
+  UseAssetBundle: 1
+  IsContentAssetBundle: 0
+  IsFirstTry: 0
+  ProductName: EditorOSXDev

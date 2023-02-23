@@ -1,0 +1,40 @@
+using ETModel;
+
+namespace ETHotfix
+{
+    [ETModel.ObjectSystem]
+    public class #NameComponentAwakeSystem : AwakeSystem<#NameComponent>
+    {
+        public override void Awake(#NameComponent self)
+        {
+            self.Awake();
+        }
+    }
+    public class #NameComponent : UIBaseComponent
+    {
+        /// <summary>
+        /// 当前UI页的配置实例
+        /// </summary>
+        public static UIArgs Args = new UIArgs()
+        {
+            Name = "#Name",
+            PrefebPath = "#PrefabPath",
+            ComponentType = typeof(#NameComponent),
+            Layer =#Layer,
+        };
+        public #NameBind Bind;
+        public override  void Awake()
+        {
+            Bind = new #NameBind();
+		    Bind.InitUI(_curStage.transform);
+            base.Awake();
+        }
+
+        public override void Dispose()
+        {
+            if (IsDisposed) return;
+            Bind = null;
+            base.Dispose();
+        }
+    }
+}

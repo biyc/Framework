@@ -1,0 +1,28 @@
+{
+    "name": "Unity.Model",
+    "references": [
+        "Unity.ThirdParty",
+        "Unity.SDKS",
+        "Sdk",
+        "spine-csharp",
+        "spine-unity",
+        "ILRuntime",
+        "IngameDebugConsole.Runtime",
+        "NativeGallery.Runtime",
+        "Unity.TextMeshPro",
+        "NativeShare.Runtime",
+        "MoreMountains.NiceVibrations.Haptics",
+        "MoreMountains.NiceVibrations",
+        "Sdk.Channel",
+        "ACTk.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

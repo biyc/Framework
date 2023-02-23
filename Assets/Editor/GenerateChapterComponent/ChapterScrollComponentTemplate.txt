@@ -1,0 +1,57 @@
+using Blaze.Resource;
+using Blaze.Resource.Common;
+using ETModel;
+using UnityEngine;
+using UnityEngine.UI;
+namespace ETHotfix
+{
+    [ETModel.ObjectSystem]
+    public class #NameComponentAwakeSystem : AwakeSystem<#NameComponent>
+    {
+        public override void Awake(#NameComponent self)
+        {
+            self.Awake();
+        }
+    }
+    public class #NameComponent : UIBaseComponent
+    {
+        /// <summary>
+        /// 当前UI页的配置实例
+        /// </summary>
+        public static UIArgs Args = new UIArgs()
+        {
+            Name = "#Name",
+            PrefebPath = "#ScrollPrefabPath",
+            ComponentType = typeof(#NameComponent),
+            Layer =#Layer,
+        };
+        public #NameBind Bind;
+        private PrefabObject _chapter;//内容预制体
+        private ScrollRectWithGuide _rect;
+        private TiaoManOp _tiaoMan = new TiaoManOp();
+        public override async  void Awake()
+        {
+            base.Awake();
+            _chapter = await Res.InstantiateAsync("#PrefabPath", _curStage.transform);
+            var content = _chapter.Target;
+            _curStage.GetComponent<ScrollRect>().content = content.GetComponent<RectTransform>();
+            Bind = new #NameBind();
+            Bind.InitUI(_chapter.Target.transform);    
+            _rect = _curStage.GetComponent<ScrollRectWithGuide>();
+            _rect.onValueChanged.AddListener(v => { _tiaoMan.ScrollYValueChange(v.y); });
+            GetTopBar(x =>  _rect.RegisterBackBtn(x.GameObject));
+        }
+        public override void Show()
+        {
+           base.Show();
+           _rect.StartGuideDown();
+        }
+
+        public override void Dispose()
+        {
+            if (IsDisposed) return;
+            Bind = null;
+            base.Dispose();
+        }
+    }
+}

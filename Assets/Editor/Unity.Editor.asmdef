@@ -1,0 +1,25 @@
+{
+    "name": "Unity.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Unity.ThirdParty",
+        "Unity.Model",
+        "Unity.Hotfix",
+        "ILRuntime",
+        "IngameDebugConsole.Editor",
+        "Unity.TextMeshPro",
+        "spine-unity",
+        "ACTk.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

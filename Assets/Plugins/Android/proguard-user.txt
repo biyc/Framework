@@ -1,0 +1,51 @@
+# 保留我们使用的组件，自定义的BroadcastReceiver等等这些类不被混淆
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Fragment
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.view.View
+
+# 不能混淆监听
+-keep class com.m3839.sdk.auxs.** {*;}
+
+
+
+
+
+
+
+# 不能混淆监听
+-keep class com.m3839.sdk.** {*;}
+
+-keep class com.alipay.sdk.app.PayTask{ public *;}
+-keep class org.json.alipay.** { *; }
+
+# Gson specific classes
+-dontwarn sun.misc.**
+-keep class com.google.gson.** { *; }
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class io.sentry.** { *; }
+-keepclassmembers enum * { *; }
+-keep class io.sentry.android.core.** { *; }
+
+-keep class * extends com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+# Prevent R8 from leaving Data object members always null
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
+
+
+-keep class com.umeng.** {*;}
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

@@ -1,0 +1,28 @@
+{
+    "name": "Unity.Hotfix",
+    "rootNamespace": "",
+    "references": [
+        "Unity.ThirdParty",
+        "Unity.Model",
+        "Sdk.Channel",
+        "spine-unity",
+        "ILRuntime",
+        "IngameDebugConsole.Runtime",
+        "NativeGallery.Runtime",
+        "Unity.TextMeshPro",
+        "MoreMountains.NiceVibrations.Haptics",
+        "MoreMountains.NiceVibrations",
+        "NativeShare.Runtime",
+        "spine-csharp",
+        "ACTk.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

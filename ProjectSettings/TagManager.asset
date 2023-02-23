@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - BgBlack
+  - ShoppingItem
+  - ShoppingPerson
+  - ShoppingCart
+  - PUL_box
+  - PickingLuggageItem
+  - ContainerCoin
+  - ItemDikuai
+  - Placeholder1
+  - Placeholder2
+  - Placeholder3
+  - Placeholder4
+  - Placeholder5
+  - Placeholder6
+  - Placeholder7
+  - Placeholder8
+  - Placeholder9
+  - Placeholder10
+  - Placeholder11
+  - Placeholder12
+  - Placeholder13
+  - Placeholder14
+  - Placeholder15
+  - Placeholder16
+  - Placeholder17
+  - Placeholder18
+  - Placeholder19
+  - Placeholder20
+  - MakingItem
+  - MakingTrash
+  - Baking
+  - TrashCan
+  - BakingReadyItem
+  - ContainerHeart
+  - ContainerCharm
+  - ContainerPetal
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - UIHide
+  - UIFade
+  - UIRecord
+  - UIRecordBtn
+  - UIBrush
+  - Guidance
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: homeSky
+    uniqueID: 1816120525
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: par
+    uniqueID: 1714285163
+    locked: 0
+  - name: topMost
+    uniqueID: 2591780171
+    locked: 0
