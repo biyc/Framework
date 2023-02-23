@@ -1,0 +1,996 @@
+fileFormatVersion: 2
+guid: dc3d04e5d2b4f344d8cdda8081ad67c8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3877803512521763836
+    second: textMeshProSprite_0
+  - first:
+      213: 6991631885878996806
+    second: textMeshProSprite_1
+  - first:
+      213: -7731892272418330245
+    second: textMeshProSprite_2
+  - first:
+      213: -8293272242470089205
+    second: textMeshProSprite_3
+  - first:
+      213: 6319746900448287340
+    second: textMeshProSprite_4
+  - first:
+      213: 7397521833777639025
+    second: textMeshProSprite_5
+  - first:
+      213: 3831013731535134369
+    second: textMeshProSprite_6
+  - first:
+      213: -2702001631437899791
+    second: textMeshProSprite_7
+  - first:
+      213: -737460338598668613
+    second: textMeshProSprite_8
+  - first:
+      213: 3718046665089418881
+    second: textMeshProSprite_9
+  - first:
+      213: -8444314534206381352
+    second: textMeshProSprite_10
+  - first:
+      213: 1239265964094713453
+    second: textMeshProSprite_11
+  - first:
+      213: -3407212566559802413
+    second: textMeshProSprite_12
+  - first:
+      213: -6757236835739129660
+    second: textMeshProSprite_13
+  - first:
+      213: -2443954459546810933
+    second: textMeshProSprite_14
+  - first:
+      213: -8290211099695857377
+    second: textMeshProSprite_15
+  - first:
+      213: 3536628895050418651
+    second: textMeshProSprite_16
+  - first:
+      213: -3619872387272097266
+    second: textMeshProSprite_17
+  - first:
+      213: 4945541086867594314
+    second: textMeshProSprite_18
+  - first:
+      213: 90406280126753315
+    second: textMeshProSprite_19
+  - first:
+      213: 4574966475745390295
+    second: textMeshProSprite_20
+  - first:
+      213: 1080103742645434620
+    second: textMeshProSprite_21
+  - first:
+      213: -1342939901130028307
+    second: textMeshProSprite_22
+  - first:
+      213: -8612510570746494207
+    second: textMeshProSprite_23
+  - first:
+      213: -2040152816210426582
+    second: textMeshProSprite_24
+  - first:
+      213: 8998444947486723662
+    second: textMeshProSprite_25
+  - first:
+      213: 2781124452183906679
+    second: textMeshProSprite_26
+  - first:
+      213: -9183986245529475540
+    second: textMeshProSprite_27
+  - first:
+      213: -4026692064417428608
+    second: textMeshProSprite_28
+  - first:
+      213: -1829507492065982267
+    second: textMeshProSprite_29
+  - first:
+      213: -7916608090056907737
+    second: textMeshProSprite_30
+  - first:
+      213: 5258821113260757381
+    second: textMeshProSprite_31
+  - first:
+      213: -8110617354105328033
+    second: textMeshProSprite_32
+  - first:
+      213: 1670873624149993300
+    second: textMeshProSprite_33
+  - first:
+      213: 783373082761985279
+    second: textMeshProSprite_34
+  - first:
+      213: 1689571434539590048
+    second: textMeshProSprite_35
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 49
+    textureCompression: 1
+    compressionQuality: 100
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 49
+    textureCompression: 1
+    compressionQuality: 100
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: textMeshProSprite_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1274.1666
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfb2f98cfb9b0d530800000000000000
+      internalID: 3877803512521763836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1274.1666
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64fac1e2824470160800000000000000
+      internalID: 6991631885878996806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1274.1666
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b79eaec81fcc2b490800000000000000
+      internalID: -7731892272418330245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1274.1666
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0e86f9c5d068ec80800000000000000
+      internalID: -8293272242470089205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1274.1666
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6a989f825044b750800000000000000
+      internalID: 6319746900448287340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_5
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 1274.1666
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17e23800ae649a660800000000000000
+      internalID: 7397521833777639025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1020.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ae9bc5f0be7a2530800000000000000
+      internalID: 3831013731535134369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_7
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1020.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f73e9ff4df808ad0800000000000000
+      internalID: -2702001631437899791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_8
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1020.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb613e1bab304c5f0800000000000000
+      internalID: -737460338598668613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_9
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1020.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1860bfa2eb7299330800000000000000
+      internalID: 3718046665089418881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_10
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1020.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d2e5f8cba4cfca80800000000000000
+      internalID: -8444314534206381352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_11
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 1020.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6ee81414d1c23110800000000000000
+      internalID: 1239265964094713453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 766.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3dbb4ff093627b0d0800000000000000
+      internalID: -3407212566559802413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_13
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 766.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c8a59636e87932a0800000000000000
+      internalID: -6757236835739129660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_14
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 766.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc50b7f1e54551ed0800000000000000
+      internalID: -2443954459546810933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_15
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 766.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f11c0a1ade043fc80800000000000000
+      internalID: -8290211099695857377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_16
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 766.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd9ccdffd31a41130800000000000000
+      internalID: 3536628895050418651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_17
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 766.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e02c6602e31a3cdc0800000000000000
+      internalID: -3619872387272097266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4c97d87a6712a440800000000000000
+      internalID: 4945541086867594314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_19
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 512.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32a6b646800314100800000000000000
+      internalID: 90406280126753315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_20
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 512.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7deef1e35cb8d7f30800000000000000
+      internalID: 4574966475745390295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_21
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 512.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf873fc91ac4dfe00800000000000000
+      internalID: 1080103742645434620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_22
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dea427e664bec5de0800000000000000
+      internalID: -1342939901130028307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_23
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 512.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 103cb5654473a7880800000000000000
+      internalID: -8612510570746494207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 258.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a25c346a2dbefa3e0800000000000000
+      internalID: -2040152816210426582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_25
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 258.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4ecad10106e0ec70800000000000000
+      internalID: 8998444947486723662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_26
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 258.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 779139844f9889620800000000000000
+      internalID: 2781124452183906679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_27
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 258.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2664252b2deb8080800000000000000
+      internalID: -9183986245529475540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_28
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 258.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08bc388d6e05e18c0800000000000000
+      internalID: -4026692064417428608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_29
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 258.1667
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c8cd7d01a84c96e0800000000000000
+      internalID: -1829507492065982267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4.1666718
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 724ac26d2ee822290800000000000000
+      internalID: -7916608090056907737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_31
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 4.1666718
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5815b39a0f51bf840800000000000000
+      internalID: 5258821113260757381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_32
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 4.1666718
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5eee630d7c417f80800000000000000
+      internalID: -8110617354105328033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_33
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 4.1666718
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 457a70065b2203710800000000000000
+      internalID: 1670873624149993300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_34
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 4.1666718
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffc71a41ba91fda00800000000000000
+      internalID: 783373082761985279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: textMeshProSprite_35
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 4.1666718
+        width: 256
+        height: 254.83333
+      alignment: 9
+      pivot: {x: 0, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a1216a9440927710800000000000000
+      internalID: 1689571434539590048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: assets-projects-font-textmeshprosprite-png.ab
+  assetBundleVariant: 

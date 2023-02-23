@@ -31,7 +31,7 @@
 *.unitypackage
 
 /build/MonoBleedingEdge/
-/Assets/Projects
+//Assets/Projects
 
 
 Assets/StreamingAssets/
