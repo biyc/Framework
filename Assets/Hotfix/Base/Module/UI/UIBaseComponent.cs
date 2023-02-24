@@ -27,8 +27,6 @@ namespace ETHotfix
 
         // 当前舞台界面对象
         protected GameObject _curStage => GameObject;
-        protected bool _isContainSpine = false; //如果包含spine则会在顶层创建图片，进行过渡动画，避免spine的穿帮
-        private Image _spineMask;
 
         /// <summary>
         /// 循环列表循环组件
@@ -46,9 +44,6 @@ namespace ETHotfix
             AutoBundle();
             // 注入多语言
             MultiLanguage();
-
-            //生成spine渐变图层
-            CreateSpineMask();
         }
 
         /// <summary>
@@ -58,30 +53,7 @@ namespace ETHotfix
         {
             _curStage.AddComponent<Image>();
         }
-
-
-        async void CreateSpineMask()
-        {
-            if (!_isContainSpine) return;
-            var obj = await Res.InstantiateAsync("Assets/Projects/UI/Chapter/SpineMask.prefab",
-                _curStage.transform);
-            _spineMask = obj.Target.GetComponent<Image>();
-            _spineMask.GetComponent<Canvas>().sortingLayerName = Const.SortLayerName_topMost;
-            // var topWhiteMask = new GameObject("SpineMask");
-            // topWhiteMask.transform.SetParent(_curStage.transform);
-            // topWhiteMask.transform.SetAsLastSibling();
-            // topWhiteMask.transform.localScale = Vector3.one;
-            // topWhiteMask.transform.localPosition = Vector3.zero;
-            // topWhiteMask.layer = LayerMask.NameToLayer("UI");
-            // var canvas = topWhiteMask.AddComponent<Canvas>();
-            // canvas.sortingLayerName = Const.SortLayerName_topMost;
-            // Observable.NextFrame(FrameCountType.EndOfFrame).Subscribe(_ => canvas.overrideSorting = true);
-            // _spineMask = topWhiteMask.AddComponent<Image>();
-            // _spineMask.color = Color.white;
-            // var rt = topWhiteMask.GetComponent<RectTransform>();
-            // rt.anchorMin = Vector2.zero;
-            // rt.anchorMax = Vector2.one;
-        }
+        
 
         #region 页面注入引用与多语言
 
@@ -315,17 +287,10 @@ namespace ETHotfix
         public virtual void EnterAnimation(Action endCallBack, float time = 0.8f)
         {
             Tweener tweener = null;
-            if (!_isContainSpine)
-            {
-                // 默认进入动画   
-                var cg = Comp<CanvasGroup>(_curStage);
-                cg.alpha = 0;
-                tweener = cg.DOFade(1, time);
-            }
-            else
-            {
-                tweener = _spineMask.DOFade(0, time);
-            }
+            // 默认进入动画   
+            var cg = Comp<CanvasGroup>(_curStage);
+            cg.alpha = 0;
+            tweener = cg.DOFade(1, time);
 
             tweener.onComplete += delegate
             {
@@ -354,17 +319,9 @@ namespace ETHotfix
             bool isFuse = false)
         {
             Tweener tweener = null;
-            if (!_isContainSpine)
-            {
-                // 默认退出动画
-                var cg = Comp<CanvasGroup>(_curStage);
-                tweener = cg.DOFade(0, time);
-            }
-            else
-            {
-                tweener = _spineMask.DOFade(1, time);
-            }
-
+            // 默认退出动画
+            var cg = Comp<CanvasGroup>(_curStage);
+            tweener = cg.DOFade(0, time);
             tweener.onComplete = () =>
             {
                 closeThisPage?.Invoke();
@@ -395,19 +352,6 @@ namespace ETHotfix
    
             OnFinish?.Invoke(next);
         }
-
-
-        #region 废弃方法
-
-        [Obsolete("请使用 Finish() 或 FinishNext(UIArgs next) 方法替换该方法")]
-        protected void SwitchTo(UIArgs args)
-        {
-            FinishNext(null);
-        }
-
-
-        #endregion
-
         #endregion
     }
 }

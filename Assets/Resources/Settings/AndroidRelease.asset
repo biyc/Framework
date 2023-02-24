@@ -17,7 +17,7 @@ MonoBehaviour:
   Channel: AndroidRelease
   MotherVersion: 1
   FixVersion: 0
-  BuildNum: 2
+  BuildNum: 10
   IsForceCheckVersion: 0
   UseILRuntime: 1
   UseDev: 0

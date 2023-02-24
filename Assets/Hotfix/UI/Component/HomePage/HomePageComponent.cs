@@ -52,8 +52,8 @@ namespace ETHotfix
 
         private Transform _container;
 
-        private bool _isY;
-        private bool _isSet;
+        //  private bool _isY;
+        //  private bool _isSet;
 
         public override void Awake()
         {
@@ -71,7 +71,11 @@ namespace ETHotfix
                 {
                     if (m.name != "recovery")
                     {
-                        m.onClick.AddListener(() => LoadObj(m.name));
+                        m.onClick.AddListener(() =>
+                        {
+                            Recovery();
+                            LoadObj(m.name);
+                        });
                     }
                 });
 
@@ -87,20 +91,10 @@ namespace ETHotfix
                 {
                     Touch touch = Input.GetTouch(0);
                     Vector2 deltaPos = touch.deltaPosition; //位置增量
-                    if (!_isSet)
-                    {
-                        _isY = Mathf.Abs(deltaPos.x) > Mathf.Abs(deltaPos.y);
-                        _isSet = true;
-                    }
-
-                    if (_isY)
+                    if (Mathf.Abs(deltaPos.x) > Mathf.Abs(deltaPos.y))
                         _container.Rotate(Vector3.down * deltaPos.x, Space.World); //绕y轴旋转
                     else
                         _container.Rotate(Vector3.right * deltaPos.y, Space.World); //绕x轴
-                }
-                else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
-                {
-                    _isSet = false;
                 }
                 //双指旋转  && 缩放
                 else if (2 <= Input.touchCount)
@@ -161,15 +155,18 @@ namespace ETHotfix
                 GameObject.Destroy(o.gameObject);
             }
 
-            var obj = Res.InstantiateAsync($"Assets/Projects/Prefabs/{name}/{name}.fbx", _container);
+            //.prefab  fbx
+            var obj = Res.InstantiateAsync($"Assets/Projects/Prefabs/{name}/{name}.prefab", _container);
 
             obj.OnLoad(m =>
             {
                 _target = m.Target.transform;
                 _target.name = name;
-                _target.localScale = new Vector3(1000, 1000, 1000);
+                // _target.localScale = new Vector3(1000, 1000, 1000);
                 //_target.localPosition = new Vector3(0, 0, -500);
                 _target.gameObject.layer = LayerMask.NameToLayer("UI");
+                //test 包裹了一层
+                _target.GetChild(0).gameObject.layer = LayerMask.NameToLayer("UI");
             });
         }
 

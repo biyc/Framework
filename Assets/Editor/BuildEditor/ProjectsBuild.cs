@@ -31,7 +31,7 @@ namespace Blaze.Ci
         public static void BuildAndroidDevBundle()
         {
             BuildAssetBundle(EnumPackageType.AndroidDev);
-           // PushToDingding($"AndroidDevAssetBundle 打包成功");
+            // PushToDingding($"AndroidDevAssetBundle 打包成功");
         }
 
         [MenuItem("Tools/Build/构建指定版本安装包")]
@@ -177,7 +177,7 @@ namespace Blaze.Ci
                     gameSettings.ResServerList.Add($"http://192.168.8.6:8088/{packageType.ToString()}");
                     break;
             }
-            
+
             // 应用名称
             switch (packageType)
             {
@@ -240,11 +240,15 @@ namespace Blaze.Ci
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            PlayerSettings.companyName = "XXXCompany";//公司名称
+            PlayerSettings.companyName = "XXXCompany"; //公司名称
             // 应用名称
-            PlayerSettings.productName = gameSettings.ProductName;//
+            PlayerSettings.productName = gameSettings.ProductName; //
 
-            PlayerSettings.applicationIdentifier = "com.XXXCompany.Biyc" + packageType;
+
+            if (packageType == EnumPackageType.AndroidRelease)
+                PlayerSettings.applicationIdentifier = "com.nineton.tcm";
+            else
+                PlayerSettings.applicationIdentifier = "com.XXXCompany.Biyc" + packageType;
             if (packageType.ToString().ToLower().Contains("android"))
             {
                 PlayerSettings.bundleVersion = gameSettings.GetVersion();

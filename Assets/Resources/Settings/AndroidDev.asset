@@ -17,11 +17,10 @@ MonoBehaviour:
   Channel: AndroidDev
   MotherVersion: 1
   FixVersion: 0
-  BuildNum: 26
+  BuildNum: 28
   IsForceCheckVersion: 0
   UseILRuntime: 1
   UseDev: 1
   UseAssetBundle: 1
   IsContentAssetBundle: 0
-  IsFirstTry: 1
   ProductName: AndroidDev
