@@ -2,7 +2,10 @@ fileFormatVersion: 2
 guid: bdf1cbdf15980d847afae122600e916a
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 1827226128182048838
+    second: Take 001
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -98,5 +101,5 @@ ModelImporter:
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   additionalBone: 0
   userData: 
-  assetBundleName: assets-projects-prefabs-tianhua-tianhua-fbx.ab
+  assetBundleName: 
   assetBundleVariant: 

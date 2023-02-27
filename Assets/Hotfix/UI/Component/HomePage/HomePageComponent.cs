@@ -156,17 +156,17 @@ namespace ETHotfix
             }
 
             //.prefab  fbx
-            var obj = Res.InstantiateAsync($"Assets/Projects/Prefabs/{name}/{name}.prefab", _container);
+            var obj = Res.InstantiateAsync($"Assets/Projects/Prefabs/{name}/{name}.fbx", _container);
 
             obj.OnLoad(m =>
             {
                 _target = m.Target.transform;
                 _target.name = name;
-                // _target.localScale = new Vector3(1000, 1000, 1000);
+                 _target.localScale = new Vector3(1000, 1000, 1000);
                 //_target.localPosition = new Vector3(0, 0, -500);
                 _target.gameObject.layer = LayerMask.NameToLayer("UI");
                 //test 包裹了一层
-                _target.GetChild(0).gameObject.layer = LayerMask.NameToLayer("UI");
+                //_target.GetChild(0).gameObject.layer = LayerMask.NameToLayer("UI");
             });
         }
 
