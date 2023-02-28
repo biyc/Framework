@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31307f276108458d981bbcbbf46fb78a, type: 3}
   m_Name: AndroidRelease
   m_EditorClassIdentifier: 
-  ResServerList:
-  - http://lovinhouse2.iyloft.com/AndroidRelease
+  ResServerList: []
   Channel: AndroidRelease
   MotherVersion: 1
   FixVersion: 0
-  BuildNum: 10
+  BuildNum: 17
   IsForceCheckVersion: 0
   UseILRuntime: 1
   UseDev: 0

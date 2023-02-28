@@ -38,7 +38,7 @@ namespace Game.Sdk
         /// </summary>
         /// <param name="eventId">友盟后台设定的事件Id</param>
         /// <param name="label">分类标签</param>
-        public void Event(string eventId, string label = null);
+         void Event(string eventId, string label = null);
 
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Game.Sdk
         /// </summary>
         /// <param name="coin">虚拟币数量</param>
         /// <param name="source">奖励方式</param>
-        public void Bonus(double coin, GA.BonusSource source);
+         void Bonus(double coin, GA.BonusSource source);
 
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Game.Sdk
         /// <param name="price">道具单价</param>
         /// <param name="source">奖励方式</param>
         ///
-        public void Bonus(string item, int amount, double price, GA.BonusSource source);
+         void Bonus(string item, int amount, double price, GA.BonusSource source);
 
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Game.Sdk
         /// <param name="webUrl">网页连接</param>
         /// <param name="appUri">app拉起连接</param>
         /// <param name="cb">跳转后回调</param>
-        public void ToPage(string webUrl, string appUri, Action<string> cb);
+         void ToPage(string webUrl, string appUri, Action<string> cb);
 
 
         /// <summary>

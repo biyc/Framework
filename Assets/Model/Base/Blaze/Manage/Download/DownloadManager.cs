@@ -212,7 +212,7 @@ namespace Blaze.Manage.Download
                     if (nowFileLength < totalLength)
                     {
                         var uri = new Uri(url);
-                        using UnityWebRequest downloader = UnityWebRequest.Get(uri);
+                         UnityWebRequest downloader = UnityWebRequest.Get(uri);
                         taskInfo.downloader = downloader;
                         _runing.Add(taskInfo);
                         downloader.SetRequestHeader("Range", "bytes=" + nowFileLength + "-" + totalLength);
@@ -279,7 +279,7 @@ namespace Blaze.Manage.Download
         {
             taskInfo.Url = url;
             taskInfo.Path = filePath;
-            using UnityWebRequest downloader = UnityWebRequest.Get(new Uri(url));
+             UnityWebRequest downloader = UnityWebRequest.Get(new Uri(url));
             taskInfo.downloader = downloader;
             _runing.Add(taskInfo);
             downloader.downloadHandler = new DownloadHandlerFile(filePath); //直接将文件下载到外存

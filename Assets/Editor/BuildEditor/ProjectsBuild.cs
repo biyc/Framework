@@ -166,7 +166,7 @@ namespace Blaze.Ci
                 case EnumPackageType.IOSRelease:
                 case EnumPackageType.AndroidTestOnline:
                 case EnumPackageType.IOSTestOnline:
-                    gameSettings.ResServerList.Add($"http://lovinhouse2.iyloft.com/{packageType.ToString()}");
+                  //  gameSettings.ResServerList.Add($"http://lovinhouse2.iyloft.com/{packageType.ToString()}");
                     break;
                 case EnumPackageType.AndroidTestInner:
                 case EnumPackageType.IOSTestInner:

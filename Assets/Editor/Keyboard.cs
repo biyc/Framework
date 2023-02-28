@@ -12,7 +12,7 @@ public class Keyboard
         Selection.objects = null;
         var obj = AssetDatabase.LoadAssetAtPath<Object>("Assets/Projects/Font/textMeshPro.prefab");
         EditorGUIUtility.PingObject(obj);
-    }
+    } 
 
     [MenuItem("快捷键/打开存档目录 #p")]
     private static void OpenPersistentDic()

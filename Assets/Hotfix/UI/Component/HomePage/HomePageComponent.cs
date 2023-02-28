@@ -1,6 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Blaze.Manage.Csv.Enum;
 using Blaze.Resource;
+using Blaze.Resource.AssetBundles;
+using Blaze.Resource.AssetBundles.Data;
+using Blaze.Utility;
+using Blaze.Utility.Helper;
 using DG.Tweening;
 using ETModel;
 using Hotfix.Game.Reddot;
@@ -38,8 +47,6 @@ namespace ETHotfix
         };
 
 
-        #region 功能逻辑相关
-
         private HomePageBind Bind;
 
         public float speed = 5f;
@@ -55,7 +62,7 @@ namespace ETHotfix
         //  private bool _isY;
         //  private bool _isSet;
 
-        public override void Awake()
+        public override async void Awake()
         {
             base.Awake();
             // 初始化绑定
@@ -63,7 +70,7 @@ namespace ETHotfix
             Bind.InitUI(_curStage.transform);
             //InitRedPoint();
             _container = _curStage.transform.Find("Container");
-            LoadObj("cheqian");
+            //  LoadObj("cheqian");
 
             //test
             _curStage.transform.GetComponentsInChildren<Button>().ToList()
@@ -71,11 +78,13 @@ namespace ETHotfix
                 {
                     if (m.name != "recovery")
                     {
-                        m.onClick.AddListener(() =>
+                        async void Call()
                         {
                             Recovery();
-                            LoadObj(m.name);
-                        });
+                            await LoadObj(m.name);
+                        }
+
+                        m.onClick.AddListener(Call);
                     }
                 });
 
@@ -144,7 +153,7 @@ namespace ETHotfix
             _container.localEulerAngles = Vector3.zero;
         }
 
-        public void LoadObj(string name)
+        public async Task LoadObj(string name)
         {
             if (_target != null && name == _target.name)
                 return;
@@ -155,49 +164,28 @@ namespace ETHotfix
                 GameObject.Destroy(o.gameObject);
             }
 
-            //.prefab  fbx
-            var obj = Res.InstantiateAsync($"Assets/Projects/Prefabs/{name}/{name}.fbx", _container);
+            var assetPath = $"Assets/Projects/Prefabs/{name}/{name}.fbx";
+         
+            // await BundleHotfix.LoadTarget(assetPath);
 
+           // await LoadTarget(assetPath);
+            //.prefab  fbx
+            var obj = Res.InstantiateAsync(assetPath, _container);
             obj.OnLoad(m =>
             {
                 _target = m.Target.transform;
                 _target.name = name;
-                 _target.localScale = new Vector3(1000, 1000, 1000);
+                _target.localScale = new Vector3(1000, 1000, 1000);
                 //_target.localPosition = new Vector3(0, 0, -500);
                 _target.gameObject.layer = LayerMask.NameToLayer("UI");
-                //test 包裹了一层
-                //_target.GetChild(0).gameObject.layer = LayerMask.NameToLayer("UI");
             });
         }
-
-
-        /// <summary>
-        /// 初始化本页的红点
-        /// </summary>
-        private void InitRedPoint()
-        {
-            // // 绑定红点与监听状态
-            // void ListenRed(RedType type, GameObject obj)
-            // {
-            //     var temp = RedManager._.GetPoint(type);
-            //     if (temp != null)
-            //         temp.OnMessage += delegate(RedData data) { obj.SetActive(data.IsLight); };
-            // }
-            //
-            // ListenRed(RedType.Chapter, Bind.go_m_RedPonitChapter);
-            // ListenRed(RedType.Sign, Bind.go_m_RedPonitSig);
-            // ListenRed(RedType.Mail, Bind.go_m_RedPonitMail);
-            // ListenRed(RedType.Phone, Bind.go_m_RedPonitPhone);
-            // ListenRed(RedType.Mission, Bind.go_m_RedPonitMission);
-        }
-
+        
 
         public override void Dispose()
         {
             if (IsDisposed) return;
             base.Dispose();
         }
-
-        #endregion
     }
 }

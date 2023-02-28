@@ -147,7 +147,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_GameObject_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Threading_Tasks_Task_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_Binding.Register(app);
-            System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_GameObject_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_GameObject_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_String_GameObject_Binding.Register(app);
@@ -155,11 +154,11 @@ namespace ILRuntime.Runtime.Generated
             System_Reflection_FieldInfo_Binding.Register(app);
             System_Collections_IEnumerator_Binding.Register(app);
             UnityEngine_UI_Text_Binding.Register(app);
-            UnityEngine_Canvas_Binding.Register(app);
             System_Reflection_MethodBase_Binding.Register(app);
             UnityEngine_UI_Selectable_Binding.Register(app);
             UnityEngine_Material_Binding.Register(app);
             UnityEngine_LayerMask_Binding.Register(app);
+            UnityEngine_Canvas_Binding.Register(app);
             System_Single_Binding.Register(app);
             System_Double_Binding.Register(app);
             System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_ILTypeInstance_Binding.Register(app);
@@ -184,6 +183,7 @@ namespace ILRuntime.Runtime.Generated
             System_Action_1_Single_Binding.Register(app);
             System_Threading_Tasks_TaskCompletionSource_1_Boolean_Binding.Register(app);
             System_Threading_CancellationToken_Binding.Register(app);
+            System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.Register(app);
             IngameDebugConsole_DebugLogConsole_Binding.Register(app);
             Blaze_Resource_ResManager_Binding.Register(app);
             Blaze_Resource_AssetBundles_AssetProviderBundle_Binding.Register(app);
@@ -192,6 +192,7 @@ namespace ILRuntime.Runtime.Generated
             Blaze_Manage_Progress_ProgressManager_Binding.Register(app);
             UnityEngine_Input_Binding.Register(app);
             UnityEngine_Touch_Binding.Register(app);
+            System_Collections_Generic_List_1_Button_Binding.Register(app);
             UnityEngine_UI_MaskableGraphic_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
             Sirenix_Utilities_StringExtensions_Binding.Register(app);

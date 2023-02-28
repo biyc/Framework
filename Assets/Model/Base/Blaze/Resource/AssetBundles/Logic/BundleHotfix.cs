@@ -49,14 +49,20 @@ namespace Blaze.Resource.AssetBundles
         // .../Bundle/iOS
         private string _resBasePath;
 
+        public string ResBasePath => _resBasePath;
+
         /// 网络基础路径
         /// $"http://192.168.8.199:8088/iOS"
         private string _netBasePath;
+
+        public string NetBasePath => _netBasePath;
 
         private LocalHotfixVersion _hotfixVersion;
 
         /// streamAsset 文件夹中带的资源描述文件
         private ManifestInfo _saMf = new ManifestInfo();
+
+        public ManifestInfo StreamMf => _saMf;
 
         /// streamAsset 本次启动最终使用的 mf 描述文件
         private ManifestInfo _startMf;
@@ -79,6 +85,7 @@ namespace Blaze.Resource.AssetBundles
             // Bundle/iOS/1.1/
             return PathHelper.Combine(_resBasePath, _hotfixVersion.AbleVersion.Version());
         }
+
 
         ///  查找可用的网络连接
         private Task<string> SelectUri(string target)
@@ -220,7 +227,7 @@ namespace Blaze.Resource.AssetBundles
 
 
         // 下载文件，如果失败则弹出提示框，点确定后重新开始下载
-        private async Task<bool> DownBundleMust(List<ManifestData> waitDown, string baseUri, string basePath)
+        public async Task<bool> DownBundleMust(List<ManifestData> waitDown, string baseUri, string basePath)
         {
             var task = new TaskCompletionSource<bool>();
             try
@@ -318,23 +325,27 @@ namespace Blaze.Resource.AssetBundles
 
                 var waitHash = new HashSet<string>();
                 // 等待下载的资源
-                var waitDown = mf.ManifestList.FindAll(delegate(ManifestData data)
+                var waitDown2 = mf.ManifestList.FindAll(delegate(ManifestData data)
                 {
                     checkSuccessNum++;
+                    //  该路径下的资源不需要下载，用到的时候再动态下载
+                  //  if (data.AssetPath.StartsWith("Assets/Projects/Prefabs/")) return false;
+
                     // streamAsset静态文件中有，不下载
-                    if (saFiles.Contains(data.Hash)) return false;
+                    if (saFiles.Contains(data.Hash))
+                        return false;
                     // 已经在下载队列中等待的，不在重复添加任务
                     if (waitHash.Contains(data.Hash)) return false;
 
                     // [补丁代码] 以前在根目录的文件移动到子目录中
-                    var targetRoot = PathHelper.Combine(downPath, data.Hash);
-                    if (File.Exists(targetRoot))
-                    {
-                        // 检查并创建二级目录
-                        data.CheckSubPath(downPath);
-                        var targetSub = PathHelper.Combine(downPath, data.GetSaveSubPath());
-                        File.Move(targetRoot, targetSub);
-                    }
+                    // var targetRoot = PathHelper.Combine(downPath, data.Hash);
+                    // if (File.Exists(targetRoot))
+                    // {
+                    //     // 检查并创建二级目录
+                    //     data.CheckSubPath(downPath);
+                    //     var targetSub = PathHelper.Combine(downPath, data.GetSaveSubPath());
+                    //     File.Move(targetRoot, targetSub);
+                    // }
 
                     // 文件存储路径修改
                     var target = PathHelper.Combine(downPath, data.GetSaveSubPath());
@@ -357,6 +368,7 @@ namespace Blaze.Resource.AssetBundles
                         }
                     }
 
+                    Debug.Log(data.AssetPath);
                     // 将文件加入等待下载的队列中
                     waitHash.Add(data.Hash);
                     return true;
@@ -371,7 +383,7 @@ namespace Blaze.Resource.AssetBundles
                 passFileHash.Clear();
 
                 // 整理完全部信息，返回给上层下载器，开始下载
-                waitDownTask.SetResult(waitDown);
+                waitDownTask.SetResult(waitDown2);
             })).Start();
 
             // 开启进度条报告任务，刷新检查文件版本的进度条任务
@@ -480,6 +492,7 @@ namespace Blaze.Resource.AssetBundles
 
         private bool _isAgreeDown = false;
 
+
         /// <summary>
         /// 下载
         /// </summary>
@@ -524,5 +537,117 @@ namespace Blaze.Resource.AssetBundles
         }
 
         #endregion
+
+
+        public static async Task<bool> LoadTarget(string assetpath)
+        {
+            Debug.LogError("aa");
+            var downCompletion = new TaskCompletionSource<bool>();
+            var currentMf = _.GetManifestInfo();
+            
+            var data = currentMf.ManifestList.Find(m => m.AssetPath == assetpath);
+            
+            if (data == null)
+                Debug.LogError("null:" + assetpath);
+            if (data == null) downCompletion.SetResult(false);
+            Debug.LogError(data.File);
+            
+            var waitDownDatas = new List<ManifestData>();
+            waitDownDatas.Add(data);
+            data.Dependencies.ForEach(file =>
+            {
+                //todo 依赖的依赖还没加载
+                var dependence = currentMf.ManifestList.Find(m => m.File == file);
+                if (dependence != null && !waitDownDatas.Contains(dependence))
+                    waitDownDatas.Add(dependence);
+            });
+            
+            
+            var netVersionPath = PathHelper.Combine(BundleHotfix._.NetBasePath,
+                BundleHotfix._.GetVersion().AbleVersion.FullVersion());
+            
+            
+            var saFiles = BundleHotfix._.StreamMf.ManifestList.ConvertAll(input => input.Hash);
+            
+            // Bundle/iOS/1.1  存放 bundle 的文件夹
+            var downPath = PathHelper.Combine(BundleHotfix._.ResBasePath,
+                BundleHotfix._.GetVersion().AbleVersion.Version());
+            
+            var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
+            // 在独立的线程中计算一下文件MD5
+            new Thread(new ThreadStart(delegate
+            {
+                // 加载本地 MD5 效验信息
+                var passFileInfo = PassFileInfo.Load(BundleHotfix._.ResBasePath);
+            
+                var passFileHash = new HashSet<string>();
+                passFileInfo.FilesHash.ForEach(delegate(string s) { passFileHash.Add(s); });
+            
+                var isNeedRefreshPassInfo = false;
+            
+                var waitHash = new HashSet<string>();
+                // 等待下载的资源
+                var waitDown = waitDownDatas.FindAll(delegate(ManifestData data)
+                {
+                    // streamAsset静态文件中有，不下载
+                    if (saFiles.Contains(data.Hash)) return false;
+                    // 已经在下载队列中等待的，不在重复添加任务
+                    if (waitHash.Contains(data.Hash)) return false;
+            
+                    // 文件存储路径修改
+                    var target = PathHelper.Combine(downPath, data.GetSaveSubPath());
+                    // 已经下载并且可以通过效验,
+                    if (File.Exists(target))
+                    {
+                        // 曾经通过效验，不下载
+                        if (passFileHash.Contains(data.Md5))
+                        {
+                            return false;
+                        }
+            
+                        // 通过效验，不下载
+                        if (data.Md5 == CryptoHelper.FileMD5(target))
+                        {
+                            passFileHash.Add(data.Md5);
+                            passFileInfo.FilesHash.Add(data.Md5);
+                            isNeedRefreshPassInfo = true;
+                            return false;
+                        }
+                    }
+            
+                    Debug.Log(data.AssetPath);
+                    // 将文件加入等待下载的队列中
+                    waitHash.Add(data.Hash);
+                    return true;
+                });
+            
+                // 保存MD5效验信息
+                if (isNeedRefreshPassInfo)
+                {
+                    passFileInfo.Save();
+                }
+            
+                passFileHash.Clear();
+            
+                // 整理完全部信息，返回给上层下载器，开始下载
+                waitDownTask.SetResult(waitDown);
+            })).Start();
+            
+            var waitDown = await waitDownTask.Task;
+            try
+            {
+                // 下载 bundle
+                downCompletion.SetResult(await BundleHotfix._.DownBundleMust(waitDown, netVersionPath, downPath));
+                //return true;
+            }
+            catch (Exception e)
+            {
+                Tuner.Log("下载发生异常" + e.StackTrace);
+                downCompletion.SetResult(false);
+                //return false;
+            }
+
+            return await downCompletion.Task;
+        }
     }
 }
