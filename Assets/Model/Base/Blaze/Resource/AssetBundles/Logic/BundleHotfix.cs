@@ -329,7 +329,7 @@ namespace Blaze.Resource.AssetBundles
                 {
                     checkSuccessNum++;
                     //  该路径下的资源不需要下载，用到的时候再动态下载
-                  //  if (data.AssetPath.StartsWith("Assets/Projects/Prefabs/")) return false;
+                    if (data.AssetPath.StartsWith("Assets/Projects/Prefabs/")) return false;
 
                     // streamAsset静态文件中有，不下载
                     if (saFiles.Contains(data.Hash))
@@ -368,7 +368,7 @@ namespace Blaze.Resource.AssetBundles
                         }
                     }
 
-                    Debug.Log(data.AssetPath);
+                    //  Debug.Log(data.AssetPath);
                     // 将文件加入等待下载的队列中
                     waitHash.Add(data.Hash);
                     return true;
@@ -481,12 +481,16 @@ namespace Blaze.Resource.AssetBundles
                     OnError: delegate(Exception exception) { onError.ChangeNotify(exception); });
                 task.AddTask(delegate(Action action)
                 {
-                    down.OnCompleted += delegate(DownTaskInfo info) { action?.Invoke(); };
+                    down.OnCompleted += delegate(DownTaskInfo info)
+                    {
+                        Debug.Log("下载ab文件完成：" + data.AssetPath);
+                        action?.Invoke();
+                    };
                 });
             });
-            task.Start();
+            
             Log.Info("开始下载AB文件:" + waitDown.Count);
-
+            task.Start();
             return await downCompletion.Task;
         }
 
@@ -541,16 +545,11 @@ namespace Blaze.Resource.AssetBundles
 
         public static async Task<bool> LoadTarget(string assetpath)
         {
-            Debug.LogError("aa");
             var downCompletion = new TaskCompletionSource<bool>();
             var currentMf = _.GetManifestInfo();
-            
+
             var data = currentMf.ManifestList.Find(m => m.AssetPath == assetpath);
-            
-            if (data == null)
-                Debug.LogError("null:" + assetpath);
             if (data == null) downCompletion.SetResult(false);
-            Debug.LogError(data.File);
             
             var waitDownDatas = new List<ManifestData>();
             waitDownDatas.Add(data);
@@ -561,30 +560,30 @@ namespace Blaze.Resource.AssetBundles
                 if (dependence != null && !waitDownDatas.Contains(dependence))
                     waitDownDatas.Add(dependence);
             });
-            
-            
+
+
             var netVersionPath = PathHelper.Combine(BundleHotfix._.NetBasePath,
                 BundleHotfix._.GetVersion().AbleVersion.FullVersion());
-            
-            
+
+
             var saFiles = BundleHotfix._.StreamMf.ManifestList.ConvertAll(input => input.Hash);
-            
+
             // Bundle/iOS/1.1  存放 bundle 的文件夹
             var downPath = PathHelper.Combine(BundleHotfix._.ResBasePath,
                 BundleHotfix._.GetVersion().AbleVersion.Version());
-            
+
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 在独立的线程中计算一下文件MD5
             new Thread(new ThreadStart(delegate
             {
                 // 加载本地 MD5 效验信息
                 var passFileInfo = PassFileInfo.Load(BundleHotfix._.ResBasePath);
-            
+
                 var passFileHash = new HashSet<string>();
                 passFileInfo.FilesHash.ForEach(delegate(string s) { passFileHash.Add(s); });
-            
+
                 var isNeedRefreshPassInfo = false;
-            
+
                 var waitHash = new HashSet<string>();
                 // 等待下载的资源
                 var waitDown = waitDownDatas.FindAll(delegate(ManifestData data)
@@ -593,7 +592,7 @@ namespace Blaze.Resource.AssetBundles
                     if (saFiles.Contains(data.Hash)) return false;
                     // 已经在下载队列中等待的，不在重复添加任务
                     if (waitHash.Contains(data.Hash)) return false;
-            
+
                     // 文件存储路径修改
                     var target = PathHelper.Combine(downPath, data.GetSaveSubPath());
                     // 已经下载并且可以通过效验,
@@ -604,7 +603,7 @@ namespace Blaze.Resource.AssetBundles
                         {
                             return false;
                         }
-            
+
                         // 通过效验，不下载
                         if (data.Md5 == CryptoHelper.FileMD5(target))
                         {
@@ -614,25 +613,25 @@ namespace Blaze.Resource.AssetBundles
                             return false;
                         }
                     }
-            
-                    Debug.Log(data.AssetPath);
+
+                    Debug.Log("需要下载ab文件："+data.AssetPath);
                     // 将文件加入等待下载的队列中
                     waitHash.Add(data.Hash);
                     return true;
                 });
-            
+
                 // 保存MD5效验信息
                 if (isNeedRefreshPassInfo)
                 {
                     passFileInfo.Save();
                 }
-            
+
                 passFileHash.Clear();
-            
+
                 // 整理完全部信息，返回给上层下载器，开始下载
                 waitDownTask.SetResult(waitDown);
             })).Start();
-            
+
             var waitDown = await waitDownTask.Task;
             try
             {
