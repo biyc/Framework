@@ -187,9 +187,8 @@ namespace Blaze.Resource
         public static async Task<PrefabObject> InstantiateAsync(string assetPath, Transform parent = null,
             bool worldPositionStays = false)
         {
-            
-            // if (assetPath.StartsWith("Assets/Projects/Prefabs/"))
-            //     await BundleHotfix.LoadTarget(assetPath);
+            if (assetPath.StartsWith("Assets/Projects/Prefabs/"))
+                await BundleHotfix.LoadTarget(assetPath);
 
             var task = new TaskCompletionSource<PrefabObject>();
             // 成功回调

@@ -8,6 +8,7 @@ using Blaze.Manage.Csv.Enum;
 using Blaze.Resource;
 using Blaze.Resource.AssetBundles;
 using Blaze.Resource.AssetBundles.Data;
+using Blaze.Resource.Common;
 using Blaze.Utility;
 using Blaze.Utility.Helper;
 using DG.Tweening;
@@ -59,8 +60,12 @@ namespace ETHotfix
 
         private Transform _container;
 
-        //  private bool _isY;
-        //  private bool _isSet;
+
+        /// <summary>
+        /// 当前应该显示的资源
+        /// </summary>
+        private string _currentName;
+
 
         public override async void Awake()
         {
@@ -164,15 +169,21 @@ namespace ETHotfix
                 GameObject.Destroy(o.gameObject);
             }
 
-            var assetPath = $"Assets/Projects/Prefabs/{name}/{name}.fbx";
-         
-            // await BundleHotfix.LoadTarget(assetPath);
+            _currentName = name;
+            var path = $"Assets/Projects/Prefabs/{name}/{name}.fbx";
 
-           // await LoadTarget(assetPath);
+            // await LoadTarget(assetPath);
             //.prefab  fbx
-            var obj = Res.InstantiateAsync(assetPath, _container);
-            obj.OnLoad(m =>
+            var task = Res.InstantiateAsync(path, _container);
+            task.OnLoad(m =>
             {
+                //在下载过程中点击了其他的物品
+                if (_currentName != name)
+                {
+                    GameObject.Destroy(m.Target);
+                    return;
+                }
+
                 _target = m.Target.transform;
                 _target.name = name;
                 _target.localScale = new Vector3(1000, 1000, 1000);
@@ -180,7 +191,7 @@ namespace ETHotfix
                 _target.gameObject.layer = LayerMask.NameToLayer("UI");
             });
         }
-        
+
 
         public override void Dispose()
         {

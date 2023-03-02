@@ -154,14 +154,13 @@ namespace Blaze.Manage.Download
             if (_curTasks >= MAX_TASKS)
                 return;
 
-            _curTasks++;
-
             lock (_tasks)
             {
                 if (_tasks.Count > 0)
                 {
                     var task = _tasks[0];
                     _tasks.Remove(task);
+                    _curTasks++;
                     MonoScheduler.DispatchCoroutine(task);
                 }
             }

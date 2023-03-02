@@ -130,6 +130,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
+            // DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
@@ -305,19 +306,20 @@ namespace Blaze.Resource.AssetBundles
             var checkSuccessNum = 0;
             var totalCheck = mf.ManifestList.Count;
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
+
+            // 加载本地 MD5 效验信息
+            var passFileInfo = PassFileInfo.Load(_resBasePath);
+            // MD5 效验信息 不存在时，创建效验信息
+            if (passFileInfo == null)
+            {
+                passFileInfo = new PassFileInfo();
+                passFileInfo.Config(_resBasePath);
+                passFileInfo.Save();
+            }
+
             // 在独立的线程中计算一下文件MD5
             new Thread(new ThreadStart(delegate
             {
-                // 加载本地 MD5 效验信息
-                var passFileInfo = PassFileInfo.Load(_resBasePath);
-                // MD5 效验信息 不存在时，创建效验信息
-                if (passFileInfo == null)
-                {
-                    passFileInfo = new PassFileInfo();
-                    passFileInfo.Config(_resBasePath);
-                    passFileInfo.Save();
-                }
-
                 var passFileHash = new HashSet<string>();
                 passFileInfo.FilesHash.ForEach(delegate(string s) { passFileHash.Add(s); });
 
@@ -430,6 +432,7 @@ namespace Blaze.Resource.AssetBundles
                 ProgressManager._.ReportFinish(ProgressPoint.DownLoadAb);
                 // 停止统计网速
                 Download.StopSpeedCount();
+                // Download.StopAll();
             };
 
             var onError = new DataWatch<Exception>();
@@ -459,6 +462,7 @@ namespace Blaze.Resource.AssetBundles
 
                 var txt =
                     $"{Math.Round(secDownSize / 1024f)} KB/S （{Math.Round(downSize / 1024f / 1024f, 2)} MB / {Math.Round(total / 1024f / 1024f, 2)} MB）";
+                Debug.Log(txt);
                 // 更新下载进度条
                 ProgressManager._.ReportSub(ProgressPoint.DownLoadAb, total, downSize, txt);
             };
@@ -483,12 +487,12 @@ namespace Blaze.Resource.AssetBundles
                 {
                     down.OnCompleted += delegate(DownTaskInfo info)
                     {
-                        Debug.Log("下载ab文件完成：" + data.AssetPath);
+                        // Debug.Log("下载ab文件完成：" + data.AssetPath);
                         action?.Invoke();
                     };
                 });
             });
-            
+
             Log.Info("开始下载AB文件:" + waitDown.Count);
             task.Start();
             return await downCompletion.Task;
@@ -550,7 +554,7 @@ namespace Blaze.Resource.AssetBundles
 
             var data = currentMf.ManifestList.Find(m => m.AssetPath == assetpath);
             if (data == null) downCompletion.SetResult(false);
-            
+
             var waitDownDatas = new List<ManifestData>();
             waitDownDatas.Add(data);
             data.Dependencies.ForEach(file =>
@@ -573,12 +577,11 @@ namespace Blaze.Resource.AssetBundles
                 BundleHotfix._.GetVersion().AbleVersion.Version());
 
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
+            // 加载本地 MD5 效验信息
+            var passFileInfo = PassFileInfo.Load(BundleHotfix._.ResBasePath);
             // 在独立的线程中计算一下文件MD5
             new Thread(new ThreadStart(delegate
             {
-                // 加载本地 MD5 效验信息
-                var passFileInfo = PassFileInfo.Load(BundleHotfix._.ResBasePath);
-
                 var passFileHash = new HashSet<string>();
                 passFileInfo.FilesHash.ForEach(delegate(string s) { passFileHash.Add(s); });
 
@@ -614,7 +617,6 @@ namespace Blaze.Resource.AssetBundles
                         }
                     }
 
-                    Debug.Log("需要下载ab文件："+data.AssetPath);
                     // 将文件加入等待下载的队列中
                     waitHash.Add(data.Hash);
                     return true;
