@@ -417,7 +417,6 @@ namespace Blaze.Resource.AssetBundles
             _hotfixVersion.Save();
         }
 
-
         // 根据要求下载 ab 包
         private async Task<bool> DownBundle(List<ManifestData> waitDown, string baseUri, string basePath)
         {
@@ -559,26 +558,25 @@ namespace Blaze.Resource.AssetBundles
             waitDownDatas.Add(data);
             data.Dependencies.ForEach(file =>
             {
-                //todo 依赖的依赖还没加载
                 var dependence = currentMf.ManifestList.Find(m => m.File == file);
                 if (dependence != null && !waitDownDatas.Contains(dependence))
                     waitDownDatas.Add(dependence);
             });
 
 
-            var netVersionPath = PathHelper.Combine(BundleHotfix._.NetBasePath,
-                BundleHotfix._.GetVersion().AbleVersion.FullVersion());
+            var netVersionPath = PathHelper.Combine(_.NetBasePath,
+                _.GetVersion().AbleVersion.FullVersion());
 
 
-            var saFiles = BundleHotfix._.StreamMf.ManifestList.ConvertAll(input => input.Hash);
+            var saFiles = _.StreamMf.ManifestList.ConvertAll(input => input.Hash);
 
             // Bundle/iOS/1.1  存放 bundle 的文件夹
-            var downPath = PathHelper.Combine(BundleHotfix._.ResBasePath,
-                BundleHotfix._.GetVersion().AbleVersion.Version());
+            var downPath = PathHelper.Combine(_.ResBasePath,
+                _.GetVersion().AbleVersion.Version());
 
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
-            var passFileInfo = PassFileInfo.Load(BundleHotfix._.ResBasePath);
+            var passFileInfo = PassFileInfo.Load(_.ResBasePath);
             // 在独立的线程中计算一下文件MD5
             new Thread(new ThreadStart(delegate
             {
@@ -592,7 +590,8 @@ namespace Blaze.Resource.AssetBundles
                 var waitDown = waitDownDatas.FindAll(delegate(ManifestData data)
                 {
                     // streamAsset静态文件中有，不下载
-                    if (saFiles.Contains(data.Hash)) return false;
+                    if (saFiles.Contains(data.Hash))
+                        return false;
                     // 已经在下载队列中等待的，不在重复添加任务
                     if (waitHash.Contains(data.Hash)) return false;
 
@@ -638,7 +637,7 @@ namespace Blaze.Resource.AssetBundles
             try
             {
                 // 下载 bundle
-                downCompletion.SetResult(await BundleHotfix._.DownBundleMust(waitDown, netVersionPath, downPath));
+                downCompletion.SetResult(await _.DownBundleMust(waitDown, netVersionPath, downPath));
                 //return true;
             }
             catch (Exception e)

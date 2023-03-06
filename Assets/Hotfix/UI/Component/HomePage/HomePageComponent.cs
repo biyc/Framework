@@ -1,21 +1,9 @@
+
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Blaze.Manage.Csv.Enum;
 using Blaze.Resource;
-using Blaze.Resource.AssetBundles;
-using Blaze.Resource.AssetBundles.Data;
-using Blaze.Resource.Common;
-using Blaze.Utility;
-using Blaze.Utility.Helper;
-using DG.Tweening;
 using ETModel;
-using Hotfix.Game.Reddot;
-using Hotfix.Game.Reddot.Data;
-using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -66,6 +54,11 @@ namespace ETHotfix
         /// </summary>
         private string _currentName;
 
+        private const string TARGETTAG = "TARGETTAG";
+
+        private bool _isMove = false;
+
+        private Vector3 _distance;
 
         public override async void Awake()
         {
@@ -75,7 +68,9 @@ namespace ETHotfix
             Bind.InitUI(_curStage.transform);
             //InitRedPoint();
             _container = _curStage.transform.Find("Container");
-            //  LoadObj("cheqian");
+            // _container.gameObject.AddComponent<ItemDrag>();
+
+           // LoadObj("cheqian");
 
             //test
             _curStage.transform.GetComponentsInChildren<Button>().ToList()
@@ -97,18 +92,79 @@ namespace ETHotfix
             {
                 if (_target == null)
                     return;
+
+                
+                // if (Input.GetMouseButtonDown(0))
+                // {
+                //     var isHit = Physics.Raycast(BUI.GetUICamera().ScreenPointToRay(Input.mousePosition),
+                //         out RaycastHit hitInfo,
+                //         Mathf.Infinity);
+                //     if (isHit && hitInfo.transform.CompareTag(TARGETTAG))
+                //     {
+                //         //移动
+                //         _isMove = true;
+                //         RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                //             _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
+                //             out Vector2 pos);
+                //         _distance = _container.localPosition - (Vector3) pos;
+                //     }
+                // }
+                //
+                // if (Input.GetMouseButton(0) && _isMove)
+                // {
+                //     RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                //         _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
+                //         out Vector2 pos);
+                //     _container.localPosition = (Vector3) pos + _distance;
+                // }
+                //
+                //
+                // if (Input.GetMouseButtonUp(0))
+                //     _isMove = false;
                 //没有触摸  
                 if (Input.touchCount <= 0)
                     return;
+
+
+                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    var isHit = Physics.Raycast(BUI.GetUICamera().ScreenPointToRay(Input.mousePosition),
+                        out RaycastHit hitInfo,
+                        Mathf.Infinity);
+                    if (isHit && hitInfo.transform.CompareTag(TARGETTAG))
+                    {
+                        //移动
+                        _isMove = true;
+                        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                            _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
+                            out Vector2 pos);
+                        _distance = _container.localPosition - (Vector3) pos;
+                    }
+                    else
+                    {
+                        _isMove = false;
+                    }
+                }
+
                 //单点拖动
                 if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
-                    Touch touch = Input.GetTouch(0);
-                    Vector2 deltaPos = touch.deltaPosition; //位置增量
-                    if (Mathf.Abs(deltaPos.x) > Mathf.Abs(deltaPos.y))
-                        _container.Rotate(Vector3.down * deltaPos.x, Space.World); //绕y轴旋转
+                    if (_isMove)
+                    {
+                        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                            _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
+                            out Vector2 pos);
+                        _container.localPosition = (Vector3) pos + _distance;
+                    }
                     else
-                        _container.Rotate(Vector3.right * deltaPos.y, Space.World); //绕x轴
+                    {
+                        Touch touch = Input.GetTouch(0);
+                        Vector2 deltaPos = touch.deltaPosition; //位置增量
+                        if (Mathf.Abs(deltaPos.x) > Mathf.Abs(deltaPos.y))
+                            _container.Rotate(Vector3.down * deltaPos.x, Space.World); //绕y轴旋转
+                        else
+                            _container.Rotate(Vector3.right * deltaPos.y, Space.World); //绕x轴   
+                    }
                 }
                 //双指旋转  && 缩放
                 else if (2 <= Input.touchCount)
@@ -135,15 +191,24 @@ namespace ETHotfix
                         Vector3 scale = new Vector3(localScale.x + scaleFactor,
                             localScale.y + scaleFactor,
                             localScale.z + scaleFactor);
-                        if (scale.x > 0.3f && scale.x < 1.5f)
+                        if (scale.x > 0)
                         {
                             _container.localScale = scale;
+                            Debug.Log("Scale:" + scale.x);
                         }
 
+                        // if (scale.x > 0.3f && scale.x < 1.5f)
+                        // {
+                        //     _container.localScale = scale;
+                        // }
+                        _container.localScale = scale;
                         oldTouch1 = newTouch1;
                         oldTouch2 = newTouch2;
                     }
                 }
+
+                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended && _isMove)
+                    _isMove = false;
             });
 
             Bind.button_recovery.onClick.AddListener(Recovery);
@@ -156,6 +221,7 @@ namespace ETHotfix
         {
             _container.localScale = Vector3.one;
             _container.localEulerAngles = Vector3.zero;
+            _container.localPosition=new Vector3(0,0,-13000);
         }
 
         public async Task LoadObj(string name)
@@ -166,30 +232,44 @@ namespace ETHotfix
             {
                 var o = _target;
                 _target = null;
-                GameObject.Destroy(o.gameObject);
+                UnityEngine.Object.Destroy(o.gameObject);
             }
-
+            
             _currentName = name;
             var path = $"Assets/Projects/Prefabs/{name}/{name}.fbx";
-
+            
             // await LoadTarget(assetPath);
             //.prefab  fbx
-            var task = Res.InstantiateAsync(path, _container);
-            task.OnLoad(m =>
-            {
-                //在下载过程中点击了其他的物品
-                if (_currentName != name)
-                {
-                    GameObject.Destroy(m.Target);
-                    return;
-                }
 
-                _target = m.Target.transform;
-                _target.name = name;
-                _target.localScale = new Vector3(1000, 1000, 1000);
-                //_target.localPosition = new Vector3(0, 0, -500);
-                _target.gameObject.layer = LayerMask.NameToLayer("UI");
-            });
+            try
+            {
+                var task = Res.InstantiateAsync(path, _container);
+                task.OnLoad(m =>
+                {
+                    //在下载过程中点击了其他的物品
+                    if (_currentName != name)
+                    {
+                        UnityEngine.Object.Destroy(m.Target);
+                        return;
+                    }
+                
+                    _target = m.Target.transform;
+                    _target.name = name;
+                    _target.tag = TARGETTAG;
+                    //_target.GetComponent<MeshCollider>().convex = true;
+                    _target.gameObject.AddComponent<DoubleSideMeshCollider>();
+                    _target.GetComponent<MeshCollider>().cookingOptions = MeshColliderCookingOptions.None;
+                    _target.localScale = new Vector3(1000, 1000, 1000);
+                    //_target.localPosition = new Vector3(0, 0, -500);
+                    _target.gameObject.layer = LayerMask.NameToLayer("UI");
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+          
         }
 
 

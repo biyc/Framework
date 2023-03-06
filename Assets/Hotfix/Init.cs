@@ -38,7 +38,7 @@ namespace ETHotfix
                 // 开启键盘测试
                 Game.Scene.AddComponent<KeyboardTestCaseComponent>();
                 // 开启FPS显示
-                await BUI.Create(UIFrameShowComponent.Args);
+                //await BUI.Create(UIFrameShowComponent.Args);
                 // 开发期关闭CSV数据缓存
                 DefaultDebug.DisableCsvDataCache = true;
             }

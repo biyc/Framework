@@ -40,6 +40,7 @@ TagManager:
   - ContainerHeart
   - ContainerCharm
   - ContainerPetal
+  - TARGETTAG
   layers:
   - Default
   - TransparentFX

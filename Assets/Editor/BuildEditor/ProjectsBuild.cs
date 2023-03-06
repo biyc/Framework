@@ -92,7 +92,7 @@ namespace Blaze.Ci
             // 初始安装包中是否包含 AB 资源
             switch (packageType)
             {
-                case EnumPackageType.AndroidRelease:
+                 case EnumPackageType.AndroidRelease:
                 case EnumPackageType.IOSRelease:
                 case EnumPackageType.AndroidTestOnline:
                 case EnumPackageType.IOSTestOnline:
@@ -136,6 +136,7 @@ namespace Blaze.Ci
                 case EnumPackageType.EditorWin64Dev:
                 case EnumPackageType.AndroidTestInner:
                 case EnumPackageType.IOSTestInner:
+                case EnumPackageType.AndroidRelease:
                     gameSettings.UseDev = true;
                     break;
                 default:
@@ -166,7 +167,10 @@ namespace Blaze.Ci
                 case EnumPackageType.IOSRelease:
                 case EnumPackageType.AndroidTestOnline:
                 case EnumPackageType.IOSTestOnline:
-                  //  gameSettings.ResServerList.Add($"http://lovinhouse2.iyloft.com/{packageType.ToString()}");
+                    //https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/AndroidRelease/Android/VersionCheck.json
+                    // gameSettings.ResServerList.Add($"https://lv2m3839first.oss-cn-chengdu.aliyuncs.com/zhongyao/{packageType.ToString()}");
+                    gameSettings.ResServerList.Add(
+                        $"https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/{packageType.ToString()}");
                     break;
                 case EnumPackageType.AndroidTestInner:
                 case EnumPackageType.IOSTestInner:
@@ -174,8 +178,8 @@ namespace Blaze.Ci
                 case EnumPackageType.IOSDev:
                 case EnumPackageType.EditorOSXDev:
                 case EnumPackageType.EditorWin64Dev:
-                    gameSettings.ResServerList.Add($"http://192.168.8.6:8088/{packageType.ToString()}");//公司服务器
-                    gameSettings.ResServerList.Add($"http://192.168.1.4:8088/{packageType.ToString()}");//家里
+                    gameSettings.ResServerList.Add($"http://192.168.8.6:8088/{packageType.ToString()}"); //公司服务器
+                    gameSettings.ResServerList.Add($"http://192.168.1.4:8088/{packageType.ToString()}"); //家里
                     break;
             }
 

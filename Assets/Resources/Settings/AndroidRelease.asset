@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31307f276108458d981bbcbbf46fb78a, type: 3}
   m_Name: AndroidRelease
   m_EditorClassIdentifier: 
-  ResServerList: []
+  ResServerList:
+  - https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/AndroidRelease
   Channel: AndroidRelease
   MotherVersion: 1
   FixVersion: 0
-  BuildNum: 21
+  BuildNum: 35
   IsForceCheckVersion: 0
   UseILRuntime: 1
-  UseDev: 0
+  UseDev: 1
   UseAssetBundle: 1
   IsContentAssetBundle: 1
   ProductName: "\u4E2D\u836F"
