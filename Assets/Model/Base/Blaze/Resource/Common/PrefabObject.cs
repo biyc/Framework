@@ -11,11 +11,13 @@
 */
 
 using System;
+using System.Diagnostics;
 using Blaze.Manage.Data;
 using Blaze.Resource.Asset;
 using Blaze.Utility;
 using UniRx;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Blaze.Resource.Common
 {
@@ -73,10 +75,14 @@ namespace Blaze.Resource.Common
         /// <param name="assetPath"></param>
         private void LoadInternal(string assetPath, Transform parent, bool worldPositionStays)
         {
+
             _asset = Res.LoadAsset(assetPath);
             // 增加源计数
             _asset.AddRef();
-            _asset.Completed += delegate(IUAsset asset) { InstObj(asset, parent, worldPositionStays); };
+            _asset.Completed += delegate(IUAsset asset)
+            {
+                InstObj(asset, parent, worldPositionStays);
+            };
         }
 
         /// <summary>

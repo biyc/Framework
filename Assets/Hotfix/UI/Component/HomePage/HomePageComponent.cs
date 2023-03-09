@@ -1,5 +1,6 @@
-
 using System;
+using System.Collections;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Blaze.Resource;
@@ -7,6 +8,7 @@ using ETModel;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 namespace ETHotfix
 {
@@ -70,7 +72,7 @@ namespace ETHotfix
             _container = _curStage.transform.Find("Container");
             // _container.gameObject.AddComponent<ItemDrag>();
 
-           // LoadObj("cheqian");
+            // LoadObj("cheqian");
 
             //test
             _curStage.transform.GetComponentsInChildren<Button>().ToList()
@@ -93,7 +95,7 @@ namespace ETHotfix
                 if (_target == null)
                     return;
 
-                
+
                 // if (Input.GetMouseButtonDown(0))
                 // {
                 //     var isHit = Physics.Raycast(BUI.GetUICamera().ScreenPointToRay(Input.mousePosition),
@@ -221,8 +223,9 @@ namespace ETHotfix
         {
             _container.localScale = Vector3.one;
             _container.localEulerAngles = Vector3.zero;
-            _container.localPosition=new Vector3(0,0,-13000);
+            _container.localPosition = new Vector3(0, 0, -13000);
         }
+
 
         public async Task LoadObj(string name)
         {
@@ -234,10 +237,10 @@ namespace ETHotfix
                 _target = null;
                 UnityEngine.Object.Destroy(o.gameObject);
             }
-            
+
             _currentName = name;
             var path = $"Assets/Projects/Prefabs/{name}/{name}.fbx";
-            
+
             // await LoadTarget(assetPath);
             //.prefab  fbx
 
@@ -252,15 +255,13 @@ namespace ETHotfix
                         UnityEngine.Object.Destroy(m.Target);
                         return;
                     }
-                
+
                     _target = m.Target.transform;
                     _target.name = name;
                     _target.tag = TARGETTAG;
-                    //_target.GetComponent<MeshCollider>().convex = true;
-                    _target.gameObject.AddComponent<DoubleSideMeshCollider>();
-                    _target.GetComponent<MeshCollider>().cookingOptions = MeshColliderCookingOptions.None;
                     _target.localScale = new Vector3(1000, 1000, 1000);
-                    //_target.localPosition = new Vector3(0, 0, -500);
+                    //  _target.gameObject.AddComponent<DoubleSideMeshCollider>();
+                    MainThreadDispatcher.StartCoroutine(AddDoubleMesh());
                     _target.gameObject.layer = LayerMask.NameToLayer("UI");
                 });
             }
@@ -269,7 +270,12 @@ namespace ETHotfix
                 Console.WriteLine(e);
                 throw;
             }
-          
+        }
+
+        IEnumerator AddDoubleMesh()
+        {
+            yield return new WaitForSeconds(1);
+            _target.gameObject.AddComponent<DoubleSideMeshCollider>();
         }
 
 
