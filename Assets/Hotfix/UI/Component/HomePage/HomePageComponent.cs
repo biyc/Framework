@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blaze.Resource;
 using ETModel;
+using Sirenix.Utilities;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -140,7 +141,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3) pos;
+                        _distance = _container.localPosition - (Vector3)pos;
                     }
                     else
                     {
@@ -156,7 +157,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _container.localPosition = (Vector3) pos + _distance;
+                        _container.localPosition = (Vector3)pos + _distance;
                     }
                     else
                     {
@@ -262,7 +263,9 @@ namespace ETHotfix
                     _target.localScale = new Vector3(1000, 1000, 1000);
                     //  _target.gameObject.AddComponent<DoubleSideMeshCollider>();
                     MainThreadDispatcher.StartCoroutine(AddDoubleMesh());
-                    _target.gameObject.layer = LayerMask.NameToLayer("UI");
+                    _target.GetComponentsInChildren<Transform>()
+                        .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
+                    //_target.gameObject.layer = LayerMask.NameToLayer("UI");
                 });
             }
             catch (Exception e)
