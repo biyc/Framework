@@ -263,7 +263,7 @@ namespace ETHotfix
                     _target.tag = TARGETTAG;
                     _target.localScale = new Vector3(1000, 1000, 1000);
                     //  _target.gameObject.AddComponent<DoubleSideMeshCollider>();
-                    MainThreadDispatcher.StartCoroutine(AddDoubleMesh());
+                   // MainThreadDispatcher.StartCoroutine(AddDoubleMesh());
                     _target.GetComponentsInChildren<Transform>()
                         .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
                     //_target.gameObject.layer = LayerMask.NameToLayer("UI");
