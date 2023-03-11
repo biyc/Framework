@@ -256,6 +256,7 @@ namespace ETHotfix
                         UnityEngine.Object.Destroy(m.Target);
                         return;
                     }
+                    
 
                     _target = m.Target.transform;
                     _target.name = name;
