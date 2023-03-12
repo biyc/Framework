@@ -549,6 +549,18 @@ namespace Blaze.Resource.AssetBundles
         public static async Task<bool> LoadTarget(string assetpath)
         {
             var downCompletion = new TaskCompletionSource<bool>();
+            try
+            {
+                //  查找可用的网络连接
+                DefaultRuntime.ServerURI = await _.SelectUri(_._runtimeTarget.ToString());
+            }
+            catch (Exception e)
+            {
+                Tuner.Log("服务器不可用，选择线路失败");
+                downCompletion.SetResult(false);
+            }
+
+           
             var currentMf = _.GetManifestInfo();
 
             var data = currentMf.ManifestList.Find(m => m.AssetPath == assetpath);

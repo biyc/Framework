@@ -29,8 +29,8 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("GetTouch", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetTouch_1);
             args = new Type[]{};
-            method = type.GetMethod("get_mousePosition", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_mousePosition_2);
+            method = type.GetMethod("get_touches", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_touches_2);
 
 
         }
@@ -64,13 +64,13 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* get_mousePosition_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_touches_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = UnityEngine.Input.mousePosition;
+            var result_of_this_method = UnityEngine.Input.touches;
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

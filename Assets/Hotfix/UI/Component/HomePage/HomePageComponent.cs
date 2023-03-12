@@ -59,9 +59,12 @@ namespace ETHotfix
 
         private const string TARGETTAG = "TARGETTAG";
 
-        private bool _isMove = false;
+        // private bool _isMove = false;
 
         private Vector3 _distance;
+
+
+        private int _index = 1;
 
         public override async void Awake()
         {
@@ -96,85 +99,59 @@ namespace ETHotfix
                 if (_target == null)
                     return;
 
-
-                // if (Input.GetMouseButtonDown(0))
-                // {
-                //     var isHit = Physics.Raycast(BUI.GetUICamera().ScreenPointToRay(Input.mousePosition),
-                //         out RaycastHit hitInfo,
-                //         Mathf.Infinity);
-                //     if (isHit && hitInfo.transform.CompareTag(TARGETTAG))
-                //     {
-                //         //移动
-                //         _isMove = true;
-                //         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                //             _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
-                //             out Vector2 pos);
-                //         _distance = _container.localPosition - (Vector3) pos;
-                //     }
-                // }
-                //
-                // if (Input.GetMouseButton(0) && _isMove)
-                // {
-                //     RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                //         _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
-                //         out Vector2 pos);
-                //     _container.localPosition = (Vector3) pos + _distance;
-                // }
-                //
-                //
-                // if (Input.GetMouseButtonUp(0))
-                //     _isMove = false;
                 //没有触摸  
                 if (Input.touchCount <= 0)
                     return;
 
 
-                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
-                {
-                    var isHit = Physics.Raycast(BUI.GetUICamera().ScreenPointToRay(Input.mousePosition),
-                        out RaycastHit hitInfo,
-                        Mathf.Infinity);
-                    if (isHit && hitInfo.transform.CompareTag(TARGETTAG))
-                    {
-                        //移动
-                        _isMove = true;
-                        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                            _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
-                            out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3)pos;
-                    }
-                    else
-                    {
-                        _isMove = false;
-                    }
-                }
-
                 //单点拖动
                 if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
-                    if (_isMove)
-                    {
-                        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                            _container.parent.GetRectTransform(), Input.mousePosition, BUI.GetUICamera(),
-                            out Vector2 pos);
-                        _container.localPosition = (Vector3)pos + _distance;
-                    }
+                    Touch touch = Input.GetTouch(0);
+                    Vector2 deltaPos = touch.deltaPosition; //位置增量
+                    if (Mathf.Abs(deltaPos.x) > Mathf.Abs(deltaPos.y))
+                        _container.Rotate(Vector3.down * deltaPos.x, Space.World); //绕y轴旋转
                     else
-                    {
-                        Touch touch = Input.GetTouch(0);
-                        Vector2 deltaPos = touch.deltaPosition; //位置增量
-                        if (Mathf.Abs(deltaPos.x) > Mathf.Abs(deltaPos.y))
-                            _container.Rotate(Vector3.down * deltaPos.x, Space.World); //绕y轴旋转
-                        else
-                            _container.Rotate(Vector3.right * deltaPos.y, Space.World); //绕x轴   
-                    }
+                        _container.Rotate(Vector3.right * deltaPos.y, Space.World); //绕x轴   
                 }
                 //双指旋转  && 缩放
-                else if (2 <= Input.touchCount)
+                else if (2 == Input.touchCount)
                 {
-                    //缩放
-                    newTouch1 = Input.GetTouch(0); //
+                    newTouch1 = Input.GetTouch(0);
                     newTouch2 = Input.GetTouch(1);
+
+                    //移动
+                    //** 如果两个手指同时按下滑动， 会同时触发began
+                    //如果两个手指不是同时按下，有先后，只会触发第二个手指的began,
+                    //坑： a,b手指，a先按下，b再按下，此时滑动会触发b的began,而a不会触发。
+                    //此时抬起a手指，b保持按着，再按下a手指，此时滑动只会触发a的began，不会触发b的
+                    if (newTouch1.phase == TouchPhase.Began && newTouch2.phase == TouchPhase.Began)
+                        SetParame(newTouch2.position, 1);
+                    else if (newTouch2.phase == TouchPhase.Began)
+                        SetParame(newTouch2.position, 1);
+                    else if (newTouch1.phase == TouchPhase.Began)
+                        SetParame(newTouch1.position, 0);
+                    void SetParame(Vector2 screenPoint, int index)
+                    {
+                        _index = index;
+                        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                            _container.parent.GetRectTransform(), screenPoint, BUI.GetUICamera(),
+                            out Vector2 pos);
+                        _distance = _container.localPosition - (Vector3)pos;
+                    }
+
+                    if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved)
+                    {
+                        var touch = Input.GetTouch(_index);
+                        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                            _container.parent.GetRectTransform(), touch.position, BUI.GetUICamera(),
+                            out Vector2 pos);
+                        _container.localPosition = _distance + (Vector3)pos;
+                    }
+
+
+                    //缩放
+
                     if (newTouch2.phase == TouchPhase.Began)
                     {
                         oldTouch2 = newTouch2;
@@ -182,36 +159,31 @@ namespace ETHotfix
                         return;
                     }
 
-                    float oldDistance = Vector2.Distance(oldTouch1.position, oldTouch2.position);
-                    float newDistance = Vector2.Distance(newTouch1.position, newTouch2.position);
-                    float offset = newDistance - oldDistance;
+                    var oldDistance = Vector2.Distance(oldTouch1.position, oldTouch2.position);
+                    var newDistance = Vector2.Distance(newTouch1.position, newTouch2.position);
+                    var offset = newDistance - oldDistance;
 
 
-                    if (Mathf.Abs(offset) >= 3)
+                    if (!(Mathf.Abs(offset) >= 3)) return;
+                    var scaleFactor = offset / 100f;
+                    Vector3 localScale = _container.localScale;
+                    Vector3 scale = new Vector3(localScale.x + scaleFactor,
+                        localScale.y + scaleFactor,
+                        localScale.z + scaleFactor);
+                    if (scale.x > 0)
                     {
-                        float scaleFactor = offset / 100f;
-                        Vector3 localScale = _container.localScale;
-                        Vector3 scale = new Vector3(localScale.x + scaleFactor,
-                            localScale.y + scaleFactor,
-                            localScale.z + scaleFactor);
-                        if (scale.x > 0)
-                        {
-                            _container.localScale = scale;
-                            Debug.Log("Scale:" + scale.x);
-                        }
-
-                        // if (scale.x > 0.3f && scale.x < 1.5f)
-                        // {
-                        //     _container.localScale = scale;
-                        // }
                         _container.localScale = scale;
-                        oldTouch1 = newTouch1;
-                        oldTouch2 = newTouch2;
+                        Debug.Log("Scale:" + scale.x);
                     }
-                }
 
-                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended && _isMove)
-                    _isMove = false;
+                    // if (scale.x > 0.3f && scale.x < 1.5f)
+                    // {
+                    //     _container.localScale = scale;
+                    // }
+                    _container.localScale = scale;
+                    oldTouch1 = newTouch1;
+                    oldTouch2 = newTouch2;
+                }
             });
 
             Bind.button_recovery.onClick.AddListener(Recovery);
@@ -256,14 +228,14 @@ namespace ETHotfix
                         UnityEngine.Object.Destroy(m.Target);
                         return;
                     }
-                    
+
 
                     _target = m.Target.transform;
                     _target.name = name;
                     _target.tag = TARGETTAG;
                     _target.localScale = new Vector3(1000, 1000, 1000);
                     //  _target.gameObject.AddComponent<DoubleSideMeshCollider>();
-                   // MainThreadDispatcher.StartCoroutine(AddDoubleMesh());
+                    // MainThreadDispatcher.StartCoroutine(AddDoubleMesh());
                     _target.GetComponentsInChildren<Transform>()
                         .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
                     //_target.gameObject.layer = LayerMask.NameToLayer("UI");

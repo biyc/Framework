@@ -192,13 +192,11 @@ namespace ILRuntime.Runtime.Generated
             Blaze_Manage_Progress_ProgressManager_Binding.Register(app);
             UnityEngine_Input_Binding.Register(app);
             UnityEngine_Touch_Binding.Register(app);
-            UnityEngine_Camera_Binding.Register(app);
-            UnityEngine_Physics_Binding.Register(app);
-            UnityEngine_RaycastHit_Binding.Register(app);
             UnityEngine_RectTransformUtility_Binding.Register(app);
             System_Collections_Generic_List_1_Button_Binding.Register(app);
-            UnityEngine_MeshCollider_Binding.Register(app);
             System_Console_Binding.Register(app);
+            UnityEngine_WaitForSeconds_Binding.Register(app);
+            System_NotSupportedException_Binding.Register(app);
             UnityEngine_UI_MaskableGraphic_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
             Sirenix_Utilities_StringExtensions_Binding.Register(app);
