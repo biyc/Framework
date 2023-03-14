@@ -40,8 +40,6 @@ namespace ETHotfix
 
 
         private HomePageBind Bind;
-
-        public float speed = 5f;
         private Touch oldTouch1; //上次触摸点1(手指1)  
         private Touch oldTouch2; //上次触摸点2(手指2)  
 
@@ -66,6 +64,8 @@ namespace ETHotfix
 
         private int _index = 1;
 
+        private Transform _loading;
+
         public override async void Awake()
         {
             base.Awake();
@@ -73,12 +73,9 @@ namespace ETHotfix
             Bind = new HomePageBind();
             Bind.InitUI(_curStage.transform);
             //InitRedPoint();
+            Debug.Log("版本号:" + Define.GameSettings?.GetVersion() + " res:" + Define.AssetBundleVersion);
             _container = _curStage.transform.Find("Container");
-            // _container.gameObject.AddComponent<ItemDrag>();
-
-            // LoadObj("cheqian");
-
-            //test
+            _loading = _curStage.transform.Find("Loading");
             _curStage.transform.GetComponentsInChildren<Button>().ToList()
                 .ForEach(m =>
                 {
@@ -131,13 +128,14 @@ namespace ETHotfix
                         SetParame(newTouch2.position, 1);
                     else if (newTouch1.phase == TouchPhase.Began)
                         SetParame(newTouch1.position, 0);
+
                     void SetParame(Vector2 screenPoint, int index)
                     {
                         _index = index;
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), screenPoint, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3)pos;
+                        _distance = _container.localPosition - (Vector3) pos;
                     }
 
                     if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved)
@@ -146,7 +144,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), touch.position, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _container.localPosition = _distance + (Vector3)pos;
+                        _container.localPosition = _distance + (Vector3) pos;
                     }
 
 
@@ -211,6 +209,8 @@ namespace ETHotfix
                 UnityEngine.Object.Destroy(o.gameObject);
             }
 
+            _loading.Show();
+
             _currentName = name;
             var path = $"Assets/Projects/Prefabs/{name}/{name}.fbx";
 
@@ -229,16 +229,13 @@ namespace ETHotfix
                         return;
                     }
 
-
                     _target = m.Target.transform;
                     _target.name = name;
                     _target.tag = TARGETTAG;
                     _target.localScale = new Vector3(1000, 1000, 1000);
-                    //  _target.gameObject.AddComponent<DoubleSideMeshCollider>();
-                    // MainThreadDispatcher.StartCoroutine(AddDoubleMesh());
                     _target.GetComponentsInChildren<Transform>()
                         .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
-                    //_target.gameObject.layer = LayerMask.NameToLayer("UI");
+                    _loading.Hide();
                 });
             }
             catch (Exception e)
@@ -246,12 +243,6 @@ namespace ETHotfix
                 Console.WriteLine(e);
                 throw;
             }
-        }
-
-        IEnumerator AddDoubleMesh()
-        {
-            yield return new WaitForSeconds(1);
-            _target.gameObject.AddComponent<DoubleSideMeshCollider>();
         }
 
 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f9da3f703b2f9d741b870e6967b9f008
+guid: 59b8155c776aab440b33daca58c3914f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -116,5 +116,5 @@ TextureImporter:
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
-  assetBundleName: assets-projects-prefabs-changshashen-tex-ye_normal-png.ab
+  assetBundleName: assets-projects-ui-homepage-loading-loading_00007-png.ab
   assetBundleVariant: 
