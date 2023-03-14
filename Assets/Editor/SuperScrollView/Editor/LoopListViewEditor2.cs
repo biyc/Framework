@@ -10,7 +10,7 @@ namespace SuperScrollView
 {
 
     [CustomEditor(typeof(LoopListView2))]
-    public class LoopListViewEditor2 : Editor
+    public class LoopListViewEditor2 : UnityEditor.Editor
     {
 
         SerializedProperty mSupportScrollBar;

@@ -6,7 +6,7 @@ namespace Company
 {
 	[CustomEditor(typeof(Transform))]
 
-	public class TransformInspector : Editor {
+	public class TransformInspector : UnityEditor.Editor {
 
 	    static Vector3 clipBoardPos = new Vector3();
 	    static Vector3 clipBoardRot = new Vector3();

@@ -10,7 +10,7 @@ namespace SuperScrollView
 {
 
     [CustomEditor(typeof(LoopStaggeredGridView))]
-    public class LoopStaggeredGridViewEditor : Editor
+    public class LoopStaggeredGridViewEditor : UnityEditor.Editor
     {
 
         SerializedProperty mArrangeType;

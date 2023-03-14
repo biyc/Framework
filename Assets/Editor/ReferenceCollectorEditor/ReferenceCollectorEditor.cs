@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 [CustomEditor(typeof (ReferenceCollector))]
 [CanEditMultipleObjects]
-public class ReferenceCollectorEditor: Editor
+public class ReferenceCollectorEditor: UnityEditor.Editor
 {
 	private string searchKey
 	{

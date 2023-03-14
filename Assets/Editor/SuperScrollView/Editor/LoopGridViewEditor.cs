@@ -10,7 +10,7 @@ namespace SuperScrollView
 {
 
     [CustomEditor(typeof(LoopGridView))]
-    public class LoopGridViewEditor : Editor
+    public class LoopGridViewEditor : UnityEditor.Editor
     {
 
         SerializedProperty mGridFixedType;
