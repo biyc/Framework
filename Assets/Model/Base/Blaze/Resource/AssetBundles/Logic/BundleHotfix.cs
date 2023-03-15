@@ -130,7 +130,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
-            // DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
+            DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
@@ -546,50 +546,59 @@ namespace Blaze.Resource.AssetBundles
         #endregion
 
 
-        public static async Task<bool> LoadTarget(string assetpath)
+        public async Task<bool> LoadTarget(string assetPath)
         {
+            var p = assetPath.Replace(".fbx", "").Split('/');
+            var name = p[p.Length - 1];
+            var netPath = "http://192.168.8.6:808/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
             var downCompletion = new TaskCompletionSource<bool>();
-            try
-            {
-                //  查找可用的网络连接
-                DefaultRuntime.ServerURI = await _.SelectUri(_._runtimeTarget.ToString());
-            }
-            catch (Exception e)
-            {
-                Tuner.Log("服务器不可用，选择线路失败");
-                downCompletion.SetResult(false);
-            }
 
-           
-            var currentMf = _.GetManifestInfo();
+            var localManifestPath = PathHelper.Combine(_resBasePath, name, "BundleManifest.json");
+            Debug.Log(localManifestPath);
+            var downRemoteManifest = new TaskCompletionSource<string>();
+            ObservableWebRequest.Get(PathHelper.Combine(netPath, "BundleManifest.json"))
+                .Subscribe(s => downRemoteManifest.SetResult(s), exception =>
+                {
+                    Debug.Log("远程装配文件下载失败,加载本地装配文件");
+                    var info = ManifestInfo.Load(localManifestPath);
+                    if (info == null)
+                    {
+                        Debug.LogError("本地装配文件不存在");
+                        downCompletion.SetResult(false);
+                    }
+                    else
+                    {
+                        BundleManager._.AddManifest(info);
+                        downCompletion.SetResult(true);
+                    }
+                    // ObservableWebRequest.Get("file://" + localManifestPath).Subscribe(
+                    //     s =>
+                    //     {
+                    //         BundleManager._.AddManifest(PersistHelper.FromJson<ManifestInfo>(s));
+                    //         downCompletion.SetResult(true);
+                    //     }, exception =>
+                    //     {
+                    //         downCompletion.SetResult(false);
+                    //         Debug.LogError($"资源：{name} 远程，本地加载均出现错误，请检查！");
+                    //     });
+                });
 
-            var data = currentMf.ManifestList.Find(m => m.AssetPath == assetpath);
-            if (data == null) downCompletion.SetResult(false);
+            //远端装配文件
+            var remoteManifest = PersistHelper.FromJson<ManifestInfo>(await downRemoteManifest.Task);
+            BundleManager._.AddManifest(remoteManifest);
+            // PathHelper.CheckOrCreate(localManifestPath);
+            remoteManifest.Config(localManifestPath);
+            remoteManifest.Save();
 
-            var waitDownDatas = new List<ManifestData>();
-            waitDownDatas.Add(data);
-            data.Dependencies.ForEach(file =>
-            {
-                var dependence = currentMf.ManifestList.Find(m => m.File == file);
-                if (dependence != null && !waitDownDatas.Contains(dependence))
-                    waitDownDatas.Add(dependence);
-            });
+            var saFiles = StreamMf.ManifestList.ConvertAll(input => input.Hash);
 
-
-            var netVersionPath = PathHelper.Combine(_.NetBasePath,
-                _.GetVersion().AbleVersion.FullVersion());
-
-
-            var saFiles = _.StreamMf.ManifestList.ConvertAll(input => input.Hash);
-
-            // Bundle/iOS/1.1  存放 bundle 的文件夹
-            var downPath = PathHelper.Combine(_.ResBasePath,
-                _.GetVersion().AbleVersion.Version());
+            // // Bundle/iOS/1.1  存放 bundle 的文件夹
+            var downPath = PathHelper.Combine(ResBasePath, GetVersion().AbleVersion.Version());
 
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
-            var passFileInfo = PassFileInfo.Load(_.ResBasePath);
-            // 在独立的线程中计算一下文件MD5
+            var passFileInfo = PassFileInfo.Load(ResBasePath);
+            // // 在独立的线程中计算一下文件MD5
             new Thread(new ThreadStart(delegate
             {
                 var passFileHash = new HashSet<string>();
@@ -599,7 +608,7 @@ namespace Blaze.Resource.AssetBundles
 
                 var waitHash = new HashSet<string>();
                 // 等待下载的资源
-                var waitDown = waitDownDatas.FindAll(delegate(ManifestData data)
+                var waitDown = remoteManifest.ManifestList.FindAll(delegate(ManifestData data)
                 {
                     // streamAsset静态文件中有，不下载
                     if (saFiles.Contains(data.Hash))
@@ -649,16 +658,18 @@ namespace Blaze.Resource.AssetBundles
             try
             {
                 // 下载 bundle
-                downCompletion.SetResult(await _.DownBundleMust(waitDown, netVersionPath, downPath));
+                downCompletion.SetResult(await DownBundleMust(waitDown, netPath, downPath));
                 //return true;
             }
             catch (Exception e)
             {
-                Tuner.Log("下载发生异常" + e.StackTrace);
-                downCompletion.SetResult(false);
+                Tuner.Log("下载发生异常,使用本地版本" + e.StackTrace);
+                downCompletion.SetResult(true);
+                // downCompletion.SetResult(false);
                 //return false;
             }
 
+            //   await downCompletion.Task;
             return await downCompletion.Task;
         }
     }

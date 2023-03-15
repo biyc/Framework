@@ -50,8 +50,17 @@ namespace Blaze.Resource.AssetBundles
             // CsvData/Game.Common$Favorability.csv -> CsvData.ab
             _manifest.ManifestList.ForEach(delegate(ManifestData data)
             {
-                _bundleData[data.File] = data;
-                _bundleMap[data.AssetPath] = data.File;
+                _bundleData[data.ABName] = data;
+                _bundleMap[data.AssetPath] = data.ABName;
+            });
+        }
+
+        public void AddManifest(ManifestInfo info)
+        {
+            info.ManifestList.ForEach(data =>
+            {
+                _bundleData[data.ABName] = data;
+                _bundleMap[data.AssetPath] = data.ABName;
             });
         }
 

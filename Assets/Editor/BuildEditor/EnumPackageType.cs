@@ -1,10 +1,15 @@
-﻿namespace Blaze.Ci
+﻿using System;
+
+namespace Blaze.Ci
 {
     /// <summary>
     /// 分包类型
     /// </summary>
     public enum EnumPackageType
     {
+        // 开发包安卓
+        AndroidDev,
+
         // 正式包安卓
         AndroidRelease,
 
@@ -29,8 +34,6 @@
         // 版号包IOS
         IOSVerify,
 
-        // 开发包安卓
-        AndroidDev,
 
         // 开发包IOS
         IOSDev,
@@ -40,6 +43,5 @@
 
         // 开发包WIN64_EDITOR
         EditorWin64Dev,
-        
     }
 }

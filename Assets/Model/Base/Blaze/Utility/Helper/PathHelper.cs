@@ -67,7 +67,7 @@ namespace Blaze.Utility.Helper
         }
 
         /// <summary>
-        /// 获取当前程序的运行目录
+        /// 获取当前程序的运行目录  E:\UnityXlmu\Framework
         /// </summary>
         /// <returns></returns>
         public static string GetCurrentPath()

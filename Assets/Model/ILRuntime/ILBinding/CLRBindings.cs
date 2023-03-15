@@ -134,9 +134,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_Component_Binding.Register(app);
             ETModel_Scene_Binding.Register(app);
             System_NotImplementedException_Binding.Register(app);
-            System_Threading_Tasks_Task_1_PrefabObject_Binding.Register(app);
-            System_Runtime_CompilerServices_TaskAwaiter_1_PrefabObject_Binding.Register(app);
-            System_Action_1_PrefabObject_Binding.Register(app);
             System_Collections_IDictionary_Binding.Register(app);
             System_Threading_Thread_Binding.Register(app);
             UnityEngine_Screen_Binding.Register(app);
@@ -164,6 +161,8 @@ namespace ILRuntime.Runtime.Generated
             System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_ILTypeInstance_Binding.Register(app);
             System_Threading_Tasks_Task_1_ILTypeInstance_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_1_ILTypeInstance_Binding.Register(app);
+            System_Threading_Tasks_Task_1_PrefabObject_Binding.Register(app);
+            System_Runtime_CompilerServices_TaskAwaiter_1_PrefabObject_Binding.Register(app);
             ETModel_IdGenerater_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
@@ -193,10 +192,9 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Input_Binding.Register(app);
             UnityEngine_Touch_Binding.Register(app);
             UnityEngine_RectTransformUtility_Binding.Register(app);
+            Blaze_Common_GameSettings_Binding.Register(app);
             System_Collections_Generic_List_1_Button_Binding.Register(app);
             System_Console_Binding.Register(app);
-            UnityEngine_WaitForSeconds_Binding.Register(app);
-            System_NotSupportedException_Binding.Register(app);
             UnityEngine_UI_MaskableGraphic_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
             Sirenix_Utilities_StringExtensions_Binding.Register(app);

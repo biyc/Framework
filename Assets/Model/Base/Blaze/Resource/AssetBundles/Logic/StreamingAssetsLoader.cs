@@ -120,7 +120,7 @@ namespace Blaze.Resource.AssetBundles.Logic.StreamingAssets
                         }
                         else
                         {
-                            Debug.Log($"LoadBundle From StreamingAssets Error {mf.File} {uwr.error}");
+                            Debug.Log($"LoadBundle From StreamingAssets Error {mf.ABName} {uwr.error}");
                             callback(null);
                         }
 
@@ -149,7 +149,7 @@ namespace Blaze.Resource.AssetBundles.Logic.StreamingAssets
                 }
                 else
                 {
-                    Debug.Log($"LoadZip From StreamingAssets Error {mf.File} {uwr.error}");
+                    Debug.Log($"LoadZip From StreamingAssets Error {mf.ABName} {uwr.error}");
                     callback(null);
                     endCb?.Invoke();
                 }

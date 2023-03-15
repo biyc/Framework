@@ -65,16 +65,16 @@ namespace Blaze.Bundle.Step
             Dictionary<string, string> fileToMd5 = new Dictionary<string, string>();
             _manifest.ManifestList.ForEach(delegate(ManifestData data)
             {
-                if (!fileToMd5.ContainsKey(data.File))
+                if (!fileToMd5.ContainsKey(data.ABName))
                 {
-                    var filePath = PathHelper.Combine(cachePath, data.File);
+                    var filePath = PathHelper.Combine(cachePath, data.ABName);
                     data.Md5 = CryptoHelper.FileMD5(filePath);
-                    fileToMd5.Add(data.File, data.Md5);
+                    fileToMd5.Add(data.ABName, data.Md5);
                 }
                 else
                 {
                     // 找到已创建的哈希
-                    data.Md5 = fileToMd5[data.File];
+                    data.Md5 = fileToMd5[data.ABName];
                 }
             });
 
@@ -83,16 +83,16 @@ namespace Blaze.Bundle.Step
             Dictionary<string, long> fileToSize = new Dictionary<string, long>();
             _manifest.ManifestList.ForEach(delegate(ManifestData data)
             {
-                if (!fileToSize.ContainsKey(data.File))
+                if (!fileToSize.ContainsKey(data.ABName))
                 {
-                    var filePath = PathHelper.Combine(cachePath, data.File);
+                    var filePath = PathHelper.Combine(cachePath, data.ABName);
                     data.Size = new FileInfo(filePath).Length;
-                    fileToSize.Add(data.File, data.Size);
+                    fileToSize.Add(data.ABName, data.Size);
                 }
                 else
                 {
                     // 找到已创建的哈希
-                    data.Size = fileToSize[data.File];
+                    data.Size = fileToSize[data.ABName];
                 }
             });
 
@@ -118,17 +118,17 @@ namespace Blaze.Bundle.Step
             Dictionary<string, string> fileToHash = new Dictionary<string, string>();
             _manifest.ManifestList.ForEach(delegate(ManifestData data)
             {
-                if (!fileToHash.ContainsKey(data.File))
+                if (!fileToHash.ContainsKey(data.ABName))
                 {
                     // 给文件创建全新哈希 (文件名 + MD5)
-                    data.Hash = CryptoHelper.MD5Encode(data.File + data.Md5) + ".ab";
+                    data.Hash = CryptoHelper.MD5Encode(data.ABName + data.Md5) + ".ab";
                     // data.Hash = CryptoHelper.ShortId(data.File + data.Md5, true) + ".ab";
-                    fileToHash.Add(data.File, data.Hash);
+                    fileToHash.Add(data.ABName, data.Hash);
                 }
                 else
                 {
                     // 找到已创建的哈希
-                    data.Hash = fileToHash[data.File];
+                    data.Hash = fileToHash[data.ABName];
                 }
             });
             // 保存装配信息到 版本目录

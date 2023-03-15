@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Blaze.Common;
 using Blaze.Core;
 using Blaze.Utility.Helper;
+using UnityEngine.Serialization;
 
 namespace Blaze.Resource.AssetBundles.Data
 {
@@ -27,8 +28,8 @@ namespace Blaze.Resource.AssetBundles.Data
         /// 资源版本
         public int Version;
 
-        /// 文件
-        public string File;
+        /// 资源所属ab包名
+        public string ABName;
 
         /// 网络上下载到的HASH文件名
         public string Hash;

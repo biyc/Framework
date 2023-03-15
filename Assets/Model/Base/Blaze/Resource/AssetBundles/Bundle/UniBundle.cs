@@ -134,7 +134,7 @@ namespace Blaze.Resource.AssetBundles.Bundle
         /// </summary>
         public string Name
         {
-            get { return _manifest.File; }
+            get { return _manifest.ABName; }
         }
 
         #endregion

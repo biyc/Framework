@@ -91,6 +91,8 @@ namespace ETHotfix
                     }
                 });
 
+            #region 手势识别
+
             Observable.EveryUpdate().Subscribe(_ =>
             {
                 if (_target == null)
@@ -184,6 +186,8 @@ namespace ETHotfix
                 }
             });
 
+            #endregion
+
             Bind.button_recovery.onClick.AddListener(Recovery);
         }
 
@@ -217,32 +221,32 @@ namespace ETHotfix
             // await LoadTarget(assetPath);
             //.prefab  fbx
 
-            try
-            {
-                var task = Res.InstantiateAsync(path, _container);
-                task.OnLoad(m =>
-                {
-                    //在下载过程中点击了其他的物品
-                    if (_currentName != name)
-                    {
-                        UnityEngine.Object.Destroy(m.Target);
-                        return;
-                    }
 
-                    _target = m.Target.transform;
-                    _target.name = name;
-                    _target.tag = TARGETTAG;
-                    _target.localScale = new Vector3(1000, 1000, 1000);
-                    _target.GetComponentsInChildren<Transform>()
-                        .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
-                    _loading.Hide();
-                });
-            }
-            catch (Exception e)
+            var task = Res.InstantiateAsync(path, _container);
+            task.OnLoad(m =>
             {
-                Console.WriteLine(e);
-                throw;
-            }
+                Debug.LogError("nuu");
+                if (m == null)
+                {
+                    _loading.Hide();
+                    return;
+                }
+
+                //在下载过程中点击了其他的物品
+                if (_currentName != name)
+                {
+                    UnityEngine.Object.Destroy(m.Target);
+                    return;
+                }
+
+                _target = m.Target.transform;
+                _target.name = name;
+                _target.tag = TARGETTAG;
+                _target.localScale = new Vector3(1000, 1000, 1000);
+                _target.GetComponentsInChildren<Transform>()
+                    .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
+                _loading.Hide();
+            });
         }
 
 

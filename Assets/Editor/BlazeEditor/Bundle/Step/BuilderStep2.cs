@@ -24,6 +24,7 @@ using Blaze.Resource.Poco;
 using Blaze.Utility;
 using Blaze.Utility.Helper;
 using ICSharpCode.SharpZipLib.Zip;
+using Sirenix.Utilities;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -81,7 +82,7 @@ namespace Blaze.Bundle.Step
             if (filename.EndsWith(".DS_Store")
                 || filename.EndsWith(".meta")
                 || filename.EndsWith(".MD")
-            ) return true;
+               ) return true;
             return false;
         }
 
@@ -120,7 +121,7 @@ namespace Blaze.Bundle.Step
                         var data = new ManifestData();
                         data.AssetPath = PathHelper.Combine("Data", dir.Name, file.Name);
                         data.Type = BundleType.Zip;
-                        data.File = dir.Name + ".ab";
+                        data.ABName = dir.Name + ".ab";
                         mf.ManifestList.Add(data);
 
                         var name = ZipEntry.CleanName(file.Name);
@@ -156,16 +157,16 @@ namespace Blaze.Bundle.Step
         /// <param name="item"></param>
         private void ProcessAssetBundle()
         {
-            AssetDatabase.RemoveUnusedAssetBundleNames();
             var files = AssetDatabase.GetAllAssetPaths().ToList()
-                .FindAll(path => path.StartsWith("Assets/Projects") && !Directory.Exists(path));
+                .FindAll(path =>
+                    path.StartsWith("Assets/Projects") && !Directory.Exists(path));
             files.ForEach(delegate(string file)
             {
                 // 需要忽略的文件
                 if (CheckIgnore(file)) return;
 
                 // todo 跳过自定义打包规则
-                if (file.Contains("Assets/Projects/FGui")) return;
+                if (file.Contains("Assets/Projects/Prefabs")) return;
 
                 _originPath[file.ToLower()] = file;
 
@@ -240,6 +241,8 @@ namespace Blaze.Bundle.Step
                 buildTarget);
 
             Generation(abmf);
+
+            AssetDatabase.GetAllAssetBundleNames().ForEach(abName => AssetDatabase.RemoveAssetBundleName(abName, true));
         }
 
         /// <summary>
@@ -271,7 +274,7 @@ namespace Blaze.Bundle.Step
                     var data = new ManifestData();
                     data.AssetPath = asstePath;
                     data.Type = BundleType.AssetBundle;
-                    data.File = abName;
+                    data.ABName = abName;
                     data.Checksum = desc.CRC.ToString();
                     data.Dependencies = abmf.GetAllDependencies(abName).ToList();
                     if (IsContent(data))

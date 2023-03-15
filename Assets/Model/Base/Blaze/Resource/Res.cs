@@ -187,12 +187,16 @@ namespace Blaze.Resource
         public static async Task<PrefabObject> InstantiateAsync(string assetPath, Transform parent = null,
             bool worldPositionStays = false)
         {
-            
-            // if (DefaultRuntime.RuntimeEnvMode == EnumEnvMode.HotfixRun &&
-            //     assetPath.StartsWith("Assets/Projects/Prefabs/"))
-            //     await BundleHotfix.LoadTarget(assetPath);
-
             var task = new TaskCompletionSource<PrefabObject>();
+            if (DefaultRuntime.RuntimeEnvMode == EnumEnvMode.HotfixRun &&
+                assetPath.StartsWith("Assets/Projects/Prefabs/"))
+                if (!await BundleHotfix._.LoadTarget(assetPath))
+                {
+                    Debug.LogError("dd");
+                    task.SetResult(null);        
+                }
+            
+
             // 成功回调
             PrefabObject.Load(assetPath, parent, worldPositionStays).Completed += task.SetResult;
             return await task.Task;
@@ -214,7 +218,7 @@ namespace Blaze.Resource
             if (ResManager._.CurrentEnv != EnumEnvMode.AssetDatabase)
             {
                 var provider = ResManager._.GetAssetProvider() as IAssetBundleProvider;
-                return (UniBundle)provider.GetBundle(bundleName);
+                return (UniBundle) provider.GetBundle(bundleName);
             }
 
             return null;
@@ -230,7 +234,7 @@ namespace Blaze.Resource
             if (ResManager._.CurrentEnv != EnumEnvMode.AssetDatabase)
             {
                 var provider = ResManager._.GetAssetProvider() as IAssetBundleProvider;
-                return (UniBundle)provider.GetBundleSync(bundleName);
+                return (UniBundle) provider.GetBundleSync(bundleName);
             }
 
             return null;
