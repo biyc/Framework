@@ -194,7 +194,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_RectTransformUtility_Binding.Register(app);
             Blaze_Common_GameSettings_Binding.Register(app);
             System_Collections_Generic_List_1_Button_Binding.Register(app);
-            System_Console_Binding.Register(app);
             UnityEngine_UI_MaskableGraphic_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
             Sirenix_Utilities_StringExtensions_Binding.Register(app);

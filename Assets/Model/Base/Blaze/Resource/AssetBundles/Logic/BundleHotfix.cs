@@ -550,51 +550,36 @@ namespace Blaze.Resource.AssetBundles
         {
             var p = assetPath.Replace(".fbx", "").Split('/');
             var name = p[p.Length - 1];
-            var netPath = "http://192.168.8.6:808/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
-            var downCompletion = new TaskCompletionSource<bool>();
-
+            var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles1/" + name;
+             var downCompletion = new TaskCompletionSource<bool>();
+            //
             var localManifestPath = PathHelper.Combine(_resBasePath, name, "BundleManifest.json");
-            Debug.Log(localManifestPath);
+            
             var downRemoteManifest = new TaskCompletionSource<string>();
             ObservableWebRequest.Get(PathHelper.Combine(netPath, "BundleManifest.json"))
-                .Subscribe(s => downRemoteManifest.SetResult(s), exception =>
-                {
-                    Debug.Log("远程装配文件下载失败,加载本地装配文件");
-                    var info = ManifestInfo.Load(localManifestPath);
-                    if (info == null)
-                    {
-                        Debug.LogError("本地装配文件不存在");
-                        downCompletion.SetResult(false);
-                    }
-                    else
-                    {
-                        BundleManager._.AddManifest(info);
-                        downCompletion.SetResult(true);
-                    }
-                    // ObservableWebRequest.Get("file://" + localManifestPath).Subscribe(
-                    //     s =>
-                    //     {
-                    //         BundleManager._.AddManifest(PersistHelper.FromJson<ManifestInfo>(s));
-                    //         downCompletion.SetResult(true);
-                    //     }, exception =>
-                    //     {
-                    //         downCompletion.SetResult(false);
-                    //         Debug.LogError($"资源：{name} 远程，本地加载均出现错误，请检查！");
-                    //     });
-                });
-
-            //远端装配文件
-            var remoteManifest = PersistHelper.FromJson<ManifestInfo>(await downRemoteManifest.Task);
-            BundleManager._.AddManifest(remoteManifest);
-            // PathHelper.CheckOrCreate(localManifestPath);
-            remoteManifest.Config(localManifestPath);
-            remoteManifest.Save();
-
+                .Subscribe(s => downRemoteManifest.SetResult(s), m => downRemoteManifest.SetResult(""));
+            
+            var content = await downRemoteManifest.Task;
+            if (string.IsNullOrEmpty(content))
+            {
+                Debug.LogError("ddd");
+                downCompletion.SetResult(false);
+                return await downCompletion.Task;
+            }
+            Debug.LogError("11");
+            ManifestInfo remoteManifest = PersistHelper.FromJson<ManifestInfo>(await downRemoteManifest.Task);
+            if (remoteManifest == null || remoteManifest.ManifestList == null)
+            {
+                remoteManifest = new ManifestInfo();
+                remoteManifest.ManifestList = new List<ManifestData>();
+            }
+            
+            
             var saFiles = StreamMf.ManifestList.ConvertAll(input => input.Hash);
-
+            
             // // Bundle/iOS/1.1  存放 bundle 的文件夹
             var downPath = PathHelper.Combine(ResBasePath, GetVersion().AbleVersion.Version());
-
+            
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
             var passFileInfo = PassFileInfo.Load(ResBasePath);
@@ -603,9 +588,9 @@ namespace Blaze.Resource.AssetBundles
             {
                 var passFileHash = new HashSet<string>();
                 passFileInfo.FilesHash.ForEach(delegate(string s) { passFileHash.Add(s); });
-
+            
                 var isNeedRefreshPassInfo = false;
-
+            
                 var waitHash = new HashSet<string>();
                 // 等待下载的资源
                 var waitDown = remoteManifest.ManifestList.FindAll(delegate(ManifestData data)
@@ -615,7 +600,7 @@ namespace Blaze.Resource.AssetBundles
                         return false;
                     // 已经在下载队列中等待的，不在重复添加任务
                     if (waitHash.Contains(data.Hash)) return false;
-
+            
                     // 文件存储路径修改
                     var target = PathHelper.Combine(downPath, data.GetSaveSubPath());
                     // 已经下载并且可以通过效验,
@@ -626,7 +611,7 @@ namespace Blaze.Resource.AssetBundles
                         {
                             return false;
                         }
-
+            
                         // 通过效验，不下载
                         if (data.Md5 == CryptoHelper.FileMD5(target))
                         {
@@ -636,24 +621,24 @@ namespace Blaze.Resource.AssetBundles
                             return false;
                         }
                     }
-
+            
                     // 将文件加入等待下载的队列中
                     waitHash.Add(data.Hash);
                     return true;
                 });
-
+            
                 // 保存MD5效验信息
                 if (isNeedRefreshPassInfo)
                 {
                     passFileInfo.Save();
                 }
-
+            
                 passFileHash.Clear();
-
+            
                 // 整理完全部信息，返回给上层下载器，开始下载
                 waitDownTask.SetResult(waitDown);
             })).Start();
-
+            
             var waitDown = await waitDownTask.Task;
             try
             {
@@ -668,8 +653,10 @@ namespace Blaze.Resource.AssetBundles
                 // downCompletion.SetResult(false);
                 //return false;
             }
-
+            
+            BundleManager._.AddManifest(remoteManifest);
             //   await downCompletion.Task;
+           // downCompletion.SetResult(false);
             return await downCompletion.Task;
         }
     }

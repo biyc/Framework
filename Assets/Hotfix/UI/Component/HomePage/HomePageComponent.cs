@@ -221,32 +221,37 @@ namespace ETHotfix
             // await LoadTarget(assetPath);
             //.prefab  fbx
 
+           Debug.Log(13);
+          //  var task = Res.InstantiateAsync(path, _container);
+          //  Debug.Log(12);
+          //  var p = await task;
+           // Debug.Log(11);
+          //  Debug.LogError(p == null);
 
-            var task = Res.InstantiateAsync(path, _container);
-            task.OnLoad(m =>
-            {
-                Debug.LogError("nuu");
-                if (m == null)
-                {
-                    _loading.Hide();
-                    return;
-                }
-
-                //在下载过程中点击了其他的物品
-                if (_currentName != name)
-                {
-                    UnityEngine.Object.Destroy(m.Target);
-                    return;
-                }
-
-                _target = m.Target.transform;
-                _target.name = name;
-                _target.tag = TARGETTAG;
-                _target.localScale = new Vector3(1000, 1000, 1000);
-                _target.GetComponentsInChildren<Transform>()
-                    .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
-                _loading.Hide();
-            });
+            // await task.OnLoad(m =>
+            // {
+            //     Debug.LogError("nuu");
+            //     if (m == null)
+            //     {
+            //         _loading.Hide();
+            //         return;
+            //     }
+            //
+            //     //在下载过程中点击了其他的物品
+            //     if (_currentName != name)
+            //     {
+            //         UnityEngine.Object.Destroy(m.Target);
+            //         return;
+            //     }
+            //
+            //     _target = m.Target.transform;
+            //     _target.name = name;
+            //     _target.tag = TARGETTAG;
+            //     _target.localScale = new Vector3(1000, 1000, 1000);
+            //     _target.GetComponentsInChildren<Transform>()
+            //         .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
+            //     _loading.Hide();
+            // });
         }
 
 
