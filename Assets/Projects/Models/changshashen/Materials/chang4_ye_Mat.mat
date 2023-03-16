@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: chang4_ye_Mat
-  m_Shader: {fileID: -6465566751694194690, guid: 653d1e8b5578968458a5bd85bd0babee,
+  m_Shader: {fileID: -6465566751694194690, guid: e7ddc22bec5108b45b85d21b6b11bc0d,
     type: 3}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _NORMALMAP
   m_LightmapFlags: 4

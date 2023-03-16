@@ -130,7 +130,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
-             DefaultRuntime.ServerURI = "http://192.168.1.7:8088/EditorWin64Dev";
+            // DefaultRuntime.ServerURI = "http://192.168.1.7:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
