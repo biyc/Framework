@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Blaze.Resource;
+using Blaze.Utility.Helper;
 using ETModel;
 using Sirenix.Utilities;
 using UniRx;
@@ -76,6 +77,9 @@ namespace ETHotfix
             Debug.Log("版本号:" + Define.GameSettings?.GetVersion() + " res:" + Define.AssetBundleVersion);
             _container = _curStage.transform.Find("Container");
             _loading = _curStage.transform.Find("Loading");
+
+            // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
+            var baseNetPath = "http://192.168.8.6:8088/AndroidDev/Android/PrefabBundles/";
             _curStage.transform.GetComponentsInChildren<Button>().ToList()
                 .ForEach(m =>
                 {
@@ -84,7 +88,7 @@ namespace ETHotfix
                         async void Call()
                         {
                             Recovery();
-                            await LoadObj(m.name);
+                            await LoadObj(baseNetPath, m.name);
                         }
 
                         m.onClick.AddListener(Call);
@@ -189,6 +193,8 @@ namespace ETHotfix
             #endregion
 
             Bind.button_recovery.onClick.AddListener(Recovery);
+            
+            
         }
 
         /// <summary>
@@ -202,8 +208,9 @@ namespace ETHotfix
         }
 
 
-        public async Task LoadObj(string name)
+        public async Task LoadObj(string baseNetPath, string name)
         {
+            Debug.Log("netPath:"+PathHelper.Combine(baseNetPath,name));
             if (_target != null && name == _target.name)
                 return;
             if (_target != null)
@@ -216,42 +223,43 @@ namespace ETHotfix
             _loading.Show();
 
             _currentName = name;
+
+            if (!await Res.DownLoadModelAsset(baseNetPath, name))
+            {
+                _loading.Hide();
+                return;
+            }
+
             var path = $"Assets/Projects/Prefabs/{name}/{name}.fbx";
 
             // await LoadTarget(assetPath);
             //.prefab  fbx
 
-           Debug.Log(13);
-          //  var task = Res.InstantiateAsync(path, _container);
-          //  Debug.Log(12);
-          //  var p = await task;
-           // Debug.Log(11);
-          //  Debug.LogError(p == null);
 
-            // await task.OnLoad(m =>
-            // {
-            //     Debug.LogError("nuu");
-            //     if (m == null)
-            //     {
-            //         _loading.Hide();
-            //         return;
-            //     }
-            //
-            //     //在下载过程中点击了其他的物品
-            //     if (_currentName != name)
-            //     {
-            //         UnityEngine.Object.Destroy(m.Target);
-            //         return;
-            //     }
-            //
-            //     _target = m.Target.transform;
-            //     _target.name = name;
-            //     _target.tag = TARGETTAG;
-            //     _target.localScale = new Vector3(1000, 1000, 1000);
-            //     _target.GetComponentsInChildren<Transform>()
-            //         .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
-            //     _loading.Hide();
-            // });
+            var task = Res.InstantiateAsync(path, _container);
+            task.OnLoad(m =>
+            {
+                // if (m == null)
+                // {
+                //     _loading.Hide();
+                //     return;
+                // }
+
+                //在下载过程中点击了其他的物品
+                if (_currentName != name)
+                {
+                    UnityEngine.Object.Destroy(m.Target);
+                    return;
+                }
+
+                _target = m.Target.transform;
+                _target.name = name;
+                _target.tag = TARGETTAG;
+                _target.localScale = new Vector3(1000, 1000, 1000);
+                _target.GetComponentsInChildren<Transform>()
+                    .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
+                _loading.Hide();
+            });
         }
 
 

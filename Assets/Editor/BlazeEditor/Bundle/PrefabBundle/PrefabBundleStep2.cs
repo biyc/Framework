@@ -22,6 +22,7 @@ namespace Blaze.Bundle.PrefabBundle
 
         private void ProcessAssetBundle()
         {
+            AssetDatabase.GetAllAssetBundleNames().ForEach(abName => AssetDatabase.RemoveAssetBundleName(abName, true));
             var files = AssetDatabase.GetAllAssetPaths().ToList()
                 .FindAll(path =>
                     path.StartsWith("Assets/Projects/Prefabs/" + PrefabBundleStep1._.Name) && !Directory.Exists(path));

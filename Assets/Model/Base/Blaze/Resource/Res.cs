@@ -187,22 +187,31 @@ namespace Blaze.Resource
         public static async Task<PrefabObject> InstantiateAsync(string assetPath, Transform parent = null,
             bool worldPositionStays = false)
         {
-            var abDownTask = new TaskCompletionSource<bool>();
-            if (DefaultRuntime.RuntimeEnvMode == EnumEnvMode.HotfixRun &&
-                assetPath.StartsWith("Assets/Projects/Prefabs/"))
-                abDownTask.SetResult(await BundleHotfix._.LoadTarget(assetPath));
-            else
-                abDownTask.SetResult(true);
+            // var abDownTask = new TaskCompletionSource<bool>();
+            // if (DefaultRuntime.RuntimeEnvMode == EnumEnvMode.HotfixRun &&
+            //     assetPath.StartsWith("Assets/Projects/Prefabs/"))
+            //     abDownTask.SetResult(await BundleHotfix._.LoadTarget(assetPath));
+            // else
+            //     abDownTask.SetResult(true);
 
             var task = new TaskCompletionSource<PrefabObject>();
-            var d = await abDownTask.Task;
-            Debug.LogError(d);
-            if (!d)
-                task.SetResult(new PrefabObject());
-            else
-                // 成功回调
-                PrefabObject.Load(assetPath, parent, worldPositionStays).Completed += task.SetResult;
+            // if (!await abDownTask.Task)
+            //     task.SetResult(null);
+            // else
+            // 成功回调
+            PrefabObject.Load(assetPath, parent, worldPositionStays).Completed += task.SetResult;
             return await task.Task;
+        }
+
+        public static async Task<bool> DownLoadModelAsset(string baseNetPath, string name)
+        {
+            var abDownTask = new TaskCompletionSource<bool>();
+            // if (DefaultRuntime.RuntimeEnvMode)
+            //     abDownTask.SetResult(await BundleHotfix._.LoadModelAsset(assetPath));
+            // else
+            //     abDownTask.SetResult(true);
+            abDownTask.SetResult(await BundleHotfix._.LoadModelAsset(baseNetPath,name));
+            return await abDownTask.Task;
         }
 
         #endregion

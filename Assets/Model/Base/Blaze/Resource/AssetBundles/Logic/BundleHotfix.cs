@@ -130,7 +130,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
-            DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
+            //DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
@@ -546,40 +546,45 @@ namespace Blaze.Resource.AssetBundles
         #endregion
 
 
-        public async Task<bool> LoadTarget(string assetPath)
+        /// <summary>
+        /// 下载模型资源
+        /// </summary>
+        /// <param name="assetPath"></param>
+        /// <returns></returns>
+        public async Task<bool> LoadModelAsset(string baseNetPath, string name)
         {
-            var p = assetPath.Replace(".fbx", "").Split('/');
-            var name = p[p.Length - 1];
-            var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles1/" + name;
-             var downCompletion = new TaskCompletionSource<bool>();
+            // var p = assetPath.Replace(".fbx", "").Split('/');
+            // var name = p[p.Length - 1];
+            // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
+            var netPath = PathHelper.Combine(baseNetPath, name);
+            Tuner.Log("netPath:"+netPath);
+            var downCompletion = new TaskCompletionSource<bool>();
             //
-            var localManifestPath = PathHelper.Combine(_resBasePath, name, "BundleManifest.json");
-            
+            var localManifestDirPath = PathHelper.Combine(_resBasePath, "ModelManifest");
+            var localManifestPath = PathHelper.Combine(localManifestDirPath, name + "_BundleManifest.json");
+
+            PathHelper.CheckOrCreate(localManifestDirPath);
+
             var downRemoteManifest = new TaskCompletionSource<string>();
             ObservableWebRequest.Get(PathHelper.Combine(netPath, "BundleManifest.json"))
                 .Subscribe(s => downRemoteManifest.SetResult(s), m => downRemoteManifest.SetResult(""));
-            
+
             var content = await downRemoteManifest.Task;
+            //下载远端配置表失败
             if (string.IsNullOrEmpty(content))
             {
-                Debug.LogError("ddd");
-                downCompletion.SetResult(false);
-                return await downCompletion.Task;
+                var successLog = $"远程{name}模型Manifest文件下载失败！成功加载本地磁盘该模型Manifest文件,使用旧版本模型资源";
+                var faultLog = $"远程{name}模型Manifest文件下载失败！从磁盘没有加载到{name}模型的Manifest文件 {localManifestPath}";
+                return await LoadLocalManifest(localManifestPath, successLog, faultLog);
             }
-            Debug.LogError("11");
-            ManifestInfo remoteManifest = PersistHelper.FromJson<ManifestInfo>(await downRemoteManifest.Task);
-            if (remoteManifest == null || remoteManifest.ManifestList == null)
-            {
-                remoteManifest = new ManifestInfo();
-                remoteManifest.ManifestList = new List<ManifestData>();
-            }
-            
-            
+
+            ManifestInfo remoteManifest = PersistHelper.FromJson<ManifestInfo>(content);
+
             var saFiles = StreamMf.ManifestList.ConvertAll(input => input.Hash);
-            
+
             // // Bundle/iOS/1.1  存放 bundle 的文件夹
             var downPath = PathHelper.Combine(ResBasePath, GetVersion().AbleVersion.Version());
-            
+
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
             var passFileInfo = PassFileInfo.Load(ResBasePath);
@@ -588,9 +593,9 @@ namespace Blaze.Resource.AssetBundles
             {
                 var passFileHash = new HashSet<string>();
                 passFileInfo.FilesHash.ForEach(delegate(string s) { passFileHash.Add(s); });
-            
+
                 var isNeedRefreshPassInfo = false;
-            
+
                 var waitHash = new HashSet<string>();
                 // 等待下载的资源
                 var waitDown = remoteManifest.ManifestList.FindAll(delegate(ManifestData data)
@@ -600,7 +605,7 @@ namespace Blaze.Resource.AssetBundles
                         return false;
                     // 已经在下载队列中等待的，不在重复添加任务
                     if (waitHash.Contains(data.Hash)) return false;
-            
+
                     // 文件存储路径修改
                     var target = PathHelper.Combine(downPath, data.GetSaveSubPath());
                     // 已经下载并且可以通过效验,
@@ -611,7 +616,7 @@ namespace Blaze.Resource.AssetBundles
                         {
                             return false;
                         }
-            
+
                         // 通过效验，不下载
                         if (data.Md5 == CryptoHelper.FileMD5(target))
                         {
@@ -621,43 +626,84 @@ namespace Blaze.Resource.AssetBundles
                             return false;
                         }
                     }
-            
+
                     // 将文件加入等待下载的队列中
                     waitHash.Add(data.Hash);
                     return true;
                 });
-            
+
                 // 保存MD5效验信息
                 if (isNeedRefreshPassInfo)
                 {
                     passFileInfo.Save();
                 }
-            
+
                 passFileHash.Clear();
-            
+
                 // 整理完全部信息，返回给上层下载器，开始下载
                 waitDownTask.SetResult(waitDown);
             })).Start();
-            
+
             var waitDown = await waitDownTask.Task;
+
+            var abAssetDownCompletion = new TaskCompletionSource<bool>();
             try
             {
                 // 下载 bundle
-                downCompletion.SetResult(await DownBundleMust(waitDown, netPath, downPath));
-                //return true;
+                abAssetDownCompletion.SetResult(await DownBundleMust(waitDown, netPath, downPath));
             }
             catch (Exception e)
             {
-                Tuner.Log("下载发生异常,使用本地版本" + e.StackTrace);
-                downCompletion.SetResult(true);
-                // downCompletion.SetResult(false);
-                //return false;
+                abAssetDownCompletion.SetResult(false);
             }
-            
-            BundleManager._.AddManifest(remoteManifest);
-            //   await downCompletion.Task;
-           // downCompletion.SetResult(false);
+
+
+            //资源下载不成功
+            if (!await abAssetDownCompletion.Task)
+            {
+                var successLog = $"远程{name}模型资源下载失败！成功加载本地磁盘该模型Manifest文件,使用旧版本模型资源";
+                var faultLog = $"远程{name}模型资源下载失败！从磁盘没有加载到{name}模型的Manifest文件 {localManifestPath}";
+                downCompletion.SetResult(await LoadLocalManifest(localManifestPath, successLog, faultLog));
+            }
+            else
+            {
+                remoteManifest.SetName(name + "_BundleManifest");
+                remoteManifest.Config(localManifestDirPath);
+                remoteManifest.Save();
+                BundleManager._.AddManifest(remoteManifest);
+                downCompletion.SetResult(true);
+            }
+
             return await downCompletion.Task;
+        }
+
+        /// <summary>
+        /// 加载本地模型的Mf文件
+        /// </summary>
+        /// <param name="localManifestPath"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<bool> LoadLocalManifest(string localManifestPath, string successLog, string faultLog)
+        {
+            var task = new TaskCompletionSource<bool>();
+            try
+            {
+                // 尝试读取本地mf 文件
+                var preRead = new TaskCompletionSource<string>();
+                ObservableWebRequest.Get("file://" + localManifestPath)
+                    .Subscribe(preRead.SetResult, preRead.SetException);
+                var mf = PersistHelper.FromJson<ManifestInfo>(await preRead.Task);
+                BundleManager._.AddManifest(mf);
+                task.SetResult(true);
+                Tuner.Log(successLog);
+            }
+            catch (Exception e)
+            {
+                Tuner.Log(faultLog);
+                task.SetResult(false);
+            }
+
+            return await task.Task;
         }
     }
 }

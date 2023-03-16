@@ -157,6 +157,7 @@ namespace Blaze.Bundle.Step
         /// <param name="item"></param>
         private void ProcessAssetBundle()
         {
+            AssetDatabase.GetAllAssetBundleNames().ForEach(abName => AssetDatabase.RemoveAssetBundleName(abName, true));
             var files = AssetDatabase.GetAllAssetPaths().ToList()
                 .FindAll(path =>
                     path.StartsWith("Assets/Projects") && !Directory.Exists(path));
@@ -241,7 +242,6 @@ namespace Blaze.Bundle.Step
                 buildTarget);
 
             Generation(abmf);
-
             AssetDatabase.GetAllAssetBundleNames().ForEach(abName => AssetDatabase.RemoveAssetBundleName(abName, true));
         }
 
@@ -262,6 +262,7 @@ namespace Blaze.Bundle.Step
 
             // 根据官方装配文件，生成自己的装配文件
             var mf = BuilderStep1._.GetManifest();
+            Debug.LogError(abmf == null);
             abmf.GetAllAssetBundles().ToList().ForEach(delegate(string abName)
             {
                 // Publish/iOS/_Cache/1.1/1.1.manifest

@@ -25,6 +25,9 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("GetAwaiter", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetAwaiter_0);
+            args = new Type[]{};
+            method = type.GetMethod("get_Result", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_Result_1);
 
 
         }
@@ -41,6 +44,21 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetAwaiter();
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* get_Result_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Threading.Tasks.Task<Blaze.Resource.Common.PrefabObject> instance_of_this_method = (System.Threading.Tasks.Task<Blaze.Resource.Common.PrefabObject>)typeof(System.Threading.Tasks.Task<Blaze.Resource.Common.PrefabObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.Result;
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

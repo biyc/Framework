@@ -92,14 +92,14 @@ namespace Blaze.Ci
             // 初始安装包中是否包含 AB 资源
             switch (packageType)
             {
-                 case EnumPackageType.AndroidRelease:
+                case EnumPackageType.AndroidRelease:
                 case EnumPackageType.IOSRelease:
-                case EnumPackageType.AndroidTestOnline:
-                case EnumPackageType.IOSTestOnline:
+                //case EnumPackageType.AndroidTestOnline:
+                // case EnumPackageType.IOSTestOnline:
                 case EnumPackageType.AndroidTestInner:
                 case EnumPackageType.IOSTestInner:
-                case EnumPackageType.AndroidVerify:
-                case EnumPackageType.IOSVerify:
+                    // case EnumPackageType.AndroidVerify:
+                    // case EnumPackageType.IOSVerify:
                     // case EnumPackageType.AndroidM3839FirstTest:
                     gameSettings.IsContentAssetBundle = true;
                     break;
@@ -136,7 +136,6 @@ namespace Blaze.Ci
                 case EnumPackageType.EditorWin64Dev:
                 case EnumPackageType.AndroidTestInner:
                 case EnumPackageType.IOSTestInner:
-                case EnumPackageType.AndroidRelease:
                     gameSettings.UseDev = true;
                     break;
                 default:
@@ -146,17 +145,18 @@ namespace Blaze.Ci
             }
 
             // 是否使用 ilruntime IsILRuntime
-            switch (packageType)
-            {
-                case EnumPackageType.AndroidVerify:
-                case EnumPackageType.IOSVerify:
-                    // case EnumPackageType.AndroidM3839Dev:
-                    gameSettings.UseILRuntime = false;
-                    break;
-                default:
-                    gameSettings.UseILRuntime = true;
-                    break;
-            }
+            gameSettings.UseILRuntime = true;
+            // switch (packageType)
+            // {
+            //     case EnumPackageType.AndroidVerify:
+            //     case EnumPackageType.IOSVerify:
+            //         // case EnumPackageType.AndroidM3839Dev:
+            //         gameSettings.UseILRuntime = false;
+            //         break;
+            //     default:
+            //         gameSettings.UseILRuntime = true;
+            //         break;
+            // }
 
 
             // 资源服务器地址列表
@@ -165,15 +165,14 @@ namespace Blaze.Ci
             {
                 case EnumPackageType.AndroidRelease:
                 case EnumPackageType.IOSRelease:
-                case EnumPackageType.AndroidTestOnline:
-                case EnumPackageType.IOSTestOnline:
-                    //https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/AndroidRelease/Android/VersionCheck.json
-                    // gameSettings.ResServerList.Add($"https://lv2m3839first.oss-cn-chengdu.aliyuncs.com/zhongyao/{packageType.ToString()}");
-                    gameSettings.ResServerList.Add(
-                        $"https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/{packageType.ToString()}");
-                    break;
                 case EnumPackageType.AndroidTestInner:
                 case EnumPackageType.IOSTestInner:
+                    //https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/AndroidRelease/Android/VersionCheck.json
+                    // gameSettings.ResServerList.Add($"https://lv2m3839first.oss-cn-chengdu.aliyuncs.com/zhongyao/{packageType.ToString()}");
+                    // gameSettings.ResServerList.Add(
+                    //     $"https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/{packageType.ToString()}");
+                    gameSettings.ResServerList.Add(null);
+                    break;
                 case EnumPackageType.AndroidDev:
                 case EnumPackageType.IOSDev:
                 case EnumPackageType.EditorOSXDev:
@@ -188,10 +187,6 @@ namespace Blaze.Ci
             {
                 case EnumPackageType.AndroidRelease:
                 case EnumPackageType.IOSRelease:
-                case EnumPackageType.AndroidTestOnline:
-                case EnumPackageType.IOSTestOnline:
-                case EnumPackageType.AndroidVerify:
-                case EnumPackageType.IOSVerify:
                     gameSettings.ProductName = "中药";
                     break;
                 default:
