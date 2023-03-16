@@ -73,27 +73,12 @@ namespace ETHotfix
             // 初始化绑定
             Bind = new HomePageBind();
             Bind.InitUI(_curStage.transform);
+            InitDev();
             //InitRedPoint();
             Debug.Log("版本号:" + Define.GameSettings?.GetVersion() + " res:" + Define.AssetBundleVersion);
             _container = _curStage.transform.Find("Container");
             _loading = _curStage.transform.Find("Loading");
 
-            // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
-            var baseNetPath = "http://192.168.8.6:8088/AndroidDev/Android/PrefabBundles/";
-            _curStage.transform.GetComponentsInChildren<Button>().ToList()
-                .ForEach(m =>
-                {
-                    if (m.name != "recovery")
-                    {
-                        async void Call()
-                        {
-                            Recovery();
-                            await LoadObj(baseNetPath, m.name);
-                        }
-
-                        m.onClick.AddListener(Call);
-                    }
-                });
 
             #region 手势识别
 
@@ -112,10 +97,12 @@ namespace ETHotfix
                 {
                     Touch touch = Input.GetTouch(0);
                     Vector2 deltaPos = touch.deltaPosition; //位置增量
+                    if (Math.Abs(Mathf.Abs(deltaPos.x) + Mathf.Abs(deltaPos.y) - 1) < 0.0001f) return;
                     if (Mathf.Abs(deltaPos.x) > Mathf.Abs(deltaPos.y))
                         _container.Rotate(Vector3.down * deltaPos.x, Space.World); //绕y轴旋转
-                    else
-                        _container.Rotate(Vector3.right * deltaPos.y, Space.World); //绕x轴   
+                    else if (Mathf.Abs(deltaPos.x) <= Mathf.Abs(deltaPos.y))
+                        _container.Rotate(Vector3.right * deltaPos.y, Space.World); //绕x轴
+                    //Debug.Log(deltaPos.x + " : " + deltaPos.y);
                 }
                 //双指旋转  && 缩放
                 else if (2 == Input.touchCount)
@@ -141,7 +128,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), screenPoint, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3) pos;
+                        _distance = _container.localPosition - (Vector3)pos;
                     }
 
                     if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved)
@@ -150,7 +137,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), touch.position, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _container.localPosition = _distance + (Vector3) pos;
+                        _container.localPosition = _distance + (Vector3)pos;
                     }
 
 
@@ -193,8 +180,6 @@ namespace ETHotfix
             #endregion
 
             Bind.button_recovery.onClick.AddListener(Recovery);
-            
-            
         }
 
         /// <summary>
@@ -210,7 +195,7 @@ namespace ETHotfix
 
         public async Task LoadObj(string baseNetPath, string name)
         {
-            Debug.Log("netPath:"+PathHelper.Combine(baseNetPath,name));
+            // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
             if (_target != null && name == _target.name)
                 return;
             if (_target != null)
@@ -230,7 +215,7 @@ namespace ETHotfix
                 return;
             }
 
-            var path = $"Assets/Projects/Prefabs/{name}/{name}.fbx";
+            var path = $"Assets/Projects/Models/{name}/{name}.fbx";
 
             // await LoadTarget(assetPath);
             //.prefab  fbx
@@ -262,6 +247,80 @@ namespace ETHotfix
             });
         }
 
+
+        private void InitDev()
+        {
+            // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
+            //var baseNetPath = "http://192.168.8.6:8088/AndroidDev/Android/PrefabBundles/";
+            Bind.button_devBtn.gameObject.SetActive(Define.IsDev);
+            var panel = _curStage.transform.Find("DevPanel");
+            var netrts = Bind.gridlayoutgroup_netStoryPanel.transform.GetComponentsInChildrenNoRoot<Text>();
+            var namerts = Bind.gridlayoutgroup_nameStoryPanel.transform.GetComponentsInChildrenNoRoot<Text>();
+
+            netrts.ForEach(m => Btn(m.gameObject, () => Bind.inputfield_netInput.text = m.text));
+            namerts.ForEach(m => Btn(m.gameObject, () => Bind.inputfield_nameInput.text = m.text));
+
+            Btn(Bind.image_devBg, () => panel.Hide());
+            Btn(Bind.button_devBtn, () =>
+            {
+                panel.Show();
+                var localNet = PlayerPrefs.GetString("net").Split('|').ToList();
+                for (var i = 0; i < netrts.Count; i++)
+                {
+                    netrts[i].gameObject.SetActive(i < localNet.Count);
+                    if (i < localNet.Count)
+                        netrts[i].text = localNet[i];
+                }
+
+                var localName = PlayerPrefs.GetString("name").Split('|').ToList();
+                for (var i = 0; i < namerts.Count; i++)
+                {
+                    namerts[i].gameObject.SetActive(i < localName.Count);
+                    if (i < localName.Count)
+                        namerts[i].text = localName[i];
+                }
+            });
+            Btn(Bind.button_clickOk, () =>
+            {
+                var inputNetPath = Bind.inputfield_netInput.text;
+                var inputName = Bind.inputfield_nameInput.text;
+                if (string.IsNullOrEmpty(inputNetPath) || string.IsNullOrEmpty(inputName)) return;
+                var localNet = PlayerPrefs.GetString("net").Split('|').ToList();
+                if (!localNet.Contains(inputNetPath))
+                    localNet.Insert(0, inputNetPath);
+                if (localNet.Count == 4)
+                    localNet.RemoveAt(localNet.Count - 1);
+                var localName = PlayerPrefs.GetString("name").Split('|').ToList();
+                if (!localName.Contains(inputName))
+                    localName.Insert(0, inputName);
+                if (localName.Count == 6)
+                    localName.RemoveAt(localName.Count - 1);
+
+                var strNet = "";
+                for (var i = 0; i < localNet.Count; i++)
+                {
+                    if (i != localNet.Count - 1)
+                        strNet += localNet[i] + "|";
+                    else
+                        strNet += localNet[i];
+                }
+
+                var strName = "";
+                for (var i = 0; i < localName.Count; i++)
+                {
+                    if (i != localName.Count - 1)
+                        strName += localName[i] + "|";
+                    else
+                        strName += localName[i];
+                }
+
+                PlayerPrefs.SetString("name", strName);
+                PlayerPrefs.SetString("net", strNet);
+
+                LoadObj(inputNetPath, inputName);
+                panel.Hide();
+            });
+        }
 
         public override void Dispose()
         {

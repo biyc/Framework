@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using Blaze.Core;
 using Blaze.Resource.AssetBundles.Data;
 using ETModel;
+using UnityEngine;
 
 namespace Blaze.Resource.AssetBundles
 {

@@ -167,7 +167,7 @@ namespace Blaze.Bundle.Step
                 if (CheckIgnore(file)) return;
 
                 // todo 跳过自定义打包规则
-                if (file.Contains("Assets/Projects/Prefabs")) return;
+                if (file.Contains("Assets/Projects/Models")) return;
 
                 _originPath[file.ToLower()] = file;
 
@@ -262,7 +262,6 @@ namespace Blaze.Bundle.Step
 
             // 根据官方装配文件，生成自己的装配文件
             var mf = BuilderStep1._.GetManifest();
-            Debug.LogError(abmf == null);
             abmf.GetAllAssetBundles().ToList().ForEach(delegate(string abName)
             {
                 // Publish/iOS/_Cache/1.1/1.1.manifest

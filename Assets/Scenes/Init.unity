@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDev: 1
-  UseAB: 0
+  UseAB: 1
   screenConsoleGo: {fileID: 1268374379}
 --- !u!4 &575235020
 Transform:
@@ -663,7 +663,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 32767
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &1203893375
 MonoBehaviour:
@@ -1253,21 +1253,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1203893371}
     m_Modifications:
-    - target: {fileID: 1150886923198315998, guid: afc8808cfae784e458f81ac65ac88866,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317899893886461909, guid: afc8808cfae784e458f81ac65ac88866,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5876819762706492499, guid: afc8808cfae784e458f81ac65ac88866,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5972038676177992714, guid: afc8808cfae784e458f81ac65ac88866,
         type: 3}
       propertyPath: m_Name

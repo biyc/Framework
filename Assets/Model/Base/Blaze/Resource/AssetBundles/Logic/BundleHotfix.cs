@@ -130,7 +130,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
-            //DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
+             DefaultRuntime.ServerURI = "http://192.168.1.7:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
@@ -557,7 +557,7 @@ namespace Blaze.Resource.AssetBundles
             // var name = p[p.Length - 1];
             // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
             var netPath = PathHelper.Combine(baseNetPath, name);
-            Tuner.Log("netPath:"+netPath);
+            Tuner.Log("netPath:" + netPath);
             var downCompletion = new TaskCompletionSource<bool>();
             //
             var localManifestDirPath = PathHelper.Combine(_resBasePath, "ModelManifest");
@@ -667,10 +667,10 @@ namespace Blaze.Resource.AssetBundles
             }
             else
             {
+                BundleManager._.AddManifest(remoteManifest);
                 remoteManifest.SetName(name + "_BundleManifest");
                 remoteManifest.Config(localManifestDirPath);
                 remoteManifest.Save();
-                BundleManager._.AddManifest(remoteManifest);
                 downCompletion.SetResult(true);
             }
 
