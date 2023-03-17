@@ -583,11 +583,21 @@ namespace Blaze.Resource.AssetBundles
             var saFiles = StreamMf.ManifestList.ConvertAll(input => input.Hash);
 
             // // Bundle/iOS/1.1  存放 bundle 的文件夹
-            var downPath = PathHelper.Combine(ResBasePath, GetVersion().AbleVersion.Version());
-
+            var downPath = PathHelper.Combine(_resBasePath, GetVersion().AbleVersion.Version());
+            PathHelper.CheckOrCreate(downPath);
+            
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
-            var passFileInfo = PassFileInfo.Load(ResBasePath);
+            var passFileInfo = PassFileInfo.Load(_resBasePath);
+            
+            // MD5 效验信息 不存在时，创建效验信息
+            if (passFileInfo == null)
+            {
+                passFileInfo = new PassFileInfo();
+                passFileInfo.Config(_resBasePath);
+                passFileInfo.Save();
+            }
+            
             // // 在独立的线程中计算一下文件MD5
             new Thread(new ThreadStart(delegate
             {

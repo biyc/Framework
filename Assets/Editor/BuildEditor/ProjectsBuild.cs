@@ -187,7 +187,7 @@ namespace Blaze.Ci
             {
                 case EnumPackageType.AndroidRelease:
                 case EnumPackageType.IOSRelease:
-                    gameSettings.ProductName = "中药";
+                    gameSettings.ProductName = "知源中医";
                     break;
                 default:
                     gameSettings.ProductName = packageType.ToString();
@@ -240,7 +240,7 @@ namespace Blaze.Ci
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            PlayerSettings.companyName = "XXXCompany"; //公司名称
+            PlayerSettings.companyName = "nineton"; //公司名称
             // 应用名称
             PlayerSettings.productName = gameSettings.ProductName; //
 
@@ -248,7 +248,7 @@ namespace Blaze.Ci
             if (packageType == EnumPackageType.AndroidRelease)
                 PlayerSettings.applicationIdentifier = "com.nineton.tcm";
             else
-                PlayerSettings.applicationIdentifier = "com.XXXCompany.Biyc" + packageType;
+                PlayerSettings.applicationIdentifier = "com.nineton.tcm" + packageType;
             if (packageType.ToString().ToLower().Contains("android"))
             {
                 PlayerSettings.bundleVersion = gameSettings.GetVersion();

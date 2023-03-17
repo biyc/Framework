@@ -128,7 +128,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), screenPoint, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3)pos;
+                        _distance = _container.localPosition - (Vector3) pos;
                     }
 
                     if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved)
@@ -137,7 +137,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), touch.position, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _container.localPosition = _distance + (Vector3)pos;
+                        _container.localPosition = _distance + (Vector3) pos;
                     }
 
 
@@ -195,6 +195,7 @@ namespace ETHotfix
 
         public async Task LoadObj(string baseNetPath, string name)
         {
+            
             // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
             if (_target != null && name == _target.name)
                 return;
@@ -243,6 +244,7 @@ namespace ETHotfix
                 _target.localScale = new Vector3(1000, 1000, 1000);
                 _target.GetComponentsInChildren<Transform>()
                     .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
+                Recovery();
                 _loading.Hide();
             });
         }
@@ -286,13 +288,16 @@ namespace ETHotfix
                 var inputName = Bind.inputfield_nameInput.text;
                 if (string.IsNullOrEmpty(inputNetPath) || string.IsNullOrEmpty(inputName)) return;
                 var localNet = PlayerPrefs.GetString("net").Split('|').ToList();
-                if (!localNet.Contains(inputNetPath))
-                    localNet.Insert(0, inputNetPath);
+                if (localNet.Contains(inputNetPath))
+                    localNet.Remove(inputNetPath);
+                localNet.Insert(0, inputNetPath);
+
                 if (localNet.Count == 4)
                     localNet.RemoveAt(localNet.Count - 1);
                 var localName = PlayerPrefs.GetString("name").Split('|').ToList();
-                if (!localName.Contains(inputName))
-                    localName.Insert(0, inputName);
+                if (localName.Contains(inputName))
+                    localName.Remove(inputName);
+                localName.Insert(0, inputName);
                 if (localName.Count == 6)
                     localName.RemoveAt(localName.Count - 1);
 

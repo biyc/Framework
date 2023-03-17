@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31307f276108458d981bbcbbf46fb78a, type: 3}
-  m_Name: AndroidDev
+  m_Name: AndroidTestInner
   m_EditorClassIdentifier: 
   ResServerList:
-  - http://192.168.8.6:8088/AndroidDev
-  - http://192.168.1.7:8088/AndroidDev
-  Channel: AndroidDev
+  - 
+  Channel: AndroidTestInner
   MotherVersion: 1
   FixVersion: 0
-  BuildNum: 72
+  BuildNum: 2
   IsForceCheckVersion: 0
   UseILRuntime: 1
   UseDev: 1
   UseAssetBundle: 1
-  IsContentAssetBundle: 0
-  ProductName: AndroidDev
+  IsContentAssetBundle: 1
+  ProductName: AndroidTestInner
