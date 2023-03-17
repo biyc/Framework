@@ -3,6 +3,7 @@ using Blaze.Bundle.PrefabBundle;
 using Blaze.Ci;
 using Blaze.Common;
 using Blaze.Resource.Common;
+using Blaze.Utility.Helper;
 using UnityEditor;
 using UnityEngine;
 using Sirenix.OdinInspector;
@@ -13,6 +14,16 @@ namespace Editor.BuildEditor
     public class BuildModelAB : OdinEditorWindow
 
     {
+        // [MenuItem("Tools/tt")]
+        // public static void Tt()
+        // {
+        //     var str = "yzll";
+        //     var ds = CryptoHelper.XxteaEncryptToString(str);
+        //     Debug.Log(ds);
+        //     Debug.Log(CryptoHelper.XxteaDecryptByString(ds));
+        // }
+
+
         /// <summary>
         /// 包的类型
         /// </summary>

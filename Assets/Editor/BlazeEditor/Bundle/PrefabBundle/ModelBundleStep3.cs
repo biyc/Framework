@@ -71,12 +71,17 @@ namespace Blaze.Bundle.PrefabBundle
             });
             manifest.Config(ModelBundleStep1._.GetPublishPath());
             manifest.Save();
+            PathHelper.CheckOrCreate(ModelBundleStep1._.GetPublishPath());
 
             var task = new TaskCompletionSource<bool>();
             new Thread(new ThreadStart(() =>
                 {
                     foreach (var pair in fileToHash)
                     {
+                        // var cryString = CryptoHelper.XxteaEncryptToString(
+                        //     File.ReadAllText(PathHelper.Combine(ModelBundleStep1._.GetCachePath(), pair.Key)));
+                        // File.WriteAllText(
+                        //     PathHelper.Combine(ModelBundleStep1._.GetPublishPath(), pair.Value), cryString);
                         File.Copy(PathHelper.Combine(ModelBundleStep1._.GetCachePath(), pair.Key),
                             PathHelper.Combine(ModelBundleStep1._.GetPublishPath(), pair.Value),
                             true);

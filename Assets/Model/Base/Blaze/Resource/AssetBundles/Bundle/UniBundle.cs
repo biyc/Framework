@@ -21,6 +21,8 @@ using Blaze.Resource.AssetBundles.Logic.StreamingAssets;
 using Blaze.Resource.Common;
 using Blaze.Utility;
 using Blaze.Utility.Base;
+using Blaze.Utility.Helper;
+using ETModel;
 using ICSharpCode.SharpZipLib.Zip;
 using UniRx;
 using UniRx.WebRequest;
@@ -33,7 +35,6 @@ namespace Blaze.Resource.AssetBundles.Bundle
     /// </summary>
     public class UniBundle : IRef
     {
-
         /// 释放时候执行回调
         public Action<UniBundle> OnDispose;
 
@@ -66,8 +67,6 @@ namespace Blaze.Resource.AssetBundles.Bundle
 
         /// 是否释放
         private bool _isDisposed;
-
-
 
 
         /// <summary>
@@ -260,7 +259,6 @@ namespace Blaze.Resource.AssetBundles.Bundle
         }
 
 
-
         /// 是否已经加载 bundle
         public bool IsLoad()
         {
@@ -359,7 +357,16 @@ namespace Blaze.Resource.AssetBundles.Bundle
             {
                 if (_manifest.Type == BundleType.AssetBundle)
                 {
-                    _assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(path);
+                    var str = File.ReadAllBytes(path);
+                    Debug.Log(str.ToString());
+                    if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
+                    {
+                        Debug.Log(_manifest.AssetPath);
+                        str = CryptoHelper.XxteaDecryptByByte(str).ToByteArray();
+                    }
+
+                    //_assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(path);
+                    _assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(str);
                     _assetBundleCreateRequest.completed += delegate(AsyncOperation operation)
                     {
                         // OnAssetBundleLoaded(operation);
@@ -405,7 +412,15 @@ namespace Blaze.Resource.AssetBundles.Bundle
                     // 如果异步也在加载该资源，需要先卸载异步加载的资源
                     _assetBundleCreateRequest?.assetBundle.Unload(true);
                     // 使用同步方法加载
-                    _assetBundle = AssetBundle.LoadFromFile(path);
+                    var str = File.ReadAllBytes(path);
+                    // if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
+                    // {
+                    //     Debug.Log(_manifest.AssetPath);
+                    //     str = CryptoHelper.XxteaDecryptByByte(str).ToByteArray();
+                    // }
+
+                    //_assetBundle = AssetBundle.LoadFromFile(path);
+                    _assetBundle = AssetBundle.LoadFromMemory(str);
                     OnLoaded();
                 }
                 else if (_manifest.Type == BundleType.Zip)
