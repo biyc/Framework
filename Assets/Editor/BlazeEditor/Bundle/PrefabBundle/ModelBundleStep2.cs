@@ -49,7 +49,7 @@ namespace Blaze.Bundle.PrefabBundle
             BuildTarget buildTarget = EnumConvert.RuntimeTargetToBuildTarget(ModelBundleStep1._.TargetPlatform);
             var abmf = BuildPipeline.BuildAssetBundles(
                 ModelBundleStep1._.GetCachePath(),
-                BuildAssetBundleOptions.None,
+                BuildAssetBundleOptions.ChunkBasedCompression,
                 buildTarget
             );
             Generation(abmf);

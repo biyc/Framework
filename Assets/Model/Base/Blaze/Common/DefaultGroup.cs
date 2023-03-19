@@ -30,7 +30,7 @@ namespace Blaze.Common
         public static string ServerURI = $"http://127.0.0.1:8088/";
 
         public static List<string> ServerURIList = new List<string>()
-            {"http://127.0.0.1:8088/", "http://192.168.8.6:8088/"};
+            {"http://192.168.8.6:8088/EditorWin64Dev/", "http://192.168.1.7:8088/EditorWin64Dev"};
 
 
         /// <summary>

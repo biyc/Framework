@@ -130,7 +130,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
-             DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
+            DefaultRuntime.ServerURI = "http://192.168.1.4:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
@@ -585,11 +585,11 @@ namespace Blaze.Resource.AssetBundles
             // // Bundle/iOS/1.1  存放 bundle 的文件夹
             var downPath = PathHelper.Combine(_resBasePath, GetVersion().AbleVersion.Version());
             PathHelper.CheckOrCreate(downPath);
-            
+
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
             var passFileInfo = PassFileInfo.Load(_resBasePath);
-            
+
             // MD5 效验信息 不存在时，创建效验信息
             if (passFileInfo == null)
             {
@@ -597,7 +597,7 @@ namespace Blaze.Resource.AssetBundles
                 passFileInfo.Config(_resBasePath);
                 passFileInfo.Save();
             }
-            
+
             // // 在独立的线程中计算一下文件MD5
             new Thread(new ThreadStart(delegate
             {

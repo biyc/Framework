@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Blaze.Common;
 using Blaze.Manage.Data;
 using Blaze.Resource.AssetBundles.Data;
@@ -21,6 +22,7 @@ using Blaze.Resource.AssetBundles.Logic.StreamingAssets;
 using Blaze.Resource.Common;
 using Blaze.Utility;
 using Blaze.Utility.Base;
+using Blaze.Utility.Extend;
 using Blaze.Utility.Helper;
 using ETModel;
 using ICSharpCode.SharpZipLib.Zip;
@@ -358,15 +360,25 @@ namespace Blaze.Resource.AssetBundles.Bundle
                 if (_manifest.Type == BundleType.AssetBundle)
                 {
                     var str = File.ReadAllBytes(path);
-                    Debug.Log(str.ToString());
                     if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
                     {
-                        Debug.Log(_manifest.AssetPath);
-                        str = CryptoHelper.XxteaDecryptByByte(str).ToByteArray();
+                        ObservableWebRequest.GetAndGetBytes("file://" + path).Subscribe(bytes =>
+                        {
+                            Debug.Log(Encoding.UTF8.GetString(bytes).Length);
+                            var bytes1 = CryptoHelper.Base64Decode(Encoding.UTF8.GetString(bytes)).ToByteArray();
+                            Debug.Log(bytes1.Length);
+                            _assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(bytes1);
+                        });
                     }
+                    else
+                    {
+                        _assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(str);
+                    }
+                    // if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
+                    //     _assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(path, 0, 8);
+                    // else
+                    //     _assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(path);
 
-                    //_assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(path);
-                    _assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(str);
                     _assetBundleCreateRequest.completed += delegate(AsyncOperation operation)
                     {
                         // OnAssetBundleLoaded(operation);
@@ -413,14 +425,24 @@ namespace Blaze.Resource.AssetBundles.Bundle
                     _assetBundleCreateRequest?.assetBundle.Unload(true);
                     // 使用同步方法加载
                     var str = File.ReadAllBytes(path);
-                    // if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
-                    // {
-                    //     Debug.Log(_manifest.AssetPath);
-                    //     str = CryptoHelper.XxteaDecryptByByte(str).ToByteArray();
-                    // }
+                    if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
 
-                    //_assetBundle = AssetBundle.LoadFromFile(path);
-                    _assetBundle = AssetBundle.LoadFromMemory(str);
+                        ObservableWebRequest.GetAndGetBytes("file://" + path).Subscribe(bytes =>
+                        {
+                            var bytes1 = CryptoHelper.Base64Decode(Encoding.UTF8.GetString(bytes)).ToByteArray();
+                            _assetBundle = AssetBundle.LoadFromMemory(bytes1);
+                        });
+
+                    else
+                    {
+                        _assetBundle = AssetBundle.LoadFromMemory(str);
+                    }
+
+                    // if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
+                    //     _assetBundle = AssetBundle.LoadFromFile(path, 0, 8);
+                    // else
+                    //     _assetBundle = AssetBundle.LoadFromFile(path);
+                    // _assetBundle = AssetBundle.LoadFromMemory(str);
                     OnLoaded();
                 }
                 else if (_manifest.Type == BundleType.Zip)

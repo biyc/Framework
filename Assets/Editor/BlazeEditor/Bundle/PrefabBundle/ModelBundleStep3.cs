@@ -9,6 +9,7 @@ using Blaze.Common;
 using Blaze.Core;
 using Blaze.Resource.AssetBundles.Data;
 using Blaze.Utility.Helper;
+using ETModel;
 using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -78,13 +79,14 @@ namespace Blaze.Bundle.PrefabBundle
                 {
                     foreach (var pair in fileToHash)
                     {
-                        // var cryString = CryptoHelper.XxteaEncryptToString(
+                        // var cryString = CryptoHelper.Base64Encode(
                         //     File.ReadAllText(PathHelper.Combine(ModelBundleStep1._.GetCachePath(), pair.Key)));
                         // File.WriteAllText(
                         //     PathHelper.Combine(ModelBundleStep1._.GetPublishPath(), pair.Value), cryString);
                         File.Copy(PathHelper.Combine(ModelBundleStep1._.GetCachePath(), pair.Key),
                             PathHelper.Combine(ModelBundleStep1._.GetPublishPath(), pair.Value),
                             true);
+                        ABOffsetEncryption(PathHelper.Combine(ModelBundleStep1._.GetPublishPath(), pair.Value));
                     }
 
                     task.SetResult(true);
@@ -92,6 +94,25 @@ namespace Blaze.Bundle.PrefabBundle
                 }))
                 .Start();
             return task.Task;
+        }
+
+        public static void ABOffsetEncryption(string fileFile)
+        {
+            // byte[] oldData = File.ReadAllBytes(fileFile);
+            // int newOldLen = 8 + oldData.Length; //这个空字节数可以自己指定,示例指定8个字节
+            // var newData = new byte[newOldLen];
+            // for (int tb = 0; tb < oldData.Length; tb++)
+            // {
+            //     newData[8 + tb] = oldData[tb];
+            // }
+
+            Debug.Log(File.ReadAllBytes(fileFile).Length);
+            var newData = CryptoHelper.Base64Encode(File.ReadAllText(fileFile)).ToByteArray();
+            FileStream fs = File.OpenWrite(fileFile); //打开写入进去
+            //  fs.Write(newData, 0, newOldLen);
+            Debug.Log(newData.Length);
+            fs.Write(newData, 0, newData.Length);
+            fs.Close();
         }
     }
 }
