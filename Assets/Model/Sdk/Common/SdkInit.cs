@@ -1,4 +1,3 @@
-using Umeng;
 using UnityEngine;
 
 public class SdkInit : MonoBehaviour

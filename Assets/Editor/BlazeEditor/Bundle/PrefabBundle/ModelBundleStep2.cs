@@ -23,11 +23,16 @@ namespace Blaze.Bundle.PrefabBundle
         private void ProcessAssetBundle()
         {
             AssetDatabase.GetAllAssetBundleNames().ForEach(abName => AssetDatabase.RemoveAssetBundleName(abName, true));
-            var files = AssetDatabase.GetAllAssetPaths().ToList()
-                .FindAll(path =>
-                    path.StartsWith("Assets/Projects/Models/" + ModelBundleStep1._.Name) && !Directory.Exists(path));
-            files.ForEach(file =>
+            // var files = AssetDatabase.GetAllAssetPaths().ToList()
+            //     .FindAll(path =>
+            //         path.StartsWith("Assets/Projects/Models/" + ModelBundleStep1._.Name) && !Directory.Exists(path));
+            //  var packageName = "Assets/Projects/Models/" + ModelBundleStep1._.Name;
+            var guids = AssetDatabase.FindAssets("t:Model",
+                new[] {"Assets/Projects/Models/" + ModelBundleStep1._.Name});
+
+            guids.ForEach(uid =>
             {
+                var file = AssetDatabase.GUIDToAssetPath(uid);
                 if (CheckIgnore(file)) return;
                 var packageName = file.Replace('.', '/');
                 var abName = packageName.Replace("/", "-") + ".ab";
@@ -49,7 +54,7 @@ namespace Blaze.Bundle.PrefabBundle
             BuildTarget buildTarget = EnumConvert.RuntimeTargetToBuildTarget(ModelBundleStep1._.TargetPlatform);
             var abmf = BuildPipeline.BuildAssetBundles(
                 ModelBundleStep1._.GetCachePath(),
-                BuildAssetBundleOptions.ChunkBasedCompression,
+                BuildAssetBundleOptions.None,
                 buildTarget
             );
             Generation(abmf);

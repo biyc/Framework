@@ -17,6 +17,7 @@ using System.Text;
 using Blaze.Common;
 using Blaze.Utility.Extend;
 using Blaze.Utility.Impl;
+using Sirenix.Utilities;
 
 namespace Blaze.Utility.Helper
 {
@@ -357,6 +358,52 @@ namespace Blaze.Utility.Helper
         public static byte[] DecryptByByte(byte[] Content)
         {
             return AesCryptor.Decrypt(Content);
+        }
+
+        #endregion
+
+        #region ABOffsetEncrypt
+
+        /// <summary>
+        /// 通过获取哈希值前6位数字的和对数据进行偏移
+        /// </summary>
+        /// <param name="fileFile"> 文件路径</param>
+        /// <param name="hash"> 哈希值</param>
+        public static void ABOffsetEncrypt(string fileFile, string hash)
+        {
+            var sum = GetABOffestNum(hash);
+            byte[] oldData = File.ReadAllBytes(fileFile);
+            int newOldLen = sum + oldData.Length;
+            var newData = new byte[newOldLen];
+            for (int tb = 0; tb < oldData.Length; tb++)
+
+                newData[sum + tb] = oldData[tb];
+
+            for (int i = 0; i < sum - 1; i++)
+            {
+                Random rd = new Random();
+                var index = i * rd.Next(0, (int) (oldData.Length / (i + 1)));
+                newData[i] = oldData[index];
+            }
+
+            FileStream fs = File.OpenWrite(fileFile);
+            fs.Write(newData, 0, newData.Length);
+            fs.Close();
+        }
+
+        /// <summary>
+        /// 获取偏移的数量
+        /// </summary>
+        public static int GetABOffestNum(string hash, int num = 6)
+        {
+            var sum = 0;
+            hash = hash.Substring(0, num);
+            hash.ForEach(m =>
+            {
+                if (int.TryParse(m.ToString(), out int num))
+                    sum += num;
+            });
+            return sum;
         }
 
         #endregion

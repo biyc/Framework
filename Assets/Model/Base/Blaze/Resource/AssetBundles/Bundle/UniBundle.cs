@@ -359,26 +359,9 @@ namespace Blaze.Resource.AssetBundles.Bundle
             {
                 if (_manifest.Type == BundleType.AssetBundle)
                 {
-                    var str = File.ReadAllBytes(path);
-                    if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
-                    {
-                        ObservableWebRequest.GetAndGetBytes("file://" + path).Subscribe(bytes =>
-                        {
-                            Debug.Log(Encoding.UTF8.GetString(bytes).Length);
-                            var bytes1 = CryptoHelper.Base64Decode(Encoding.UTF8.GetString(bytes)).ToByteArray();
-                            Debug.Log(bytes1.Length);
-                            _assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(bytes1);
-                        });
-                    }
-                    else
-                    {
-                        _assetBundleCreateRequest = AssetBundle.LoadFromMemoryAsync(str);
-                    }
-                    // if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
-                    //     _assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(path, 0, 8);
-                    // else
-                    //     _assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(path);
-
+                    _assetBundleCreateRequest = _manifest.AssetPath.StartsWith("Assets/Projects/Models")
+                        ? AssetBundle.LoadFromFileAsync(path, 0, (ulong) CryptoHelper.GetABOffestNum(_manifest.Hash))
+                        : AssetBundle.LoadFromFileAsync(path);
                     _assetBundleCreateRequest.completed += delegate(AsyncOperation operation)
                     {
                         // OnAssetBundleLoaded(operation);
@@ -423,26 +406,9 @@ namespace Blaze.Resource.AssetBundles.Bundle
                 {
                     // 如果异步也在加载该资源，需要先卸载异步加载的资源
                     _assetBundleCreateRequest?.assetBundle.Unload(true);
-                    // 使用同步方法加载
-                    var str = File.ReadAllBytes(path);
-                    if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
-
-                        ObservableWebRequest.GetAndGetBytes("file://" + path).Subscribe(bytes =>
-                        {
-                            var bytes1 = CryptoHelper.Base64Decode(Encoding.UTF8.GetString(bytes)).ToByteArray();
-                            _assetBundle = AssetBundle.LoadFromMemory(bytes1);
-                        });
-
-                    else
-                    {
-                        _assetBundle = AssetBundle.LoadFromMemory(str);
-                    }
-
-                    // if (_manifest.AssetPath.StartsWith("Assets/Projects/Models"))
-                    //     _assetBundle = AssetBundle.LoadFromFile(path, 0, 8);
-                    // else
-                    //     _assetBundle = AssetBundle.LoadFromFile(path);
-                    // _assetBundle = AssetBundle.LoadFromMemory(str);
+                    _assetBundle = _manifest.AssetPath.StartsWith("Assets/Projects/Models")
+                        ? AssetBundle.LoadFromFile(path, 0, (ulong) CryptoHelper.GetABOffestNum(_manifest.Hash))
+                        : AssetBundle.LoadFromFile(path);
                     OnLoaded();
                 }
                 else if (_manifest.Type == BundleType.Zip)

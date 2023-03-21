@@ -5,6 +5,7 @@ using Blaze.Core;
 using Blaze.Resource.AssetBundles.Data;
 using Blaze.Utility.Helper;
 using UnityEngine;
+using UnityEngine.Windows;
 
 namespace Blaze.Bundle.PrefabBundle
 {
@@ -48,6 +49,8 @@ namespace Blaze.Bundle.PrefabBundle
         void Start()
         {
             //Debug.LogError(PUBLISH_ROOT_PATH);
+            if (Directory.Exists(GetPublishPath()))
+                Directory.Delete(GetPublishPath());
             PathHelper.CheckOrCreate(GetPublishPath());
             PathHelper.CheckOrCreate(GetCachePath());
         }

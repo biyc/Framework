@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Umeng;
 
 namespace Game.Sdk
 {
@@ -41,23 +40,6 @@ namespace Game.Sdk
          void Event(string eventId, string label = null);
 
 
-        /// <summary>
-        /// 玩家获虚拟币奖励
-        /// </summary>
-        /// <param name="coin">虚拟币数量</param>
-        /// <param name="source">奖励方式</param>
-         void Bonus(double coin, GA.BonusSource source);
-
-
-        /// <summary>
-        /// 玩家获道具奖励
-        /// </summary>
-        /// <param name="item">道具名称</param>
-        /// <param name="amount">道具数量</param>
-        /// <param name="price">道具单价</param>
-        /// <param name="source">奖励方式</param>
-        ///
-         void Bonus(string item, int amount, double price, GA.BonusSource source);
 
 
         /// <summary>

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResServerList:
   - http://192.168.8.6:8088/EditorWin64Dev
-  - http://192.168.1.7:8088/EditorWin64Dev
+  - http://192.168.1.4:8088/EditorWin64Dev
   Channel: EditorWin64Dev
   MotherVersion: 1
   FixVersion: 0
