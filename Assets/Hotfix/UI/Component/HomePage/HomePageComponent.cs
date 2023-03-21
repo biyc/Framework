@@ -193,9 +193,8 @@ namespace ETHotfix
         }
 
 
-        public async Task LoadObj(string baseNetPath, string name)
+        public async Task LoadObj(string name)
         {
-            
             // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
             if (_target != null && name == _target.name)
                 return;
@@ -210,7 +209,7 @@ namespace ETHotfix
 
             _currentName = name;
 
-            if (!await Res.DownLoadModelAsset(baseNetPath, name))
+            if (!await Res.DownLoadModelAsset(name))
             {
                 _loading.Hide();
                 return;
@@ -286,7 +285,8 @@ namespace ETHotfix
             {
                 var inputNetPath = Bind.inputfield_netInput.text;
                 var inputName = Bind.inputfield_nameInput.text;
-                if (string.IsNullOrEmpty(inputNetPath) || string.IsNullOrEmpty(inputName)) return;
+                // if (string.IsNullOrEmpty(inputNetPath) || string.IsNullOrEmpty(inputName)) return;
+                if (string.IsNullOrEmpty(inputName)) return;
                 var localNet = PlayerPrefs.GetString("net").Split('|').ToList();
                 if (localNet.Contains(inputNetPath))
                     localNet.Remove(inputNetPath);
@@ -322,7 +322,7 @@ namespace ETHotfix
                 PlayerPrefs.SetString("name", strName);
                 PlayerPrefs.SetString("net", strNet);
 
-                LoadObj(inputNetPath, inputName);
+                LoadObj(inputName);
                 panel.Hide();
             });
         }

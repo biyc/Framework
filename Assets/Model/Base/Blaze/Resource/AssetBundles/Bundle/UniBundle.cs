@@ -294,8 +294,8 @@ namespace Blaze.Resource.AssetBundles.Bundle
             // Tuner.Log("加载bundle:" + _manifest.AssetPath);
 
             // Bundle/iOS/1.1/Hash
-            var filePath = Path.Combine(BundleHotfix._.GetBasePath(), _manifest.GetSaveSubPath());
-
+            var filePath = GetAssetLocalPath();
+            
             if (File.Exists(filePath))
             {
                 // 1. 从本地文件中直接加载AB
@@ -312,11 +312,24 @@ namespace Blaze.Resource.AssetBundles.Bundle
             return this;
         }
 
+        public string GetAssetLocalPath()
+        {
+            var isModel = _manifest.AssetPath.StartsWith("Assets/Projects/Models");
+            var splits = _manifest.AssetPath.Split('/');
+            var filePath = isModel
+                ? PathHelper.Combine(BundleHotfix._.ResBasePath, "ModelBundle", splits[3],
+                    _manifest.Hash)
+                : Path.Combine(
+                    BundleHotfix._.GetBasePath(), _manifest.GetSaveSubPath());
+            return filePath;
+        }
+
         public UniBundle LoadSync()
         {
             // Tuner.Log("加载bundle:" + _manifest.AssetPath);
             // Bundle/iOS/1.1/Hash
-            var filePath = Path.Combine(BundleHotfix._.GetBasePath(), _manifest.GetSaveSubPath());
+
+            var filePath = GetAssetLocalPath();
             if (File.Exists(filePath))
             {
                 // Tuner.Log("从文件中加载资源   " + filePath);

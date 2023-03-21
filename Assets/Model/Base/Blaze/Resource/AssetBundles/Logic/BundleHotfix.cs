@@ -475,8 +475,13 @@ namespace Blaze.Resource.AssetBundles
             {
                 // Log.Info("下载文件" + data.Hash);
                 // Bundle/iOS/1.1/Hash
-                data.CheckSubPath(basePath);
-                var savePath = PathHelper.Combine(basePath, data.GetSaveSubPath());
+                var isModel = data.AssetPath.StartsWith("Assets/Projects/Models");
+                if (!isModel)
+                    data.CheckSubPath(basePath);
+                var savePath = isModel
+                    ? PathHelper.Combine(basePath, data.Hash)
+                    : PathHelper.Combine(basePath, data.GetSaveSubPath());
+                //Debug.Log(data.AssetPath + data.AssetPath.StartsWith("Assets/Projects/Models"));
                 var url = PathHelper.Combine(baseUri, data.Hash);
                 // 添加到下载队列开始下载
                 var down = Download.Add(url, savePath, true,
@@ -551,19 +556,23 @@ namespace Blaze.Resource.AssetBundles
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        public async Task<bool> LoadModelAsset(string baseNetPath, string name)
+        public async Task<bool> LoadModelAsset(string name, string baseNetPath = "")
         {
             // var p = assetPath.Replace(".fbx", "").Split('/');
             // var name = p[p.Length - 1];
             // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
-            var netPath = PathHelper.Combine(baseNetPath, name);
+            //首先选择传入的网络(后面因为更改需求，不在传入),-》 查找项目配置的网络（只配置了本地内网的网络，方便开发)--> 以上网络失败后，直接加载本地数据
+            var netPath = string.IsNullOrEmpty(baseNetPath)
+                ? PathHelper.Combine(_netBasePath, "ModelBundles", name)
+                : PathHelper.Combine(baseNetPath, name);
             Tuner.Log("netPath:" + netPath);
             var downCompletion = new TaskCompletionSource<bool>();
-            //
-            var localManifestDirPath = PathHelper.Combine(_resBasePath, "ModelManifest");
-            var localManifestPath = PathHelper.Combine(localManifestDirPath, name + "_BundleManifest.json");
 
-            PathHelper.CheckOrCreate(localManifestDirPath);
+            //本地模型资源存储路径
+            var localModelBundleDir = PathHelper.Combine(_resBasePath, "ModelBundle", name);
+            var localManifestPath = PathHelper.Combine(localModelBundleDir, "BundleManifest.json");
+
+            PathHelper.CheckOrCreate(localModelBundleDir);
 
             var downRemoteManifest = new TaskCompletionSource<string>();
             ObservableWebRequest.Get(PathHelper.Combine(netPath, "BundleManifest.json"))
@@ -583,8 +592,8 @@ namespace Blaze.Resource.AssetBundles
             var saFiles = StreamMf.ManifestList.ConvertAll(input => input.Hash);
 
             // // Bundle/iOS/1.1  存放 bundle 的文件夹
-            var downPath = PathHelper.Combine(_resBasePath, GetVersion().AbleVersion.Version());
-            PathHelper.CheckOrCreate(downPath);
+            //var downPath = PathHelper.Combine(_resBasePath, GetVersion().AbleVersion.Version());
+            //PathHelper.CheckOrCreate(downPath);
 
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
@@ -617,7 +626,7 @@ namespace Blaze.Resource.AssetBundles
                     if (waitHash.Contains(data.Hash)) return false;
 
                     // 文件存储路径修改
-                    var target = PathHelper.Combine(downPath, data.GetSaveSubPath());
+                    var target = PathHelper.Combine(localModelBundleDir, data.Hash);
                     // 已经下载并且可以通过效验,
                     if (File.Exists(target))
                     {
@@ -660,7 +669,7 @@ namespace Blaze.Resource.AssetBundles
             try
             {
                 // 下载 bundle
-                abAssetDownCompletion.SetResult(await DownBundleMust(waitDown, netPath, downPath));
+                abAssetDownCompletion.SetResult(await DownBundleMust(waitDown, netPath, localModelBundleDir));
             }
             catch (Exception e)
             {
@@ -678,8 +687,8 @@ namespace Blaze.Resource.AssetBundles
             else
             {
                 BundleManager._.AddManifest(remoteManifest);
-                remoteManifest.SetName(name + "_BundleManifest");
-                remoteManifest.Config(localManifestDirPath);
+                //remoteManifest.SetName(name + "_BundleManifest");
+                remoteManifest.Config(localModelBundleDir);
                 remoteManifest.Save();
                 downCompletion.SetResult(true);
             }

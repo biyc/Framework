@@ -331,6 +331,10 @@ namespace Blaze.Ci
 
             // 推送打包成功信息
             PushToDingding($"打包成功 http://192.168.8.16:8088/Install/{apkName}");
+
+            // 应用名称
+            //打包完成后将项目的名字恢复
+            PlayerSettings.productName = EnumPackageType.EditorWin64Dev.ToString(); //
         }
 
         private static Task<bool> BuildAssetBundle(EnumPackageType target)
