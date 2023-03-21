@@ -161,17 +161,15 @@ namespace ETHotfix
                     Vector3 scale = new Vector3(localScale.x + scaleFactor,
                         localScale.y + scaleFactor,
                         localScale.z + scaleFactor);
-                    if (scale.x > 0)
-                    {
-                        _container.localScale = scale;
-                        Debug.Log("Scale:" + scale.x);
-                    }
-
-                    // if (scale.x > 0.3f && scale.x < 1.5f)
+                    // if (scale.x > 0)
                     // {
                     //     _container.localScale = scale;
+                    //     Debug.Log("Scale:" + scale.x);
                     // }
-                    _container.localScale = scale;
+
+                    if (scale.x > 2.08f)
+                        _container.localScale = scale;
+                    // _container.localScale = scale;
                     oldTouch1 = newTouch1;
                     oldTouch2 = newTouch2;
                 }
@@ -187,7 +185,7 @@ namespace ETHotfix
         /// </summary>
         public void Recovery()
         {
-            _container.localScale = Vector3.one;
+            _container.localScale = new Vector3(2.08f, 2.08f, 2.08f);
             _container.localEulerAngles = Vector3.zero;
             _container.localPosition = new Vector3(0, 0, -13000);
         }

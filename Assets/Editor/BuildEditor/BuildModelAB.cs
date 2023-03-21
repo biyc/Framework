@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Blaze.Bundle;
 using Blaze.Bundle.PrefabBundle;
 using Blaze.Ci;
 using Blaze.Common;
@@ -8,22 +9,13 @@ using UnityEditor;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
+using Sirenix.Utilities;
 
 namespace Editor.BuildEditor
 {
     public class BuildModelAB : OdinEditorWindow
 
     {
-        // [MenuItem("Tools/tt")]
-        // public static void Tt()
-        // {
-        //     var str = "yzll";
-        //     var ds = CryptoHelper.XxteaEncryptToString(str);
-        //     Debug.Log(ds);
-        //     Debug.Log(CryptoHelper.XxteaDecryptByString(ds));
-        // }
-
-
         /// <summary>
         /// 包的类型
         /// </summary>
@@ -37,10 +29,35 @@ namespace Editor.BuildEditor
         /// <summary>
         /// 模型名字
         /// </summary>
-        [ShowInInspector, ReadOnly] private static string _modelName;
+        private static string _modelName;
+
+        /// <summary>
+        /// 模型名字
+        /// </summary>
+        [ShowInInspector, ReadOnly] private static string ModelName;
+
+        /// <summary>
+        /// 输出路径
+        /// </summary>
+        //[ShowInInspector] public static string OutPath;
+
+
+        /// <summary>
+        /// 是否打包所有模型
+        /// </summary>
+        [ShowInInspector, OnValueChanged("IsBuildAllModelValueChange")]
+        public static bool IsBuildAllModel = false;
+
+        /// <summary>
+        /// 选择输出的路径
+        /// </summary>
+        [FolderPath, ShowInInspector] public static string FolderPath;
 
 
         private static BuildModelAB _window;
+
+        private static ModelABBuildConfig _abBuildConfig;
+
 
         [MenuItem("Assets/BuildModelAB", false, 3)]
         public static void BuildSinglePrefabAB()
@@ -61,6 +78,11 @@ namespace Editor.BuildEditor
             }
 
             _modelName = obj[0].name;
+            ModelName = _modelName;
+            IsBuildAllModel = false;
+            _abBuildConfig = new ModelABBuildConfig();
+            _abBuildConfig.OutPath = ModelABConfig.GetModelConfig().OutPath;
+            FolderPath = _abBuildConfig.OutPath;
             _window = GetWindow<BuildModelAB>();
             _window.Show();
         }
@@ -71,10 +93,40 @@ namespace Editor.BuildEditor
         [Button("BuildBundle")]
         public static void Build()
         {
-            ModelBundleStep1._.Execution(PackageType, TargetPlatform, _modelName);
+            if (IsBuildAllModel)
+            {
+                var dirs = Directory.GetDirectories("Assets/Projects/Models");
+                dirs.ForEach(m => BuildModel(new DirectoryInfo(m).Name));
+            }
+            else
+                BuildModel(_modelName);
+
+            _window.Close();
+        }
+
+        /// <summary>
+        ///打包模型ab包
+        /// </summary>
+        /// <param name="name"></param>
+        private static void BuildModel(string name)
+        {
+            if (!ModelPreProcess._.Execution(name))
+            {
+                _window.Close();
+                return;
+            }
+
+            ModelBundleStep1._.Execution(PackageType, TargetPlatform, name);
             ModelBundleStep2._.Execution();
             ModelBundleStep3._.Execution();
-            _window.Close();
+        }
+
+        /// <summary>
+        /// 是否打包所有模型资源
+        /// </summary>
+        private static void IsBuildAllModelValueChange()
+        {
+            ModelName = IsBuildAllModel ? "AllModel" : _modelName;
         }
     }
 }
