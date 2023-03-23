@@ -1,8 +1,10 @@
-﻿using Blaze.Ci;
+﻿using System.Collections.Generic;
+using Blaze.Ci;
 using Blaze.Common;
 using Blaze.Utility.Helper;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Blaze.Bundle
 {
@@ -11,7 +13,7 @@ namespace Blaze.Bundle
         /// <summary>
         /// 模型ab包输出路径
         /// </summary>
-        public string OutPath;
+        public string ExtraOutPath;
 
         /// <summary>
         /// 模型的名字
@@ -27,31 +29,26 @@ namespace Blaze.Bundle
         /// 打包平台
         /// </summary>
         public EnumRuntimeTarget RuntimeTarget;
+        
     }
 
-    public class ModelABConfig : ScriptableObject
+    public class ModelABOutPathConfig : ScriptableObject
     {
         /// <summary>
         /// 模型ab包输出路径
         /// </summary>
-        public string OutPath;
+        public List<string> OutPaths;
 
-        public static string GetFullPath => "Assets/Configs/ModelABConfig.asset";
+        public static string GetFullPath => "Assets/Configs/ModelABOutPathConfig.asset";
 
-        public static string GetDefaultPath(EnumPackageType packageType, EnumRuntimeTarget targetPlatform,
-            string modelName)
+        public static ModelABOutPathConfig GetModelConfig()
         {
-            var root = PathHelper.Combine("Publish", packageType.ToString(), targetPlatform.ToString(),
-                "ModelBundles");
-            return PathHelper.Combine(root, modelName);
-        }
-
-        public static ModelABConfig GetModelConfig()
-        {
-            var config = AssetDatabase.LoadAssetAtPath<ModelABConfig>("Assets/Configs/ModelABConfig");
+            var config =
+                AssetDatabase.LoadAssetAtPath<ModelABOutPathConfig>("Assets/Configs/ModelABOutPathConfig.asset");
             if (config == null)
             {
-                config = CreateInstance<ModelABConfig>();
+                config = CreateInstance<ModelABOutPathConfig>();
+                config.OutPaths = new List<string>();
                 AssetDatabase.CreateAsset(config, GetFullPath);
             }
 

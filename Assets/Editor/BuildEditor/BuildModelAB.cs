@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Blaze.Bundle;
 using Blaze.Bundle.PrefabBundle;
 using Blaze.Ci;
@@ -29,17 +32,20 @@ namespace Editor.BuildEditor
         /// <summary>
         /// 模型名字
         /// </summary>
-        private static string _modelName;
+        private static List<string> _modelNames;
 
         /// <summary>
         /// 模型名字
         /// </summary>
-        [ShowInInspector, ReadOnly] private static string ModelName;
+        [ShowInInspector, ReadOnly] private static List<string> ModelNames;
 
         /// <summary>
         /// 输出路径
         /// </summary>
-        //[ShowInInspector] public static string OutPath;
+        [ShowInInspector, ValueDropdown("_outPaths")]
+        public static string OutPath;
+
+        private static List<string> _outPaths;
 
 
         /// <summary>
@@ -47,11 +53,6 @@ namespace Editor.BuildEditor
         /// </summary>
         [ShowInInspector, OnValueChanged("IsBuildAllModelValueChange")]
         public static bool IsBuildAllModel = false;
-
-        /// <summary>
-        /// 选择输出的路径
-        /// </summary>
-        [FolderPath, ShowInInspector] public static string FolderPath;
 
 
         private static BuildModelAB _window;
@@ -64,25 +65,23 @@ namespace Editor.BuildEditor
         {
             var obj = Selection.objects;
             if (obj.Length == 0) return;
-            if (obj.Length > 1)
+            _modelNames = new List<string>();
+
+            for (var i = 0; i < obj.Length; i++)
             {
-                EditorUtility.DisplayDialog("文件夹数量超出", "请选择一个预制体文件夹", "yes", "no");
-                return;
+                var path = AssetDatabase.GetAssetPath(obj[i]);
+                if (!Directory.Exists(path) || !path.StartsWith("Assets/Projects/Models") ||
+                    path.Split('/').Length != 4)
+                {
+                    EditorUtility.DisplayDialog("", "请选择有效文件夹", "yes", "no");
+                    return;
+                }
             }
 
-            var path = AssetDatabase.GetAssetPath(obj[0]);
-            if (!Directory.Exists(path) || !path.StartsWith("Assets/Projects/Models") || path.Split('/').Length != 4)
-            {
-                EditorUtility.DisplayDialog("", "请选择有效文件夹", "yes", "no");
-                return;
-            }
-
-            _modelName = obj[0].name;
-            ModelName = _modelName;
+            _modelNames = obj.ToList().ConvertAll(m => m.name);
+            ModelNames = _modelNames;
             IsBuildAllModel = false;
-            _abBuildConfig = new ModelABBuildConfig();
-            _abBuildConfig.OutPath = ModelABConfig.GetModelConfig().OutPath;
-            FolderPath = _abBuildConfig.OutPath;
+            _outPaths = ModelABOutPathConfig.GetModelConfig().OutPaths;
             _window = GetWindow<BuildModelAB>();
             _window.Show();
         }
@@ -93,32 +92,45 @@ namespace Editor.BuildEditor
         [Button("BuildBundle")]
         public static void Build()
         {
+            _abBuildConfig = new ModelABBuildConfig()
+            {
+                ExtraOutPath = OutPath,
+                PackageType = PackageType,
+                RuntimeTarget = TargetPlatform
+            };
+
+            if (!string.IsNullOrEmpty(OutPath) && !Directory.Exists(OutPath))
+            {
+                EditorUtility.DisplayDialog("", "该输出路径不存在，请检查！", "Ok");
+                return;
+            }
+
+            _window.Close();
             if (IsBuildAllModel)
             {
                 var dirs = Directory.GetDirectories("Assets/Projects/Models");
                 dirs.ForEach(m => BuildModel(new DirectoryInfo(m).Name));
             }
             else
-                BuildModel(_modelName);
-
-            _window.Close();
+                _modelNames.ForEach(async v => { await BuildModel(v); });
         }
 
         /// <summary>
         ///打包模型ab包
         /// </summary>
         /// <param name="name"></param>
-        private static void BuildModel(string name)
+        private static async Task<bool> BuildModel(string name)
         {
             if (!ModelPreProcess._.Execution(name))
             {
                 _window.Close();
-                return;
+                return false;
             }
 
-            ModelBundleStep1._.Execution(PackageType, TargetPlatform, name);
+            _abBuildConfig.Name = name;
+            ModelBundleStep1._.Execution(_abBuildConfig);
             ModelBundleStep2._.Execution();
-            ModelBundleStep3._.Execution();
+            return await ModelBundleStep3._.Execution();
         }
 
         /// <summary>
@@ -126,7 +138,7 @@ namespace Editor.BuildEditor
         /// </summary>
         private static void IsBuildAllModelValueChange()
         {
-            ModelName = IsBuildAllModel ? "AllModel" : _modelName;
+            ModelNames = IsBuildAllModel ? new List<string>() {"AllModel"} : _modelNames;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -71,6 +72,7 @@ namespace Blaze.Bundle.PrefabBundle
                     data.Hash = fileToHash[data.ABName];
                 }
             });
+            // Debug.Log(ModelBundleStep1._.Name);
             manifest.Config(ModelBundleStep1._.GetPublishPath());
             manifest.Save();
             PathHelper.CheckOrCreate(ModelBundleStep1._.GetPublishPath());
@@ -86,6 +88,16 @@ namespace Blaze.Bundle.PrefabBundle
                         CryptoHelper.ABOffsetEncrypt(
                             PathHelper.Combine(ModelBundleStep1._.GetPublishPath(), pair.Value),
                             pair.Value);
+                    }
+
+                    if (!String.IsNullOrEmpty(ModelBundleStep1._.GetExtraOutPath()))
+                    {
+                        var files = new DirectoryInfo(ModelBundleStep1._.GetPublishPath()).GetFiles();
+                        files.ForEach(v =>
+                        {
+                            File.Copy(v.FullName, PathHelper.Combine(ModelBundleStep1._.GetExtraOutPath(), v.Name),
+                                true);
+                        });
                     }
 
                     task.SetResult(true);
