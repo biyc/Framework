@@ -70,8 +70,8 @@ namespace Editor.BuildEditor
             for (var i = 0; i < obj.Length; i++)
             {
                 var path = AssetDatabase.GetAssetPath(obj[i]);
-                if (!Directory.Exists(path) || !path.StartsWith("Assets/Projects/Models") ||
-                    path.Split('/').Length != 4)
+                if (!Directory.Exists(path) || !path.StartsWith("Assets/Projects/3d/Models") ||
+                    path.Split('/').Length != 5)
                 {
                     EditorUtility.DisplayDialog("", "请选择有效文件夹", "yes", "no");
                     return;
@@ -108,7 +108,7 @@ namespace Editor.BuildEditor
             _window.Close();
             if (IsBuildAllModel)
             {
-                var dirs = Directory.GetDirectories("Assets/Projects/Models");
+                var dirs = Directory.GetDirectories("Assets/Projects/3d/Models");
                 dirs.ForEach(m => BuildModel(new DirectoryInfo(m).Name));
             }
             else

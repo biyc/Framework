@@ -167,7 +167,7 @@ namespace Blaze.Bundle.Step
                 if (CheckIgnore(file)) return;
 
                 // todo 跳过自定义打包规则
-                if (file.Contains("Assets/Projects/Models")) return;
+                if (file.Contains("Assets/Projects/3d")) return;
 
                 _originPath[file.ToLower()] = file;
 

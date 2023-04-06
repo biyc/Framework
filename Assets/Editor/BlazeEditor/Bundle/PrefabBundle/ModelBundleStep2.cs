@@ -28,7 +28,7 @@ namespace Blaze.Bundle.PrefabBundle
             //         path.StartsWith("Assets/Projects/Models/" + ModelBundleStep1._.Name) && !Directory.Exists(path));
             //  var packageName = "Assets/Projects/Models/" + ModelBundleStep1._.Name;
             var guids = AssetDatabase.FindAssets("t:Model",
-                new[] {"Assets/Projects/Models/" + ModelBundleStep1._.Name});
+                new[] {"Assets/Projects/3d/Models/" + ModelBundleStep1._.Name});
 
             guids.ForEach(uid =>
             {

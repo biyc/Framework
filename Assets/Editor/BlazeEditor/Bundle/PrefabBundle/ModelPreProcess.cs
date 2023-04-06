@@ -17,7 +17,7 @@ namespace Blaze.Bundle.PrefabBundle
 
         public bool Execution(string name)
         {
-            var pathDir = $"Assets/Projects/Models/{name}";
+            var pathDir = $"Assets/Projects/3d/Models/{name}";
             var obj = AssetDatabase.FindAssets("t:Model", new[] {pathDir});
             if (obj.Length != 1)
             {
