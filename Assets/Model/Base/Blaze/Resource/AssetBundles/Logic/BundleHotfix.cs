@@ -130,7 +130,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
-            //DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
+            // DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
@@ -561,7 +561,7 @@ namespace Blaze.Resource.AssetBundles
             // var p = assetPath.Replace(".fbx", "").Split('/');
             // var name = p[p.Length - 1];
             // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
-            //首先选择传入的网络(后面因为更改需求，不在传入),-》 查找项目配置的网络（只配置了本地内网的网络，方便开发)--> 以上网络失败后，直接加载本地数据
+            //首先选择传入的网络(后面因为更改需求，不在传入,可以测试使用),-》 查找项目配置的网络（只配置了本地内网的网络，方便开发)--> 以上网络失败后，直接加载本地数据
             var netPath = string.IsNullOrEmpty(baseNetPath)
                 ? PathHelper.Combine(_netBasePath, "ModelBundles", name)
                 : PathHelper.Combine(baseNetPath, name);

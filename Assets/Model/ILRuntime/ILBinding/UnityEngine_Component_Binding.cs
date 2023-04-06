@@ -84,29 +84,15 @@ namespace ILRuntime.Runtime.Generated
                     }
                 }
             }
-            args = new Type[]{typeof(UnityEngine.RectTransform)};
-            if (genericMethods.TryGetValue("GetComponent", out lst))
+            args = new Type[]{typeof(UnityEngine.UI.Text)};
+            if (genericMethods.TryGetValue("GetComponentsInChildren", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(UnityEngine.RectTransform)))
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Text[])))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_5);
-
-                        break;
-                    }
-                }
-            }
-            args = new Type[]{typeof(UnityEngine.UI.Image)};
-            if (genericMethods.TryGetValue("GetComponent", out lst))
-            {
-                foreach(var m in lst)
-                {
-                    if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Image)))
-                    {
-                        method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_6);
+                        app.RegisterCLRMethodRedirection(method, GetComponentsInChildren_5);
 
                         break;
                     }
@@ -120,7 +106,35 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Text)))
                     {
                         method = m.MakeGenericMethod(args);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_6);
+
+                        break;
+                    }
+                }
+            }
+            args = new Type[]{typeof(UnityEngine.RectTransform)};
+            if (genericMethods.TryGetValue("GetComponent", out lst))
+            {
+                foreach(var m in lst)
+                {
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.RectTransform)))
+                    {
+                        method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_7);
+
+                        break;
+                    }
+                }
+            }
+            args = new Type[]{typeof(UnityEngine.UI.Image)};
+            if (genericMethods.TryGetValue("GetComponent", out lst))
+            {
+                foreach(var m in lst)
+                {
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Image)))
+                    {
+                        method = m.MakeGenericMethod(args);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_8);
 
                         break;
                     }
@@ -134,7 +148,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Button)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_8);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_9);
 
                         break;
                     }
@@ -148,7 +162,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.ScrollRect)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_9);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_10);
 
                         break;
                     }
@@ -162,7 +176,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Mask)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_10);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_11);
 
                         break;
                     }
@@ -176,7 +190,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.ContentSizeFitter)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_11);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_12);
 
                         break;
                     }
@@ -190,7 +204,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.HorizontalLayoutGroup)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_12);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_13);
 
                         break;
                     }
@@ -204,7 +218,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Dropdown)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_13);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_14);
 
                         break;
                     }
@@ -218,7 +232,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Toggle)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_14);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_15);
 
                         break;
                     }
@@ -232,7 +246,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Scrollbar)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_15);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_16);
 
                         break;
                     }
@@ -246,21 +260,21 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.InputField)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponent_16);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_17);
 
                         break;
                     }
                 }
             }
-            args = new Type[]{typeof(UnityEngine.UI.Button)};
-            if (genericMethods.TryGetValue("GetComponentsInChildren", out lst))
+            args = new Type[]{typeof(UnityEngine.UI.GridLayoutGroup)};
+            if (genericMethods.TryGetValue("GetComponent", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Button[])))
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.GridLayoutGroup)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponentsInChildren_17);
+                        app.RegisterCLRMethodRedirection(method, GetComponent_18);
 
                         break;
                     }
@@ -268,7 +282,7 @@ namespace ILRuntime.Runtime.Generated
             }
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("set_tag", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, set_tag_18);
+            app.RegisterCLRMethodRedirection(method, set_tag_19);
             args = new Type[]{typeof(UnityEngine.Transform)};
             if (genericMethods.TryGetValue("GetComponentsInChildren", out lst))
             {
@@ -277,7 +291,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.Transform[])))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetComponentsInChildren_19);
+                        app.RegisterCLRMethodRedirection(method, GetComponentsInChildren_20);
 
                         break;
                     }
@@ -546,7 +560,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* GetComponent_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetComponentsInChildren_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -556,32 +570,12 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.RectTransform>();
+            var result_of_this_method = instance_of_this_method.GetComponentsInChildren<UnityEngine.UI.Text>();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
         static StackObject* GetComponent_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Image>();
-
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* GetComponent_7(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -601,6 +595,21 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
+        static StackObject* GetComponent_7(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.RectTransform>();
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
         static StackObject* GetComponent_8(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
@@ -611,7 +620,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Button>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Image>();
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -631,7 +640,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.ScrollRect>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Button>();
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -651,7 +660,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Mask>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.ScrollRect>();
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -671,7 +680,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.ContentSizeFitter>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Mask>();
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -691,7 +700,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.HorizontalLayoutGroup>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.ContentSizeFitter>();
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -711,7 +720,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Dropdown>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.HorizontalLayoutGroup>();
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -731,7 +740,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Toggle>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Dropdown>();
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -751,7 +760,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Scrollbar>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Toggle>();
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -771,6 +780,26 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Scrollbar>();
+
+            object obj_result_of_this_method = result_of_this_method;
+            if(obj_result_of_this_method is CrossBindingAdaptorType)
+            {    
+                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
+            }
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* GetComponent_17(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
             var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.InputField>();
 
             object obj_result_of_this_method = result_of_this_method;
@@ -781,7 +810,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* GetComponentsInChildren_17(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetComponent_18(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -791,12 +820,17 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine.Component instance_of_this_method = (UnityEngine.Component)typeof(UnityEngine.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetComponentsInChildren<UnityEngine.UI.Button>();
+            var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.GridLayoutGroup>();
 
+            object obj_result_of_this_method = result_of_this_method;
+            if(obj_result_of_this_method is CrossBindingAdaptorType)
+            {    
+                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
+            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* set_tag_18(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* set_tag_19(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -815,7 +849,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* GetComponentsInChildren_19(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetComponentsInChildren_20(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;

@@ -32,6 +32,8 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_GameObject_Binding.Register(app);
             DG_Tweening_ShortcutExtensions_Binding.Register(app);
             System_Type_Binding.Register(app);
+            System_Linq_Enumerable_Binding.Register(app);
+            System_Collections_Generic_List_1_Text_Binding.Register(app);
             UnityEngine_UI_Button_Binding.Register(app);
             UnityEngine_Events_UnityEventBase_Binding.Register(app);
             UnityEngine_Events_UnityEvent_Binding.Register(app);
@@ -75,7 +77,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_Game_Binding.Register(app);
             ETModel_Hotfix_Binding.Register(app);
             System_Reflection_Assembly_Binding.Register(app);
-            System_Linq_Enumerable_Binding.Register(app);
             System_Collections_Generic_List_1_Type_Binding.Register(app);
             System_Collections_Generic_List_1_Type_Binding_Enumerator_Binding.Register(app);
             System_Reflection_MemberInfo_Binding.Register(app);
@@ -194,7 +195,9 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Touch_Binding.Register(app);
             UnityEngine_RectTransformUtility_Binding.Register(app);
             Blaze_Common_GameSettings_Binding.Register(app);
-            System_Collections_Generic_List_1_Button_Binding.Register(app);
+            System_Threading_Tasks_Task_1_Boolean_Binding.Register(app);
+            System_Runtime_CompilerServices_TaskAwaiter_1_Boolean_Binding.Register(app);
+            UnityEngine_UI_InputField_Binding.Register(app);
             UnityEngine_UI_MaskableGraphic_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
             Sirenix_Utilities_StringExtensions_Binding.Register(app);

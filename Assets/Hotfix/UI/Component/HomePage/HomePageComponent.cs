@@ -191,9 +191,9 @@ namespace ETHotfix
         }
 
 
-        public async Task LoadObj(string name)
+        public async Task LoadObj(string name, string baseNetPath = "")
         {
-            // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
+            Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
             if (_target != null && name == _target.name)
                 return;
             if (_target != null)
@@ -207,7 +207,7 @@ namespace ETHotfix
 
             _currentName = name;
 
-            if (!await Res.DownLoadModelAsset(name))
+            if (!await Res.DownLoadModelAsset(name, baseNetPath))
             {
                 _loading.Hide();
                 return;
@@ -320,7 +320,7 @@ namespace ETHotfix
                 PlayerPrefs.SetString("name", strName);
                 PlayerPrefs.SetString("net", strNet);
 
-                LoadObj(inputName);
+                LoadObj(inputName, inputNetPath);
                 panel.Hide();
             });
         }

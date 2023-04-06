@@ -70,8 +70,7 @@ namespace ETModel
                             return ((Func<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>) act)(input);
                         });
                 });
-
-            appdomain.DelegateManager.RegisterMethodDelegate<SuperScrollView.LoopListViewItem2>();
+            
             appdomain.DelegateManager.RegisterMethodDelegate<Blaze.Resource.Common.PrefabObject>();
             appdomain.DelegateManager
                 .RegisterMethodDelegate<ILRuntime.Runtime.Intepreter.ILTypeInstance, System.Int32>();
@@ -165,10 +164,6 @@ namespace ETModel
                                 ILRuntime.Runtime.Intepreter.ILTypeInstance>) act)(input);
                         });
                 });
-
-            appdomain.DelegateManager
-                .RegisterFunctionDelegate<SuperScrollView.LoopListView2, System.Int32,
-                    SuperScrollView.LoopListViewItem2>();
             appdomain.DelegateManager.RegisterMethodDelegate<System.Action>();
 
             // 注册委托
