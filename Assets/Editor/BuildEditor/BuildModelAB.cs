@@ -17,7 +17,6 @@ using Sirenix.Utilities;
 namespace Editor.BuildEditor
 {
     public class BuildModelAB : OdinEditorWindow
-
     {
         /// <summary>
         /// 包的类型
@@ -32,12 +31,8 @@ namespace Editor.BuildEditor
         /// <summary>
         /// 模型名字
         /// </summary>
-        private static List<string> _modelNames;
+        [ShowInInspector] public static string ModelNames;
 
-        /// <summary>
-        /// 模型名字
-        /// </summary>
-        [ShowInInspector, ReadOnly] private static List<string> ModelNames;
 
         /// <summary>
         /// 输出路径
@@ -51,8 +46,7 @@ namespace Editor.BuildEditor
         /// <summary>
         /// 是否打包所有模型
         /// </summary>
-        [ShowInInspector, OnValueChanged("IsBuildAllModelValueChange")]
-        public static bool IsBuildAllModel = false;
+        [ShowInInspector] public static bool IsBuildAllModel = false;
 
 
         private static BuildModelAB _window;
@@ -65,7 +59,6 @@ namespace Editor.BuildEditor
         {
             var obj = Selection.objects;
             if (obj.Length == 0) return;
-            _modelNames = new List<string>();
 
             for (var i = 0; i < obj.Length; i++)
             {
@@ -78,8 +71,9 @@ namespace Editor.BuildEditor
                 }
             }
 
-            _modelNames = obj.ToList().ConvertAll(m => m.name);
-            ModelNames = _modelNames;
+            var names = "";
+            obj.ToList().ConvertAll(m => m.name).ForEach(m => names += (m + "|"));
+            ModelNames = names;
             IsBuildAllModel = false;
             _outPaths = ModelABOutPathConfig.GetModelConfig().OutPaths;
             _window = GetWindow<BuildModelAB>();
@@ -112,7 +106,13 @@ namespace Editor.BuildEditor
                 dirs.ForEach(m => BuildModel(new DirectoryInfo(m).Name));
             }
             else
-                _modelNames.ForEach(async v => { await BuildModel(v); });
+                ModelNames.Split('|').ForEach(async v =>
+                {
+                    if (!string.IsNullOrEmpty(v))
+                        await BuildModel(v);
+                });
+
+            AssetDatabase.Refresh();
         }
 
         /// <summary>
@@ -131,14 +131,6 @@ namespace Editor.BuildEditor
             ModelBundleStep1._.Execution(_abBuildConfig);
             ModelBundleStep2._.Execution();
             return await ModelBundleStep3._.Execution();
-        }
-
-        /// <summary>
-        /// 是否打包所有模型资源
-        /// </summary>
-        private static void IsBuildAllModelValueChange()
-        {
-            ModelNames = IsBuildAllModel ? new List<string>() {"AllModel"} : _modelNames;
         }
     }
 }
