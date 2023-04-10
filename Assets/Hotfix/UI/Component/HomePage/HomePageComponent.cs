@@ -213,7 +213,7 @@ namespace ETHotfix
                 return;
             }
 
-            var path = $"Assets/Projects/Models/{name}/{name}.fbx";
+            var path = $"Assets/Projects/3d/Models/{name}/{name}.fbx";
 
             // await LoadTarget(assetPath);
             //.prefab  fbx

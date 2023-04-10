@@ -130,7 +130,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
-            // DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
+            //DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
@@ -331,7 +331,7 @@ namespace Blaze.Resource.AssetBundles
                 {
                     checkSuccessNum++;
                     //  该路径下的资源不需要下载，用到的时候再动态下载
-                    if (data.AssetPath.StartsWith("Assets/Projects/Prefabs/")) return false;
+                    if (data.IsModelAsset()) return false;
 
                     // streamAsset静态文件中有，不下载
                     if (saFiles.Contains(data.Hash))
@@ -475,10 +475,9 @@ namespace Blaze.Resource.AssetBundles
             {
                 // Log.Info("下载文件" + data.Hash);
                 // Bundle/iOS/1.1/Hash
-                var isModel = data.AssetPath.StartsWith("Assets/Projects/Models");
-                if (!isModel)
+                if (!data.IsModelAsset())
                     data.CheckSubPath(basePath);
-                var savePath = isModel
+                var savePath = data.IsModelAsset()
                     ? PathHelper.Combine(basePath, data.Hash)
                     : PathHelper.Combine(basePath, data.GetSaveSubPath());
                 //Debug.Log(data.AssetPath + data.AssetPath.StartsWith("Assets/Projects/Models"));

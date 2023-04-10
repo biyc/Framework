@@ -59,6 +59,8 @@ namespace Blaze.Resource.AssetBundles.Data
         {
             return PathHelper.Combine(Hash.Length >= 2 ? Hash.Substring(0, 2) : "sort", Hash);
         }
+
+        public bool IsModelAsset() => AssetPath.StartsWith("Assets/Projects/3d/Models");
     }
 
     /// <summary>

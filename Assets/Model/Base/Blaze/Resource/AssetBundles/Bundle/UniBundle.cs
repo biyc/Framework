@@ -295,7 +295,7 @@ namespace Blaze.Resource.AssetBundles.Bundle
 
             // Bundle/iOS/1.1/Hash
             var filePath = GetAssetLocalPath();
-            
+
             if (File.Exists(filePath))
             {
                 // 1. 从本地文件中直接加载AB
@@ -314,10 +314,10 @@ namespace Blaze.Resource.AssetBundles.Bundle
 
         public string GetAssetLocalPath()
         {
-            var isModel = _manifest.AssetPath.StartsWith("Assets/Projects/Models");
+            var isModel = _manifest.IsModelAsset();
             var splits = _manifest.AssetPath.Split('/');
             var filePath = isModel
-                ? PathHelper.Combine(BundleHotfix._.ResBasePath, "ModelBundle", splits[3],
+                ? PathHelper.Combine(BundleHotfix._.ResBasePath, "ModelBundle", splits[4],
                     _manifest.Hash)
                 : Path.Combine(
                     BundleHotfix._.GetBasePath(), _manifest.GetSaveSubPath());
@@ -372,7 +372,7 @@ namespace Blaze.Resource.AssetBundles.Bundle
             {
                 if (_manifest.Type == BundleType.AssetBundle)
                 {
-                    _assetBundleCreateRequest = _manifest.AssetPath.StartsWith("Assets/Projects/Models")
+                    _assetBundleCreateRequest = _manifest.IsModelAsset()
                         ? AssetBundle.LoadFromFileAsync(path, 0, (ulong) CryptoHelper.GetABOffestNum(_manifest.Hash))
                         : AssetBundle.LoadFromFileAsync(path);
                     _assetBundleCreateRequest.completed += delegate(AsyncOperation operation)
@@ -419,7 +419,7 @@ namespace Blaze.Resource.AssetBundles.Bundle
                 {
                     // 如果异步也在加载该资源，需要先卸载异步加载的资源
                     _assetBundleCreateRequest?.assetBundle.Unload(true);
-                    _assetBundle = _manifest.AssetPath.StartsWith("Assets/Projects/Models")
+                    _assetBundle = _manifest.IsModelAsset()
                         ? AssetBundle.LoadFromFile(path, 0, (ulong) CryptoHelper.GetABOffestNum(_manifest.Hash))
                         : AssetBundle.LoadFromFile(path);
                     OnLoaded();
