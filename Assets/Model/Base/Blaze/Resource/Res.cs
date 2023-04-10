@@ -21,6 +21,7 @@ using Blaze.Resource.AssetBundles.Bundle;
 using Blaze.Resource.AssetBundles.Logic;
 using Blaze.Resource.Common;
 using Blaze.Resource.Poco;
+using ETModel;
 using UnityEngine;
 
 namespace Blaze.Resource
@@ -203,14 +204,13 @@ namespace Blaze.Resource
             return await task.Task;
         }
 
-        public static async Task<bool> DownLoadModelAsset( string name, string netPath="")
+        public static async Task<bool> DownLoadModelAsset(string name, string netPath = "")
         {
             var abDownTask = new TaskCompletionSource<bool>();
-            // if (DefaultRuntime.RuntimeEnvMode)
-            //     abDownTask.SetResult(await BundleHotfix._.LoadModelAsset(assetPath));
-            // else
-            //     abDownTask.SetResult(true);
-            abDownTask.SetResult(await BundleHotfix._.LoadModelAsset(name,netPath));
+            if (!Define.UseAB)
+                abDownTask.SetResult(true);
+            else
+                abDownTask.SetResult(await BundleHotfix._.LoadModelAsset(name, netPath));
             return await abDownTask.Task;
         }
 
