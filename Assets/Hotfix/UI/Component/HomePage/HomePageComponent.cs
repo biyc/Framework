@@ -193,7 +193,7 @@ namespace ETHotfix
 
         public async Task LoadObj(string name, string baseNetPath = "")
         {
-            Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
+            // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
             if (_target != null && name == _target.name)
                 return;
             if (_target != null)
