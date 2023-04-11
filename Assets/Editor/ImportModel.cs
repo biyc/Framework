@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Blaze.Bundle;
+using Blaze.Ci;
+using Blaze.Common;
 using Codice.Client.Common;
 using DG.Tweening.Plugins.Options;
 using Editor.BuildEditor;
@@ -19,10 +23,34 @@ namespace Company
 
         private static ImportModel _window;
 
+        /// <summary>
+        /// 包的类型
+        /// </summary>
+        [ShowInInspector] public static EnumPackageType PackageType;
+
+        /// <summary>
+        /// 构建目标平台
+        /// </summary>
+        [ShowInInspector] public static EnumRuntimeTarget TargetPlatform = EnumRuntimeTarget.Android;
+
+        /// <summary>
+        /// 输出路径
+        /// </summary>
+        [ShowInInspector, ValueDropdown("_outPaths")]
+        public static string OutPath;
+
+        private static List<string> _outPaths;
+
+        [ShowInInspector] public static bool IsBuildAB = true;
+
+        private static ModelABBuildConfig _abBuildConfig;
+
         [MenuItem("Tools/ImportModel")]
         private static void Import()
         {
             _window = GetWindow<ImportModel>();
+            _outPaths = ModelABOutPathConfig.GetModelConfig().OutPaths;
+            ImportPath = "";
             _window.Show();
         }
 
@@ -31,13 +59,24 @@ namespace Company
         {
             _window.Close();
             if (string.IsNullOrEmpty(ImportPath) || !Directory.Exists(ImportPath)) return;
+            var names = "";
             Directory.CreateDirectory(ImportPath).GetDirectories().ToList().ForEach(m =>
             {
                 var localPath = PathHelper.Combine(AssetModelPath, m.Name);
                 if (Directory.Exists(localPath))
                     Directory.Delete(localPath, true);
                 CopyFolder(m.FullName, localPath);
+                names += (m.Name + "|");
             });
+            AssetDatabase.Refresh();
+            if (!IsBuildAB) return;
+            var config = new ModelABBuildConfig()
+            {
+                ExtraOutPath = OutPath,
+                PackageType = PackageType,
+                RuntimeTarget = TargetPlatform
+            };
+            BuildModelAB.BuildModel(names, config);
         }
 
         /// <summary>

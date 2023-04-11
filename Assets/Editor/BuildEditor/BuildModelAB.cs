@@ -86,13 +86,6 @@ namespace Editor.BuildEditor
         [Button("BuildBundle")]
         public static void Build()
         {
-            _abBuildConfig = new ModelABBuildConfig()
-            {
-                ExtraOutPath = OutPath,
-                PackageType = PackageType,
-                RuntimeTarget = TargetPlatform
-            };
-
             if (!string.IsNullOrEmpty(OutPath) && !Directory.Exists(OutPath))
             {
                 EditorUtility.DisplayDialog("", "该输出路径不存在，请检查！", "Ok");
@@ -100,13 +93,26 @@ namespace Editor.BuildEditor
             }
 
             _window.Close();
-            if (IsBuildAllModel)
+            var abBuildConfig = new ModelABBuildConfig()
+            {
+                ExtraOutPath = OutPath,
+                PackageType = PackageType,
+                RuntimeTarget = TargetPlatform
+            };
+            BuildModel(ModelNames, abBuildConfig, IsBuildAllModel);
+        }
+
+        public static void BuildModel(string names, ModelABBuildConfig config, bool isBuildAllModel = false)
+        {
+            _abBuildConfig = config;
+
+            if (isBuildAllModel)
             {
                 var dirs = Directory.GetDirectories("Assets/Projects/3d/Models");
                 dirs.ForEach(m => BuildModel(new DirectoryInfo(m).Name));
             }
             else
-                ModelNames.Split('|').ForEach(async v =>
+                names.Split('|').ForEach(async v =>
                 {
                     if (!string.IsNullOrEmpty(v))
                         await BuildModel(v);
@@ -122,11 +128,7 @@ namespace Editor.BuildEditor
         private static async Task<bool> BuildModel(string name)
         {
             if (!ModelPreProcess._.Execution(name))
-            {
-                _window.Close();
                 return false;
-            }
-
             _abBuildConfig.Name = name;
             ModelBundleStep1._.Execution(_abBuildConfig);
             ModelBundleStep2._.Execution();
