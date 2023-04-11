@@ -31,7 +31,7 @@ namespace Editor.BuildEditor
         /// <summary>
         /// 模型名字
         /// </summary>
-        [ShowInInspector] public static string ModelNames;
+        [ShowInInspector] public static string ModelIndexs;
 
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace Editor.BuildEditor
                 }
             }
 
-            var names = "";
-            obj.ToList().ConvertAll(m => m.name).ForEach(m => names += (m + "|"));
-            ModelNames = names;
+            var indexs = "";
+            obj.ToList().ConvertAll(m => m.name.Split('_')[0]).ForEach(m => indexs += (m + "|"));
+            ModelIndexs = indexs;
             IsBuildAllModel = false;
             _outPaths = ModelABOutPathConfig.GetModelConfig().OutPaths;
             _window = GetWindow<BuildModelAB>();
@@ -99,10 +99,23 @@ namespace Editor.BuildEditor
                 PackageType = PackageType,
                 RuntimeTarget = TargetPlatform
             };
-            BuildModel(ModelNames, abBuildConfig, IsBuildAllModel);
+            var allModelNames = Directory.GetDirectories("Assets/Projects/3d/Models").ToList()
+                .ConvertAll(m => new DirectoryInfo(m).Name);
+            var names = new List<string>();
+            ModelIndexs.Split('|').ForEach(m =>
+            {
+                if (string.IsNullOrEmpty(m)) return;
+                var n = allModelNames.Find(v => v.Split('_')[0] == m);
+                if (!string.IsNullOrEmpty(n))
+                    names.Add(n);
+                else
+                    Debug.LogError($"该索引未找到模型，请确认！[>>] {m} [<<]");
+            });
+
+            BuildModel(names, abBuildConfig, IsBuildAllModel);
         }
 
-        public static void BuildModel(string names, ModelABBuildConfig config, bool isBuildAllModel = false)
+        public static void BuildModel(List<string> names, ModelABBuildConfig config, bool isBuildAllModel = false)
         {
             _abBuildConfig = config;
 
@@ -112,7 +125,7 @@ namespace Editor.BuildEditor
                 dirs.ForEach(m => BuildModel(new DirectoryInfo(m).Name));
             }
             else
-                names.Split('|').ForEach(async v =>
+                names.ForEach(async v =>
                 {
                     if (!string.IsNullOrEmpty(v))
                         await BuildModel(v);

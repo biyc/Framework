@@ -59,14 +59,14 @@ namespace Company
         {
             _window.Close();
             if (string.IsNullOrEmpty(ImportPath) || !Directory.Exists(ImportPath)) return;
-            var names = "";
+            var names = new List<string>();
             Directory.CreateDirectory(ImportPath).GetDirectories().ToList().ForEach(m =>
             {
                 var localPath = PathHelper.Combine(AssetModelPath, m.Name);
                 if (Directory.Exists(localPath))
                     Directory.Delete(localPath, true);
                 CopyFolder(m.FullName, localPath);
-                names += (m.Name + "|");
+                names.Add(m.Name);
             });
             AssetDatabase.Refresh();
             if (!IsBuildAB) return;
@@ -77,6 +77,7 @@ namespace Company
                 RuntimeTarget = TargetPlatform
             };
             BuildModelAB.BuildModel(names, config);
+            AssetDatabase.Refresh();
         }
 
         /// <summary>
