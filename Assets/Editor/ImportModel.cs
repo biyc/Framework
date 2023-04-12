@@ -44,8 +44,8 @@ namespace Company
         [ShowInInspector] public static bool IsBuildAB = true;
 
         private static ModelABBuildConfig _abBuildConfig;
-
-        [MenuItem("Tools/ImportModel")]
+        
+        [MenuItem("Assets/ImportModel", false, 4)]
         private static void Import()
         {
             _window = GetWindow<ImportModel>();
