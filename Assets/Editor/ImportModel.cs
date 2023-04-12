@@ -106,7 +106,8 @@ namespace Company
             {
                 foreach (string s in files)
                 {
-                    File.Copy(s, varToDirectory + s.Substring(s.LastIndexOf("\\")), true);
+                    if (!s.EndsWith(".meta"))
+                        File.Copy(s, varToDirectory + s.Substring(s.LastIndexOf("\\")), true);
                 }
             }
         }
