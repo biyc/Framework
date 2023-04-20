@@ -46,17 +46,10 @@ namespace ETHotfix
 
         Touch newTouch1;
         Touch newTouch2;
-        private Transform _target;
+
 
         private Transform _container;
 
-
-        /// <summary>
-        /// 当前应该显示的资源
-        /// </summary>
-        private string _currentName;
-
-        private const string TARGETTAG = "TARGETTAG";
 
         // private bool _isMove = false;
 
@@ -65,21 +58,14 @@ namespace ETHotfix
 
         private int _index = 1;
 
-        private Transform _loading;
 
-        
-        #region Singleton
+        private const float _minScale = 1.5f;
+        //private const float _minScale = 2.05f;
 
-        private static HomePageComponent Instance;
 
-        public static HomePageComponent _ => Instance;
-
-        #endregion
-        
         public override async void Awake()
         {
             base.Awake();
-            Instance = this;
             // 初始化绑定
             Bind = new HomePageBind();
             Bind.InitUI(_curStage.transform);
@@ -87,16 +73,14 @@ namespace ETHotfix
             //InitRedPoint();
             Debug.Log("版本号:" + Define.GameSettings?.GetVersion() + " res:" + Define.AssetBundleVersion);
             _container = _curStage.transform.Find("Container");
-            _loading = _curStage.transform.Find("Loading");
 
+
+            _curStage.GetComponent<ABModelLoad>().SetRecovery(Recovery);
 
             #region 手势识别
 
             Observable.EveryUpdate().Subscribe(_ =>
             {
-                if (_target == null)
-                    return;
-
                 //没有触摸  
                 if (Input.touchCount <= 0)
                     return;
@@ -150,7 +134,6 @@ namespace ETHotfix
                         _container.localPosition = _distance + (Vector3) pos;
                     }
 
-
                     //缩放
 
                     if (newTouch2.phase == TouchPhase.Began)
@@ -177,7 +160,7 @@ namespace ETHotfix
                     //     Debug.Log("Scale:" + scale.x);
                     // }
 
-                    if (scale.x > 2.08f)
+                    if (scale.x > _minScale)
                         _container.localScale = scale;
                     // _container.localScale = scale;
                     oldTouch1 = newTouch1;
@@ -195,66 +178,66 @@ namespace ETHotfix
         /// </summary>
         public void Recovery()
         {
-            _container.localScale = new Vector3(2.08f, 2.08f, 2.08f);
+            _container.localScale = new Vector3(_minScale, _minScale, _minScale);
             _container.localEulerAngles = Vector3.zero;
             _container.localPosition = new Vector3(0, 0, -13000);
         }
 
 
-        public async Task LoadObj(string resPath, string name, string baseNetPath = "")
-        {
-            // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
-            if (_target != null && name == _target.name)
-                return;
-            if (_target != null)
-            {
-                var o = _target;  
-                _target = null;
-                UnityEngine.Object.Destroy(o.gameObject);
-            }
-
-            _loading.Show();
-
-            _currentName = name;
-
-            if (!await Res.DownLoadModelAsset( resPath,name, baseNetPath))
-            {
-                _loading.Hide();
-                return;
-            }
-
-            var path = $"Assets/Projects/3d/Models/{name}/{name}.fbx";
-
-            // await LoadTarget(assetPath);
-            //.prefab  fbx
-
-
-            var task = Res.InstantiateAsync(path, _container);
-            task.OnLoad(m =>
-            {
-                // if (m == null)
-                // {
-                //     _loading.Hide();
-                //     return; 
-                // }
-
-                //在下载过程中点击了其他的物品
-                if (_currentName != name)
-                {
-                    UnityEngine.Object.Destroy(m.Target);
-                    return;
-                }
-
-                _target = m.Target.transform;
-                _target.name = name;
-                _target.tag = TARGETTAG;
-                _target.localScale = new Vector3(1000, 1000, 1000);
-                _target.GetComponentsInChildren<Transform>()
-                    .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
-                Recovery();
-                _loading.Hide();
-            });
-        }
+        // public async Task LoadObj(string resPath, string name, string baseNetPath = "")
+        // {
+        //     // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
+        //     if (_target != null && name == _target.name)
+        //         return;
+        //     if (_target != null)
+        //     {
+        //         var o = _target;
+        //         _target = null;
+        //         UnityEngine.Object.Destroy(o.gameObject);
+        //     }
+        //
+        //     _loading.Show();
+        //
+        //     _currentName = name;
+        //
+        //     if (!await Res.DownLoadModelAsset(resPath, name, baseNetPath))
+        //     {
+        //         _loading.Hide();
+        //         return;
+        //     }
+        //
+        //     var path = $"Assets/Projects/3d/Models/{name}/{name}.fbx";
+        //
+        //     // await LoadTarget(assetPath);
+        //     //.prefab  fbx
+        //
+        //
+        //     var task = Res.InstantiateAsync(path, _container);
+        //     task.OnLoad(m =>
+        //     {
+        //         // if (m == null)
+        //         // {
+        //         //     _loading.Hide();
+        //         //     return; 
+        //         // }
+        //
+        //         //在下载过程中点击了其他的物品
+        //         if (_currentName != name)
+        //         {
+        //             UnityEngine.Object.Destroy(m.Target);
+        //             return;
+        //         }
+        //
+        //         _target = m.Target.transform;
+        //         _target.name = name;
+        //         _target.tag = TARGETTAG;
+        //         _target.localScale = new Vector3(1000, 1000, 1000);
+        //         _target.GetComponentsInChildren<Transform>()
+        //             .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
+        //         Recovery();
+        //         _loading.Hide();
+        //     });
+        // }
 
 
         private void InitDev()
@@ -330,7 +313,7 @@ namespace ETHotfix
                 PlayerPrefs.SetString("name", strName);
                 PlayerPrefs.SetString("net", strNet);
 
-                LoadObj("", inputName, inputNetPath);
+                _curStage.GetComponent<ABModelLoad>().LoadObj("", inputName, inputNetPath);
                 panel.Hide();
             });
         }

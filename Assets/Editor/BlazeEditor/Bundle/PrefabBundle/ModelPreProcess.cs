@@ -46,6 +46,10 @@ namespace Blaze.Bundle.PrefabBundle
                 var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
                 if (mat.shader.name == "Shader Graphs/ArnoldStandardSurfaceTransparent")
                     mat.shader = AssetDatabase.LoadAssetAtPath<Shader>(SHADER_PATH);
+                // if (mat.shader.name == "Universal Render Pipeline/Lit")
+                // {
+                //     mat.set
+                // }
             });
 
             var model = AssetDatabase.LoadAssetAtPath<GameObject>(path);
