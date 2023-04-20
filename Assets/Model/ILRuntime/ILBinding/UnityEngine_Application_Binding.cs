@@ -28,9 +28,6 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_platform", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_platform_1);
-            args = new Type[]{};
-            method = type.GetMethod("get_targetFrameRate", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_targetFrameRate_2);
 
 
         }
@@ -56,19 +53,6 @@ namespace ILRuntime.Runtime.Generated
             var result_of_this_method = UnityEngine.Application.platform;
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* get_targetFrameRate_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = UnityEngine.Application.targetFrameRate;
-
-            __ret->ObjectType = ObjectTypes.Integer;
-            __ret->Value = result_of_this_method;
-            return __ret + 1;
         }
 
 

@@ -67,9 +67,19 @@ namespace ETHotfix
 
         private Transform _loading;
 
+        
+        #region Singleton
+
+        private static HomePageComponent Instance;
+
+        public static HomePageComponent _ => Instance;
+
+        #endregion
+        
         public override async void Awake()
         {
             base.Awake();
+            Instance = this;
             // 初始化绑定
             Bind = new HomePageBind();
             Bind.InitUI(_curStage.transform);
@@ -191,14 +201,14 @@ namespace ETHotfix
         }
 
 
-        public async Task LoadObj(string name, string baseNetPath = "")
+        public async Task LoadObj(string resPath, string name, string baseNetPath = "")
         {
             // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
             if (_target != null && name == _target.name)
                 return;
             if (_target != null)
             {
-                var o = _target;
+                var o = _target;  
                 _target = null;
                 UnityEngine.Object.Destroy(o.gameObject);
             }
@@ -207,7 +217,7 @@ namespace ETHotfix
 
             _currentName = name;
 
-            if (!await Res.DownLoadModelAsset(name, baseNetPath))
+            if (!await Res.DownLoadModelAsset( resPath,name, baseNetPath))
             {
                 _loading.Hide();
                 return;
@@ -225,7 +235,7 @@ namespace ETHotfix
                 // if (m == null)
                 // {
                 //     _loading.Hide();
-                //     return;
+                //     return; 
                 // }
 
                 //在下载过程中点击了其他的物品
@@ -320,7 +330,7 @@ namespace ETHotfix
                 PlayerPrefs.SetString("name", strName);
                 PlayerPrefs.SetString("net", strNet);
 
-                LoadObj(inputName, inputNetPath);
+                LoadObj("", inputName, inputNetPath);
                 panel.Hide();
             });
         }

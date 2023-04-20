@@ -317,7 +317,7 @@ namespace Blaze.Resource.AssetBundles.Bundle
             var isModel = _manifest.IsModelAsset();
             var splits = _manifest.AssetPath.Split('/');
             var filePath = isModel
-                ? PathHelper.Combine(BundleHotfix._.ResBasePath, "ModelBundle", splits[4],
+                ? PathHelper.Combine(BundleHotfix._.ModelResBasePath, "ModelBundle", splits[4],
                     _manifest.Hash)
                 : Path.Combine(
                     BundleHotfix._.GetBasePath(), _manifest.GetSaveSubPath());

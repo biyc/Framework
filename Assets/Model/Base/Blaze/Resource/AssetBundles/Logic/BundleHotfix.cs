@@ -51,6 +51,9 @@ namespace Blaze.Resource.AssetBundles
 
         public string ResBasePath => _resBasePath;
 
+        private string _modelResBasePath;
+        public string ModelResBasePath;
+
         /// 网络基础路径
         /// $"http://192.168.8.199:8088/iOS"
         private string _netBasePath;
@@ -555,10 +558,17 @@ namespace Blaze.Resource.AssetBundles
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        public async Task<bool> LoadModelAsset(string name, string baseNetPath = "")
+        public async Task<bool> LoadModelAsset(string resPath, string name, string baseNetPath = "")
         {
-            // var p = assetPath.Replace(".fbx", "").Split('/');
-            // var name = p[p.Length - 1];
+            //外部传入的模型文件路径
+            if (!string.IsNullOrEmpty(resPath))
+            {
+                Debug.Log("存在外部传入模型资源路径 resPath:" + resPath);
+                _modelResBasePath = resPath;
+                return true;
+            }
+
+            _modelResBasePath = _resBasePath;
             // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
             //首先选择传入的网络(后面因为更改需求，不在传入,可以测试使用),-》 查找项目配置的网络（只配置了本地内网的网络，方便开发)--> 以上网络失败后，直接加载本地数据
             var netPath = string.IsNullOrEmpty(baseNetPath)
@@ -568,7 +578,7 @@ namespace Blaze.Resource.AssetBundles
             var downCompletion = new TaskCompletionSource<bool>();
 
             //本地模型资源存储路径
-            var localModelBundleDir = PathHelper.Combine(_resBasePath, "ModelBundle", name);
+            var localModelBundleDir = PathHelper.Combine(_modelResBasePath, "ModelBundle", name);
             var localManifestPath = PathHelper.Combine(localModelBundleDir, "BundleManifest.json");
 
             PathHelper.CheckOrCreate(localModelBundleDir);
@@ -596,13 +606,13 @@ namespace Blaze.Resource.AssetBundles
 
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
-            var passFileInfo = PassFileInfo.Load(_resBasePath);
+            var passFileInfo = PassFileInfo.Load(_modelResBasePath);
 
             // MD5 效验信息 不存在时，创建效验信息
             if (passFileInfo == null)
             {
                 passFileInfo = new PassFileInfo();
-                passFileInfo.Config(_resBasePath);
+                passFileInfo.Config(_modelResBasePath);
                 passFileInfo.Save();
             }
 

@@ -204,13 +204,13 @@ namespace Blaze.Resource
             return await task.Task;
         }
 
-        public static async Task<bool> DownLoadModelAsset(string name, string netPath = "")
+        public static async Task<bool> DownLoadModelAsset(string resPath, string name, string netPath = "")
         {
             var abDownTask = new TaskCompletionSource<bool>();
             if (!Define.UseAB)
                 abDownTask.SetResult(true);
             else
-                abDownTask.SetResult(await BundleHotfix._.LoadModelAsset(name, netPath));
+                abDownTask.SetResult(await BundleHotfix._.LoadModelAsset(resPath,name, netPath));
             return await abDownTask.Task;
         }
 

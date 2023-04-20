@@ -34,9 +34,6 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.Single)};
             method = type.GetMethod("Abs", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Abs_3);
-            args = new Type[]{typeof(System.Single)};
-            method = type.GetMethod("Round", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Round_4);
 
             app.RegisterCLRCreateDefaultInstance(type, () => new UnityEngine.Mathf());
 
@@ -163,23 +160,6 @@ namespace ILRuntime.Runtime.Generated
 
 
             var result_of_this_method = UnityEngine.Mathf.Abs(@f);
-
-            __ret->ObjectType = ObjectTypes.Float;
-            *(float*)&__ret->Value = result_of_this_method;
-            return __ret + 1;
-        }
-
-        static StackObject* Round_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Single @f = *(float*)&ptr_of_this_method->Value;
-
-
-            var result_of_this_method = UnityEngine.Mathf.Round(@f);
 
             __ret->ObjectType = ObjectTypes.Float;
             *(float*)&__ret->Value = result_of_this_method;
