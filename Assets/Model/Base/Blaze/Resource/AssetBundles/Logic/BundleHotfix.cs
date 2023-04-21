@@ -52,7 +52,7 @@ namespace Blaze.Resource.AssetBundles
         public string ResBasePath => _resBasePath;
 
         private string _modelResBasePath;
-        public string ModelResBasePath;
+        public string ModelResBasePath => _modelResBasePath;
 
         /// 网络基础路径
         /// $"http://192.168.8.199:8088/iOS"
@@ -133,7 +133,7 @@ namespace Blaze.Resource.AssetBundles
                 Tuner.Log("服务器不可用，选择线路失败");
             }
 
-            //DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
+            // DefaultRuntime.ServerURI = "http://192.168.8.6:8088/EditorWin64Dev";
             // http://192.168.8.199:8088/iOS/
             _netBasePath = PathHelper.Combine(DefaultRuntime.ServerURI, _runtimeTarget.ToString());
             Tuner.Log(_netBasePath);
@@ -558,17 +558,22 @@ namespace Blaze.Resource.AssetBundles
         /// </summary>
         /// <param name="assetPath"></param>
         /// <returns></returns>
-        public async Task<bool> LoadModelAsset(string resPath, string name, string baseNetPath = "")
+        public async Task<bool> LoadModelAsset(string name, string resPath, string baseNetPath = "")
         {
             //外部传入的模型文件路径
             if (!string.IsNullOrEmpty(resPath))
             {
-                Debug.Log("存在外部传入模型资源路径 resPath:" + resPath);
+                Debug.Log($"存在外部传入模型{name},资源路径 resPath:" + resPath);
                 _modelResBasePath = resPath;
-                return true;
+                var outManifestPath = PathHelper.Combine(_modelResBasePath, name, "BundleManifest.json");
+                var successLog = $"成功从本地磁盘加载到{name}模型的Manifest文件，使用外部资源";
+                var faultLog = $"从磁盘没有加载到{name}模型的Manifest文件 {outManifestPath}";
+                return await LoadLocalManifest(outManifestPath, successLog, faultLog);
             }
+            else
+                _modelResBasePath = PathHelper.Combine(_resBasePath, "ModelBundle");
 
-            _modelResBasePath = _resBasePath;
+
             // var netPath = "http://192.168.8.6:8088/EditorWin64Dev/EditorWin64/PrefabBundles/" + name;
             //首先选择传入的网络(后面因为更改需求，不在传入,可以测试使用),-》 查找项目配置的网络（只配置了本地内网的网络，方便开发)--> 以上网络失败后，直接加载本地数据
             var netPath = string.IsNullOrEmpty(baseNetPath)
@@ -578,7 +583,7 @@ namespace Blaze.Resource.AssetBundles
             var downCompletion = new TaskCompletionSource<bool>();
 
             //本地模型资源存储路径
-            var localModelBundleDir = PathHelper.Combine(_modelResBasePath, "ModelBundle", name);
+            var localModelBundleDir = PathHelper.Combine(_modelResBasePath, name);
             var localManifestPath = PathHelper.Combine(localModelBundleDir, "BundleManifest.json");
 
             PathHelper.CheckOrCreate(localModelBundleDir);
@@ -606,13 +611,13 @@ namespace Blaze.Resource.AssetBundles
 
             var waitDownTask = new TaskCompletionSource<List<ManifestData>>();
             // 加载本地 MD5 效验信息
-            var passFileInfo = PassFileInfo.Load(_modelResBasePath);
+            var passFileInfo = PassFileInfo.Load(_resBasePath);
 
             // MD5 效验信息 不存在时，创建效验信息
             if (passFileInfo == null)
             {
                 passFileInfo = new PassFileInfo();
-                passFileInfo.Config(_modelResBasePath);
+                passFileInfo.Config(_resBasePath);
                 passFileInfo.Save();
             }
 

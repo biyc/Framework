@@ -171,6 +171,9 @@ namespace ETHotfix
             #endregion
 
             Bind.button_recovery.onClick.AddListener(Recovery);
+
+             // _curStage.GetComponent<ABModelLoad>()
+             //    .LoadObjWithFullPath(@"E:\UnityXlmu\Framework\Publish\EditorWin64Dev\EditorWin64\ModelBundles/41_baizhi");
         }
 
         /// <summary>
@@ -313,7 +316,7 @@ namespace ETHotfix
                 PlayerPrefs.SetString("name", strName);
                 PlayerPrefs.SetString("net", strNet);
 
-                _curStage.GetComponent<ABModelLoad>().LoadObj("", inputName, inputNetPath);
+                _curStage.GetComponent<ABModelLoad>().LoadObj(inputName, String.Empty, inputNetPath);
                 panel.Hide();
             });
         }

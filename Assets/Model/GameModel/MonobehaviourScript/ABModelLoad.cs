@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Blaze.Resource;
 using Main;
@@ -32,7 +33,14 @@ public class ABModelLoad : MonoBehaviour
 
     public void SetRecovery(Action recovery) => _recovery = recovery;
 
-    public async Task LoadObj(string resPath, string name, string baseNetPath = "")
+    public async Task LoadObjWithFullPath(string resFullPath)
+    {
+        var name = resFullPath.Split('/').ToList().Last();
+        var resPath = resFullPath.Replace(name, "");
+        await LoadObj(name, resPath, string.Empty);
+    }
+
+    public async Task LoadObj(string name, string resPath, string baseNetPath = "")
     {
         // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
         if (_target != null && name == _target.name)
@@ -48,7 +56,7 @@ public class ABModelLoad : MonoBehaviour
 
         _currentName = name;
 
-        if (!await Res.DownLoadModelAsset(resPath, name, baseNetPath))
+        if (!await Res.DownLoadModelAsset(name, resPath, baseNetPath))
         {
             _loading.Hide();
             return;
