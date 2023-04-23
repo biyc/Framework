@@ -82,7 +82,13 @@ public class ABModelLoad : MonoBehaviour
             _target = m.Target.transform;
             _target.name = name;
             _target.tag = TARGETTAG;
-            _target.localScale = new Vector3(1000, 1000, 1000);
+            var box = _target.gameObject.AddComponent<BoxCollider>();
+            var scaleFactor = 1 / box.size.z;
+            if (box.size.z > 1)
+                Debug.LogError("该模型大于了最大高度1,强制缩放为高度1");
+            _target.localScale = new Vector3(1000, 1000, 1000) * scaleFactor;
+            GameObject.Destroy(box);
+            //_target.localScale = new Vector3(1000, 1000, 1000);
             _target.GetComponentsInChildren<Transform>()
                 .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
             _recovery?.Invoke();
