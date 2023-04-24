@@ -59,9 +59,8 @@ namespace ETHotfix
         private int _index = 1;
 
 
-        private const float _minScale = 1.5f;
-        //private const float _minScale = 2.05f;
-
+        //private const float _minScale = 1.5f;
+        private float _minScale = 2.4f;
 
         public override async void Awake()
         {
@@ -73,8 +72,8 @@ namespace ETHotfix
             //InitRedPoint();
             Debug.Log("版本号:" + Define.GameSettings?.GetVersion() + " res:" + Define.AssetBundleVersion);
             _container = _curStage.transform.Find("Container");
-
-
+            
+            
             _curStage.GetComponent<ABModelLoad>().SetRecovery(Recovery);
 
             #region 手势识别
@@ -172,8 +171,8 @@ namespace ETHotfix
 
             Bind.button_recovery.onClick.AddListener(Recovery);
 
-             // _curStage.GetComponent<ABModelLoad>()
-             //    .LoadObjWithFullPath(@"E:\UnityXlmu\Framework\Publish\EditorWin64Dev\EditorWin64\ModelBundles/41_baizhi");
+            // _curStage.GetComponent<ABModelLoad>()
+            //    .LoadObjWithFullPath(@"E:\UnityXlmu\Framework\Publish\EditorWin64Dev\EditorWin64\ModelBundles/41_baizhi");
         }
 
         /// <summary>
@@ -275,7 +274,7 @@ namespace ETHotfix
                         namerts[i].text = localName[i];
                 }
             });
-            Btn(Bind.button_clickOk, () =>
+            Btn(Bind.button_clickOk, async () =>
             {
                 var inputNetPath = Bind.inputfield_netInput.text;
                 var inputName = Bind.inputfield_nameInput.text;
@@ -316,7 +315,7 @@ namespace ETHotfix
                 PlayerPrefs.SetString("name", strName);
                 PlayerPrefs.SetString("net", strNet);
 
-                _curStage.GetComponent<ABModelLoad>().LoadObj(inputName, String.Empty, inputNetPath);
+                _curStage.GetComponent<ABModelLoad>().LoadObj(inputName, String.Empty, inputNetPath, null);
                 panel.Hide();
             });
         }

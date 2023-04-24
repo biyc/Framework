@@ -17,6 +17,8 @@ public class ABModelLoad : MonoBehaviour
 
 
     private const string TARGETTAG = "TARGETTAG";
+    private const float STANDSCREENHEIGHT = 2688;
+    private const float STANDSCREENWIDTH = 1242;
 
     /// <summary>
     /// 当前应该显示的资源
@@ -33,18 +35,26 @@ public class ABModelLoad : MonoBehaviour
 
     public void SetRecovery(Action recovery) => _recovery = recovery;
 
-    public async Task LoadObjWithFullPath(string resFullPath)
+    public void LoadObjWithFullPath(string resFullPath)
     {
         var name = resFullPath.Split('/').ToList().Last();
         var resPath = resFullPath.Replace(name, "");
-        await LoadObj(name, resPath, string.Empty);
+        LoadObj(name, resPath, string.Empty, () =>
+        {
+            if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+                UnityCallAndroid._.OnModelLoadCompleteFun();
+        });
     }
 
-    public async Task LoadObj(string name, string resPath, string baseNetPath = "")
+    public async Task LoadObj(string name, string resPath, string baseNetPath, Action cb)
     {
         // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
         if (_target != null && name == _target.name)
+        {
+            cb?.Invoke();
             return;
+        }
+
         if (_target != null)
         {
             var o = _target;
@@ -59,6 +69,7 @@ public class ABModelLoad : MonoBehaviour
         if (!await Res.DownLoadModelAsset(name, resPath, baseNetPath))
         {
             _loading.Hide();
+            cb?.Invoke();
             return;
         }
 
@@ -83,16 +94,26 @@ public class ABModelLoad : MonoBehaviour
             _target.name = name;
             _target.tag = TARGETTAG;
             var box = _target.gameObject.AddComponent<BoxCollider>();
-            var scaleFactor = 1 / box.size.z;
+            var scaleZFactor = 1 / box.size.z;
+            var scaleXFactor = 0.5f / box.size.x;
             if (box.size.z > 1)
-                Debug.LogError("该模型大于了最大高度1,强制缩放为高度1");
-            _target.localScale = new Vector3(1000, 1000, 1000) * scaleFactor;
+                Debug.Log("该模型大于了最大高度1,强制缩放为高度1,缩放比：" + scaleZFactor);
+            if (box.size.x > 0.5f)
+                Debug.Log("该模型大于了最大宽度0.5,强制缩放为高度0.5,缩放比：" + scaleXFactor);
+            Debug.Log("实际缩放比：" + Mathf.Min(scaleZFactor, scaleXFactor));
+
+            var screenYScaleFactor = Screen.height / STANDSCREENHEIGHT;
+            var screenXScaleFactor = Screen.width / STANDSCREENWIDTH;
+            Debug.Log("屏幕缩放：" + Mathf.Min(screenYScaleFactor, screenXScaleFactor));
+            _target.localScale = new Vector3(1000, 1000, 1000) * Mathf.Min(scaleZFactor, scaleXFactor);
+                                //* Mathf.Min(screenYScaleFactor, screenXScaleFactor);
             GameObject.Destroy(box);
             //_target.localScale = new Vector3(1000, 1000, 1000);
             _target.GetComponentsInChildren<Transform>()
                 .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
             _recovery?.Invoke();
             _loading.Hide();
+            cb?.Invoke();
         });
     }
 }

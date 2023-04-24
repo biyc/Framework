@@ -25,7 +25,7 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.Action)};
             method = type.GetMethod("SetRecovery", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, SetRecovery_0);
-            args = new Type[]{typeof(System.String), typeof(System.String), typeof(System.String)};
+            args = new Type[]{typeof(System.String), typeof(System.String), typeof(System.String), typeof(System.Action)};
             method = type.GetMethod("LoadObj", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, LoadObj_1);
 
@@ -56,14 +56,14 @@ namespace ILRuntime.Runtime.Generated
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 4);
+            StackObject* __ret = ILIntepreter.Minus(__esp, 5);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @baseNetPath = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action @cb = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.String @name = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.String @baseNetPath = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
@@ -71,10 +71,14 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
+            System.String @name = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 5);
             global::ABModelLoad instance_of_this_method = (global::ABModelLoad)typeof(global::ABModelLoad).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.LoadObj(@resPath, @name, @baseNetPath);
+            var result_of_this_method = instance_of_this_method.LoadObj(@name, @resPath, @baseNetPath, @cb);
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)

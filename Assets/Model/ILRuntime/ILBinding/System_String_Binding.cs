@@ -20,6 +20,7 @@ namespace ILRuntime.Runtime.Generated
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
+            FieldInfo field;
             Type[] args;
             Type type = typeof(System.String);
             args = new Type[]{typeof(System.String), typeof(System.String)};
@@ -76,6 +77,10 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.Int32)};
             method = type.GetMethod("get_Chars", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Chars_17);
+
+            field = type.GetField("Empty", flag);
+            app.RegisterCLRFieldGetter(field, get_Empty_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_Empty_0, null);
 
             app.RegisterCLRCreateArrayInstance(type, s => new System.String[s]);
 
@@ -458,6 +463,18 @@ namespace ILRuntime.Runtime.Generated
             __ret->ObjectType = ObjectTypes.Integer;
             __ret->Value = (int)result_of_this_method;
             return __ret + 1;
+        }
+
+
+        static object get_Empty_0(ref object o)
+        {
+            return System.String.Empty;
+        }
+
+        static StackObject* CopyToStack_Empty_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = System.String.Empty;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
 

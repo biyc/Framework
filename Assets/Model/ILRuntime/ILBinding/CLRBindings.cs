@@ -69,6 +69,8 @@ namespace ILRuntime.Runtime.Generated
             System_IO_File_Binding.Register(app);
             System_Action_1_Texture2D_Binding.Register(app);
             UnityEngine_UI_Image_Binding.Register(app);
+            UnityEngine_AndroidJavaObject_Binding.Register(app);
+            UnityEngine_AndroidJavaClass_Binding.Register(app);
             System_Collections_Generic_List_1_String_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
