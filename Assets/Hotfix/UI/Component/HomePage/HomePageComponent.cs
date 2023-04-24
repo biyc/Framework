@@ -60,7 +60,9 @@ namespace ETHotfix
 
 
         //private const float _minScale = 1.5f;
-        private float _minScale = 2.4f;
+        private float _minScale = 2f;
+        private const float STANDSCREENHEIGHT = 2688;
+        private const float STANDSCREENWIDTH = 1242;
 
         public override async void Awake()
         {
@@ -72,8 +74,12 @@ namespace ETHotfix
             //InitRedPoint();
             Debug.Log("版本号:" + Define.GameSettings?.GetVersion() + " res:" + Define.AssetBundleVersion);
             _container = _curStage.transform.Find("Container");
-            
-            
+            var screenYScaleFactor = Screen.height / STANDSCREENHEIGHT;
+            var screenXScaleFactor = Screen.width / STANDSCREENWIDTH;
+            var resultScale = Mathf.Min(screenYScaleFactor, screenXScaleFactor);
+            Debug.Log("屏幕缩放：" + resultScale);
+            _minScale *= resultScale;
+
             _curStage.GetComponent<ABModelLoad>().SetRecovery(Recovery);
 
             #region 手势识别
@@ -121,7 +127,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), screenPoint, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3) pos;
+                        _distance = _container.localPosition - (Vector3)pos;
                     }
 
                     if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved)
@@ -130,7 +136,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), touch.position, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _container.localPosition = _distance + (Vector3) pos;
+                        _container.localPosition = _distance + (Vector3)pos;
                     }
 
                     //缩放

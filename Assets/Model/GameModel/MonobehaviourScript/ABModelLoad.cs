@@ -7,6 +7,7 @@ using Blaze.Resource;
 using Main;
 using Sirenix.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class ABModelLoad : MonoBehaviour
@@ -17,8 +18,7 @@ public class ABModelLoad : MonoBehaviour
 
 
     private const string TARGETTAG = "TARGETTAG";
-    private const float STANDSCREENHEIGHT = 2688;
-    private const float STANDSCREENWIDTH = 1242;
+   
 
     /// <summary>
     /// 当前应该显示的资源
@@ -48,6 +48,7 @@ public class ABModelLoad : MonoBehaviour
 
     public async Task LoadObj(string name, string resPath, string baseNetPath, Action cb)
     {
+        transform.Find("Test").GetComponent<Text>().text = name;
         // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
         if (_target != null && name == _target.name)
         {
@@ -93,21 +94,18 @@ public class ABModelLoad : MonoBehaviour
             _target = m.Target.transform;
             _target.name = name;
             _target.tag = TARGETTAG;
-            var box = _target.gameObject.AddComponent<BoxCollider>();
-            var scaleZFactor = 1 / box.size.z;
-            var scaleXFactor = 0.5f / box.size.x;
-            if (box.size.z > 1)
-                Debug.Log("该模型大于了最大高度1,强制缩放为高度1,缩放比：" + scaleZFactor);
-            if (box.size.x > 0.5f)
-                Debug.Log("该模型大于了最大宽度0.5,强制缩放为高度0.5,缩放比：" + scaleXFactor);
-            Debug.Log("实际缩放比：" + Mathf.Min(scaleZFactor, scaleXFactor));
+            
+            //模型没有合并，拿不到宽高
+            // var box = _target.gameObject.AddComponent<BoxCollider>();
+            // var scaleZFactor = 1 / box.size.z; //高
+            // var scaleXFactor = 0.5f / box.size.x; //宽
+            // var resultFactor = Mathf.Min(scaleXFactor, scaleZFactor);
+            // Debug.Log($"高缩放值：{scaleZFactor},宽的缩放值：{scaleXFactor},最终缩放值：{resultFactor}");
+            
+            //_target.localScale = new Vector3(1000, 1000, 1000) *resultFactor * Mathf.Min(screenYScaleFactor, screenXScaleFactor);
+            _target.localScale = new Vector3(1000, 1000, 1000);
 
-            var screenYScaleFactor = Screen.height / STANDSCREENHEIGHT;
-            var screenXScaleFactor = Screen.width / STANDSCREENWIDTH;
-            Debug.Log("屏幕缩放：" + Mathf.Min(screenYScaleFactor, screenXScaleFactor));
-            _target.localScale = new Vector3(1000, 1000, 1000) * Mathf.Min(scaleZFactor, scaleXFactor);
-                                //* Mathf.Min(screenYScaleFactor, screenXScaleFactor);
-            GameObject.Destroy(box);
+           // GameObject.Destroy(box);
             //_target.localScale = new Vector3(1000, 1000, 1000);
             _target.GetComponentsInChildren<Transform>()
                 .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
