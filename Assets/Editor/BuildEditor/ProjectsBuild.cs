@@ -313,7 +313,11 @@ namespace Blaze.Ci
                 levels.Add(scene.path);
             }
 
+
             string apkName = $"{gameSettings.GetVersion()}_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.apk";
+            if (EditorUserBuildSettings.exportAsGoogleAndroidProject)
+                apkName = $"{gameSettings.GetVersion()}_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}";
+
 
             string outPath = "";
             if (packageType.ToString().ToLower().Contains("android"))

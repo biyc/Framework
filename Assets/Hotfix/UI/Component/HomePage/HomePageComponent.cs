@@ -61,8 +61,8 @@ namespace ETHotfix
 
         //private const float _minScale = 1.5f;
         private float _minScale = 2f;
-        private const float STANDSCREENHEIGHT = 2688;
-        private const float STANDSCREENWIDTH = 1242;
+        private const float STANDSCREENHEIGHT = 1920;
+        private const float STANDSCREENWIDTH = 1080;
 
         public override async void Awake()
         {
@@ -191,7 +191,7 @@ namespace ETHotfix
             _container.localPosition = new Vector3(0, 0, -13000);
         }
 
-
+    
         // public async Task LoadObj(string resPath, string name, string baseNetPath = "")
         // {
         //     // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));

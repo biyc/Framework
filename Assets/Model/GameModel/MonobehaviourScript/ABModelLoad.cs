@@ -48,7 +48,7 @@ public class ABModelLoad : MonoBehaviour
 
     public async Task LoadObj(string name, string resPath, string baseNetPath, Action cb)
     {
-        transform.Find("Test").GetComponent<Text>().text = name;
+       // transform.Find("Test").GetComponent<Text>().text = name;
         // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
         if (_target != null && name == _target.name)
         {

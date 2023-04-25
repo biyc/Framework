@@ -36,6 +36,7 @@ public class SkipSplash
     private static void AsyncSkip()
     {
         SplashScreen.Stop(SplashScreen.StopBehavior.StopImmediate);
+                      Debug.LogError("skipSplash");
     }
 #endif
 }
