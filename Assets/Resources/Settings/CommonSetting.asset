@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0b0928d406a9994b95561d1e2a51769, type: 3}
   m_Name: CommonSetting
   m_EditorClassIdentifier: 
-  GameSetting: AndroidTestInner
+  GameSetting: AndroidDev

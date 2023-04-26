@@ -92,15 +92,12 @@ namespace Blaze.Ci
             // 初始安装包中是否包含 AB 资源
             switch (packageType)
             {
-                case EnumPackageType.AndroidRelease:
-                case EnumPackageType.IOSRelease:
-                //case EnumPackageType.AndroidTestOnline:
-                // case EnumPackageType.IOSTestOnline:
+                case EnumPackageType.AndroidExportRelease:
+                case EnumPackageType.IOSExportRelease:
                 case EnumPackageType.AndroidTestInner:
+                case EnumPackageType.AndroidExportTestInner:
                 case EnumPackageType.IOSTestInner:
-                    // case EnumPackageType.AndroidVerify:
-                    // case EnumPackageType.IOSVerify:
-                    // case EnumPackageType.AndroidM3839FirstTest:
+                case EnumPackageType.IOSExportTestInner:
                     gameSettings.IsContentAssetBundle = true;
                     break;
                 default:
@@ -108,25 +105,7 @@ namespace Blaze.Ci
                     break;
             }
 
-            // 强制版本检测 IsForceCheckVersion
             gameSettings.IsForceCheckVersion = false;
-            // switch (packageType)
-            // {
-            //     case EnumPackageType.AndroidRelease:
-            //     case EnumPackageType.IOSRelease:
-            //         // case EnumPackageType.AndroidTestOnline:
-            //         // case EnumPackageType.IOSTestOnline:
-            //         // case EnumPackageType.AndroidTestInner:
-            //         // case EnumPackageType.IOSTestInner:
-            //         // 开启强制版本检测
-            //         gameSettings.IsForceCheckVersion = true;
-            //         break;
-            //     default:
-            //         // 关闭强制版本检测
-            //         gameSettings.IsForceCheckVersion = false;
-            //         break;
-            // }
-
             // 是否开启调试模式 UseDev
             switch (packageType)
             {
@@ -135,7 +114,9 @@ namespace Blaze.Ci
                 case EnumPackageType.EditorOSXDev:
                 case EnumPackageType.EditorWin64Dev:
                 case EnumPackageType.AndroidTestInner:
+                case EnumPackageType.AndroidExportTestInner:
                 case EnumPackageType.IOSTestInner:
+                case EnumPackageType.IOSExportTestInner:
                     gameSettings.UseDev = true;
                     break;
                 default:
@@ -144,29 +125,18 @@ namespace Blaze.Ci
                     break;
             }
 
-            // 是否使用 ilruntime IsILRuntime
             gameSettings.UseILRuntime = true;
-            // switch (packageType)
-            // {
-            //     case EnumPackageType.AndroidVerify:
-            //     case EnumPackageType.IOSVerify:
-            //         // case EnumPackageType.AndroidM3839Dev:
-            //         gameSettings.UseILRuntime = false;
-            //         break;
-            //     default:
-            //         gameSettings.UseILRuntime = true;
-            //         break;
-            // }
-
 
             // 资源服务器地址列表
             gameSettings.ResServerList = new List<string>();
             switch (packageType)
             {
-                case EnumPackageType.AndroidRelease:
-                case EnumPackageType.IOSRelease:
+                case EnumPackageType.AndroidExportRelease:
+                case EnumPackageType.IOSExportRelease:
                 case EnumPackageType.AndroidTestInner:
+                case EnumPackageType.AndroidExportTestInner:
                 case EnumPackageType.IOSTestInner:
+                case EnumPackageType.IOSExportTestInner:
                     //https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/AndroidRelease/Android/VersionCheck.json
                     // gameSettings.ResServerList.Add($"https://lv2m3839first.oss-cn-chengdu.aliyuncs.com/zhongyao/{packageType.ToString()}");
                     // gameSettings.ResServerList.Add(
@@ -182,11 +152,25 @@ namespace Blaze.Ci
                     break;
             }
 
+            //是否导出安卓交互包
+            switch (packageType)
+            {
+                case EnumPackageType.AndroidExportRelease:
+                case EnumPackageType.AndroidExportTestInner:
+                case EnumPackageType.IOSExportRelease:
+                case EnumPackageType.IOSExportTestInner:
+                    gameSettings.IsExportProject = true;
+                    break;
+                default:
+                    gameSettings.IsExportProject = false;
+                    break;
+            }
+
             // 应用名称
             switch (packageType)
             {
-                case EnumPackageType.AndroidRelease:
-                case EnumPackageType.IOSRelease:
+                case EnumPackageType.AndroidExportRelease:
+                case EnumPackageType.IOSExportRelease:
                     gameSettings.ProductName = "知源中医";
                     break;
                 default:
@@ -245,7 +229,7 @@ namespace Blaze.Ci
             PlayerSettings.productName = gameSettings.ProductName; //
 
 
-            if (packageType == EnumPackageType.AndroidRelease)
+            if (packageType == EnumPackageType.AndroidExportRelease)
                 PlayerSettings.applicationIdentifier = "com.nineton.tcm";
             else
                 PlayerSettings.applicationIdentifier = "com.nineton.tcm" + packageType;
@@ -313,10 +297,11 @@ namespace Blaze.Ci
                 levels.Add(scene.path);
             }
 
+            EditorUserBuildSettings.exportAsGoogleAndroidProject = gameSettings.IsExportProject;
 
-            string apkName = $"{gameSettings.GetVersion()}_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.apk";
-            if (EditorUserBuildSettings.exportAsGoogleAndroidProject)
-                apkName = $"{gameSettings.GetVersion()}_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}";
+
+            var extra = gameSettings.IsExportProject ? "" : ".apk";
+            string apkName = $"{gameSettings.GetVersion()}_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}{extra}";
 
 
             string outPath = "";

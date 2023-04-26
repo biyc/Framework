@@ -41,15 +41,14 @@ public class ABModelLoad : MonoBehaviour
         var resPath = resFullPath.Replace(name, "");
         LoadObj(name, resPath, string.Empty, () =>
         {
-            if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-                UnityCallAndroid._.OnModelLoadCompleteFun();
+            // if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+            //     UnityCallAndroid._.OnModelLoadCompleteFun();
         });
     }
 
     public async Task LoadObj(string name, string resPath, string baseNetPath, Action cb)
     {
-       // transform.Find("Test").GetComponent<Text>().text = name;
-        // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));
+    
         if (_target != null && name == _target.name)
         {
             cb?.Invoke();

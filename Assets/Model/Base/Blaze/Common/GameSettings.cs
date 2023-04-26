@@ -68,11 +68,15 @@ namespace Blaze.Common
         [SerializeField]
         // 母包中是否包含AB包
         public bool IsContentAssetBundle;
-        
+
 
         [SerializeField]
         // 应用名称
         public string ProductName;
+
+        [SerializeField]
+        //是否导出安卓包
+        public bool IsExportProject;
 
 
         /// <summary>
