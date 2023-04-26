@@ -5,7 +5,6 @@ using System.Reflection;
 using Blaze.Manage.Locale;
 using Blaze.Manage.Spring;
 using ETModel;
-using Hotfix.Base.Module.Blaze.Audio;
 
 namespace ETHotfix
 {
@@ -24,8 +23,6 @@ namespace ETHotfix
         {
             // 启动多语言模块
             LocaleManager._.Initialize();
-            // 启动声音管理器
-            AudioManager._.Initialize();
 
             SpringManager._.Initialize();
         }

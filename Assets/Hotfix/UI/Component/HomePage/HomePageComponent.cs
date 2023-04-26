@@ -60,7 +60,7 @@ namespace ETHotfix
 
 
         //private const float _minScale = 1.5f;
-        private float _minScale = 2f; 
+        private float _minScale = 2f;
         private const float STANDSCREENHEIGHT = 1920;
         private const float STANDSCREENWIDTH = 1080;
 
@@ -127,7 +127,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), screenPoint, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3)pos;
+                        _distance = _container.localPosition - (Vector3) pos;
                     }
 
                     if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved)
@@ -136,7 +136,7 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), touch.position, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _container.localPosition = _distance + (Vector3)pos;
+                        _container.localPosition = _distance + (Vector3) pos;
                     }
 
                     //缩放
@@ -191,7 +191,7 @@ namespace ETHotfix
             _container.localPosition = new Vector3(0, 0, -13000);
         }
 
-    
+
         // public async Task LoadObj(string resPath, string name, string baseNetPath = "")
         // {
         //     // Debug.Log("netPath:" + PathHelper.Combine(baseNetPath, name));

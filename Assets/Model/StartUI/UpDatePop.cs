@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.UI;
 using System;
 using Blaze.Manage.Data;
 using Blaze.Resource.AssetBundles;
-using ETModel;
-using UniRx;
 
 public class UpDatePop : MonoBehaviour
 {
@@ -73,9 +69,9 @@ public class UpDatePop : MonoBehaviour
 
     void OpenAnimation()
     {
-        var _aniTweener = transform.DOScale(1f, 0.3f);
-        _aniTweener.SetEase(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.8f, 1.1f), new Keyframe(1, 1)));
-        _aniTweener.SetAutoKill(false);
+        // var _aniTweener = transform.DOScale(1f, 0.3f);
+        // _aniTweener.SetEase(new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.8f, 1.1f), new Keyframe(1, 1)));
+        // _aniTweener.SetAutoKill(false);
     }
 
     void Close()

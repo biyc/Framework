@@ -285,8 +285,9 @@ namespace Blaze.Ci
             //设置BuildSetting中的打包场景配置
             List<EditorBuildSettingsScene> editorBuildSettingsScenes = new List<EditorBuildSettingsScene>();
             //要把Init场景放在第一个，是初始加载场景，如果把Empty场景放前边，会什么都不显示，报dlopen异常
-            editorBuildSettingsScenes.Add(new EditorBuildSettingsScene($"Assets/Scenes/Publish.unity", true));
-            editorBuildSettingsScenes.Add(new EditorBuildSettingsScene("Assets/Scenes/Empty.unity", true));
+            // editorBuildSettingsScenes.Add(new EditorBuildSettingsScene($"Assets/Scenes/Publish.unity", true));
+            // editorBuildSettingsScenes.Add(new EditorBuildSettingsScene("Assets/Scenes/Empty.unity", true));
+            editorBuildSettingsScenes.Add(new EditorBuildSettingsScene("Assets/Scenes/1.unity", true));
             EditorBuildSettings.scenes = editorBuildSettingsScenes.ToArray();
 
             List<string> levels = new List<string>();

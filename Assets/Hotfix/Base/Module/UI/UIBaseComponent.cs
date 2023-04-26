@@ -6,7 +6,6 @@ using Blaze.Manage.Locale;
 using Blaze.Utility;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 using Blaze.Resource;
 using UniRx;
 
@@ -278,60 +277,7 @@ namespace ETHotfix
                     button.interactable = false;
             });
         }
-
-
-        /// <summary>
-        /// 进入动画
-        /// </summary>
-        /// <param name="endCallBack"></param>
-        public virtual void EnterAnimation(Action endCallBack, float time = 0.8f)
-        {
-            Tweener tweener = null;
-            // 默认进入动画   
-            var cg = Comp<CanvasGroup>(_curStage);
-            cg.alpha = 0;
-            tweener = cg.DOFade(1, time);
-
-            tweener.onComplete += delegate
-            {
-                endCallBack?.Invoke();
-                AfterEnterAction();
-            };
-            Observable.NextFrame().Subscribe(_ => Show()); //同帧渲染可能会出错
-        }
-
-
-        /// <summary>
-        /// 进入动画完成之后调用
-        /// </summary>
-        public virtual void AfterEnterAction()
-        {
-        }
-
-        /// <summary>
-        /// 退出动画
-        /// </summary>
-        /// <param name="closeThisPage">关闭当前页面</param>
-        /// <param name="showNextPage">显示下一页面</param>
-        /// <param name="time">关闭当前页面渐变动画时间</param>
-        /// <param name="isFuse">是否与下一页面融合渐变，即当前页面与下一页动画同时进行</param>
-        public virtual void ExitAnimation(Action closeThisPage, Action showNextPage = null, float time = 0.8f,
-            bool isFuse = false)
-        {
-            Tweener tweener = null;
-            // 默认退出动画
-            var cg = Comp<CanvasGroup>(_curStage);
-            tweener = cg.DOFade(0, time);
-            tweener.onComplete = () =>
-            {
-                closeThisPage?.Invoke();
-                if (!isFuse)
-                    showNextPage?.Invoke();
-                AfterExitAction();
-            };
-            if (isFuse)
-                showNextPage?.Invoke();
-        }
+        
 
         /// <summary>
         /// 退出动画完成之后调用

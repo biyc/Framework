@@ -4,7 +4,6 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 
 public static class RectTransformExtension
 {
@@ -156,17 +155,7 @@ public static class RectTransformExtension
         tr.transform.localPosition = new Vector3(x, pos.y, pos.z);
     }
 
-    public static void DoLocalMoveDisX(this Transform tr, float dis,float time)
-    {
-        var pos = tr.transform.localPosition;
-        tr.transform.DOLocalMoveX(pos.x + dis, time);
-    }
 
-    public static void DoLocalMoveDisY(this Transform tr, float dis,float time)
-    {
-        var pos = tr.transform.localPosition;
-        tr.transform.DOLocalMoveY(pos.y + dis, time);
-    }
     public static T Comp<T>(this Transform tr) where T : class
     {
         if (!tr.TryGetComponent(out T compType))

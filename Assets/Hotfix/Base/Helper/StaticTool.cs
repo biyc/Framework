@@ -1,7 +1,4 @@
 ﻿using System;
-using DG.Tweening;
-using ETHotfix;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,43 +22,7 @@ public static class StaticTool
             return;
         gameObject.SetActive(active);
     }
-
-    #region 逐渐显示或者隐藏
-
-    public static void CanvasGroupHide(Image img, float time = 1, Action callback = null)
-    {
-        CanvasGroupHide(img.transform, time, callback);
-    }
-
-    public static void CanvasGroupHide(Transform tr, float time = 1, Action callback = null)
-    {
-        var cg = tr.GetCanvasGroup();
-        DOTween.To(() => cg.alpha, x => cg.alpha = x, 0, time).onComplete = () => callback?.Invoke();
-    }
-
-    public static void CanvasGroupShow(Image img, float time = 1, Action callback = null)
-    {
-        CanvasGroupShow(img.transform, time, callback);
-    }
-
-    public static void CanvasGroupShow(Transform tr, float time = 1, Action callback = null)
-    {
-        var cg = tr.GetCanvasGroup();
-        cg.alpha = 0;
-        DOTween.To(() => cg.alpha, x => cg.alpha = x, 1, time).onComplete = () => callback?.Invoke();
-    }
-
-    public static void ImageHide(Image image, float time = 1, Action callback = null)
-    {
-        image.DOColor(GetZeroColor(image), time).onComplete = () => callback?.Invoke();
-    }
-
-    public static void ImageShow(Image image, float time = 1, Action callback = null)
-    {
-        image.DOColor(GetOneColor(image), time).onComplete = () => callback?.Invoke();
-    }
-
-    #endregion
+    
 
     /// <summary>
     /// 获得图片透明度为0的颜色值

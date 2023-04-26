@@ -1,15 +1,6 @@
-﻿using System;
-using Blaze.Common;
+﻿
 using Blaze.Manage.Progress;
-using Blaze.Utility.Base;
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-using Main;
-using Model.Sdk.Statistics;
-using Sirenix.Utilities;
-using TMPro;
-using UniRx;
 
 namespace ETModel
 {

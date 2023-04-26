@@ -47,19 +47,6 @@ namespace ETModel
                         });
                 });
             
-
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOSetter<System.Int32>>((act) =>
-            {
-                return new DG.Tweening.Core.DOSetter<System.Int32>((pNewValue) =>
-                {
-                    ((Action<System.Int32>) act)(pNewValue);
-                });
-            });
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOGetter<System.Int32>>((act) =>
-            {
-                return new DG.Tweening.Core.DOGetter<System.Int32>(() => { return ((Func<System.Int32>) act)(); });
-            });
-
             appdomain.DelegateManager
                 .RegisterDelegateConvertor<
                     System.Converter<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>>((act) =>
@@ -170,13 +157,6 @@ namespace ETModel
             appdomain.DelegateManager.RegisterMethodDelegate<List<object>>();
             appdomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
-            appdomain.DelegateManager.RegisterMethodDelegate<BestHTTP.HTTPRequest, BestHTTP.HTTPResponse>();
-            appdomain.DelegateManager.RegisterMethodDelegate<BestHTTP.WebSocket.WebSocket>();
-            appdomain.DelegateManager.RegisterMethodDelegate<BestHTTP.WebSocket.WebSocket, System.String>();
-            appdomain.DelegateManager
-                .RegisterMethodDelegate<BestHTTP.WebSocket.WebSocket, System.UInt16, System.String>();
-            appdomain.DelegateManager.RegisterMethodDelegate<BestHTTP.WebSocket.WebSocket, System.Exception>();
-            appdomain.DelegateManager.RegisterMethodDelegate<BestHTTP.WebSocket.WebSocket, System.Byte[]>();
 
 
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Vector2, System.Boolean>();
@@ -184,65 +164,11 @@ namespace ETModel
             // appDomain.DelegateManager.RegisterFunctionDelegate<Google.Protobuf.Adapt_IMessage.Adaptor>();
             // appDomain.DelegateManager.RegisterMethodDelegate<Google.Protobuf.Adapt_IMessage.Adaptor>();
 
-            appdomain.DelegateManager.RegisterMethodDelegate<Google.Protobuf.IMessage>();
-            appdomain.DelegateManager.RegisterFunctionDelegate<Google.Protobuf.IMessage>();
-            appdomain.RegisterCrossBindingAdaptor(new IMessageAdapter());
-
-
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Boolean>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Int32, System.Boolean>();
             appdomain.DelegateManager.RegisterFunctionDelegate<ILTypeInstance, System.Int64>();
 
-            appdomain.DelegateManager.RegisterDelegateConvertor<BestHTTP.WebSocket.OnWebSocketOpenDelegate>((act) =>
-            {
-                return new BestHTTP.WebSocket.OnWebSocketOpenDelegate((webSocket) =>
-                {
-                    ((Action<BestHTTP.WebSocket.WebSocket>) act)(webSocket);
-                });
-            });
-
-            appdomain.DelegateManager.RegisterDelegateConvertor<BestHTTP.WebSocket.OnWebSocketMessageDelegate>((act) =>
-            {
-                return new BestHTTP.WebSocket.OnWebSocketMessageDelegate((webSocket, message) =>
-                {
-                    ((Action<BestHTTP.WebSocket.WebSocket, string>) act)(webSocket, message);
-                });
-            });
-
-            appdomain.DelegateManager.RegisterDelegateConvertor<BestHTTP.WebSocket.OnWebSocketBinaryDelegate>((act) =>
-            {
-                return new BestHTTP.WebSocket.OnWebSocketBinaryDelegate((webSocket, data) =>
-                {
-                    ((Action<BestHTTP.WebSocket.WebSocket, byte[]>) act)(webSocket, data);
-                });
-            });
-
-            appdomain.DelegateManager.RegisterDelegateConvertor<BestHTTP.WebSocket.OnWebSocketClosedDelegate>((act) =>
-            {
-                return new BestHTTP.WebSocket.OnWebSocketClosedDelegate((webSocket, code, message) =>
-                {
-                    ((Action<BestHTTP.WebSocket.WebSocket, UInt16, string>) act)(webSocket, code, message);
-                });
-            });
-
-            appdomain.DelegateManager.RegisterDelegateConvertor<BestHTTP.WebSocket.OnWebSocketErrorDelegate>((act) =>
-            {
-                return new BestHTTP.WebSocket.OnWebSocketErrorDelegate((webSocket, ex) =>
-                {
-                    ((Action<BestHTTP.WebSocket.WebSocket, System.Exception>) act)(webSocket, ex);
-                });
-            });
-
-            appdomain.DelegateManager.RegisterDelegateConvertor<BestHTTP.WebSocket.OnWebSocketErrorDescriptionDelegate>(
-                (act) =>
-                {
-                    return new BestHTTP.WebSocket.OnWebSocketErrorDescriptionDelegate((webSocket, reason) =>
-                    {
-                        ((Action<BestHTTP.WebSocket.WebSocket, string>) act)(webSocket, reason);
-                    });
-                });
-
-
+     
             appdomain.DelegateManager.RegisterDelegateConvertor<System.Predicate<System.Int32>>((act) =>
             {
                 return new System.Predicate<System.Int32>((obj) =>
@@ -250,14 +176,7 @@ namespace ETModel
                     return ((Func<System.Int32, System.Boolean>) act)(obj);
                 });
             });
-
-            appdomain.DelegateManager.RegisterDelegateConvertor<BestHTTP.OnRequestFinishedDelegate>((act) =>
-            {
-                return new BestHTTP.OnRequestFinishedDelegate((originalRequest, response) =>
-                {
-                    ((Action<BestHTTP.HTTPRequest, BestHTTP.HTTPResponse>) act)(originalRequest, response);
-                });
-            });
+            
             appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
             {
                 return new UnityEngine.Events.UnityAction(() =>
@@ -266,11 +185,6 @@ namespace ETModel
                     ((System.Action) act)();
                 });
             });
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.TweenCallback>((act) =>
-            {
-                return new DG.Tweening.TweenCallback(() => { ((System.Action) act)(); });
-            });
-            
             appdomain.DelegateManager.RegisterFunctionDelegate<System.IO.FileInfo, System.IO.FileInfo, System.Int32>();
             appdomain.DelegateManager.RegisterMethodDelegate<System.String>();
             appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction<System.String>>((act) =>
@@ -409,72 +323,12 @@ namespace ETModel
                 .RegisterFunctionDelegate<UnityEngine.GameObject, UnityEngine.Vector3, UnityEngine.Vector3>();
             appdomain.DelegateManager.RegisterMethodDelegate<global::DragParameterObject>();
             appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.Texture2D>();
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOSetter<System.Single>>((act) =>
-            {
-                return new DG.Tweening.Core.DOSetter<System.Single>((pNewValue) =>
-                {
-                    ((Action<System.Single>) act)(pNewValue);
-                });
-            });
-            appdomain.DelegateManager.RegisterFunctionDelegate<System.Single>();
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOGetter<System.Single>>((act) =>
-            {
-                return new DG.Tweening.Core.DOGetter<System.Single>(() =>
-                {
-                    return ((Func<System.Single>) act)();
-                });
-            });
 
 
             appdomain.DelegateManager.RegisterMethodDelegate<System.Int32, System.String>();
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Vector2>();
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOSetter<UnityEngine.Vector2>>((act) =>
-            {
-                return new DG.Tweening.Core.DOSetter<UnityEngine.Vector2>((pNewValue) =>
-                {
-                    ((Action<UnityEngine.Vector2>) act)(pNewValue);
-                });
-            });
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOGetter<UnityEngine.Vector2>>((act) =>
-            {
-                return new DG.Tweening.Core.DOGetter<UnityEngine.Vector2>(() =>
-                {
-                    return ((Func<UnityEngine.Vector2>) act)();
-                });
-            });
-
-            appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.Color>();
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOSetter<UnityEngine.Color>>((act) =>
-            {
-                return new DG.Tweening.Core.DOSetter<UnityEngine.Color>((pNewValue) =>
-                {
-                    ((Action<UnityEngine.Color>) act)(pNewValue);
-                });
-            });
-            appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Color>();
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOGetter<UnityEngine.Color>>((act) =>
-            {
-                return new DG.Tweening.Core.DOGetter<UnityEngine.Color>(() =>
-                {
-                    return ((Func<UnityEngine.Color>) act)();
-                });
-            });
-            appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.Vector3>();
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOSetter<UnityEngine.Vector3>>((act) =>
-            {
-                return new DG.Tweening.Core.DOSetter<UnityEngine.Vector3>((pNewValue) =>
-                {
-                    ((Action<UnityEngine.Vector3>) act)(pNewValue);
-                });
-            });
+            
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Vector3>();
-            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOGetter<UnityEngine.Vector3>>((act) =>
-            {
-                return new DG.Tweening.Core.DOGetter<UnityEngine.Vector3>(() =>
-                {
-                    return ((Func<UnityEngine.Vector3>) act)();
-                });
-            });
             appdomain.DelegateManager.RegisterMethodDelegate<System.Object>();
             appdomain.DelegateManager.RegisterDelegateConvertor<System.Threading.SendOrPostCallback>((act) =>
             {
@@ -499,27 +353,7 @@ namespace ETModel
             appdomain.DelegateManager
                 .RegisterFunctionDelegate<UnityEngine.GameObject, UnityEngine.Vector3, System.Boolean>();
             appdomain.DelegateManager.RegisterMethodDelegate<System.Int32, UnityEngine.GameObject>();
-            appdomain.DelegateManager.RegisterDelegateConvertor<global::Item_BeginDragHandle>((act) =>
-            {
-                return new global::Item_BeginDragHandle((id, Item) =>
-                {
-                    ((Action<System.Int32, UnityEngine.GameObject>) act)(id, Item);
-                });
-            });
-            appdomain.DelegateManager.RegisterDelegateConvertor<global::Item_DragHandle>((act) =>
-            {
-                return new global::Item_DragHandle((id, Item) =>
-                {
-                    ((Action<System.Int32, UnityEngine.GameObject>) act)(id, Item);
-                });
-            });
-            appdomain.DelegateManager.RegisterDelegateConvertor<global::Item_EndDragHandle>((act) =>
-            {
-                return new global::Item_EndDragHandle((id, Item) =>
-                {
-                    ((Action<System.Int32, UnityEngine.GameObject>) act)(id, Item);
-                });
-            });
+            
             appdomain.DelegateManager
                 .RegisterMethodDelegate<System.Collections.Generic.Dictionary<System.String, System.String>>();
 
@@ -527,22 +361,6 @@ namespace ETModel
             // 图库适配
             appdomain.DelegateManager
                 .RegisterMethodDelegate<System.Threading.Tasks.Task<ILRuntime.Runtime.Intepreter.ILTypeInstance>>();
-            appdomain.DelegateManager
-                .RegisterFunctionDelegate<QuikGraph.Edge<ILRuntime.Runtime.Intepreter.ILTypeInstance>,
-                    ILRuntime.Runtime.Intepreter.ILTypeInstance>();
-            appdomain.DelegateManager
-                .RegisterDelegateConvertor<
-                    System.Converter<QuikGraph.Edge<ILRuntime.Runtime.Intepreter.ILTypeInstance>,
-                        ILRuntime.Runtime.Intepreter.ILTypeInstance>>((act) =>
-                {
-                    return new
-                        System.Converter<QuikGraph.Edge<ILRuntime.Runtime.Intepreter.ILTypeInstance>,
-                            ILRuntime.Runtime.Intepreter.ILTypeInstance>((input) =>
-                        {
-                            return ((Func<QuikGraph.Edge<ILRuntime.Runtime.Intepreter.ILTypeInstance>,
-                                ILRuntime.Runtime.Intepreter.ILTypeInstance>) act)(input);
-                        });
-                });
 
             appdomain.DelegateManager
                 .RegisterMethodDelegate<System.Collections.Generic.KeyValuePair<UnityEngine.GameObject,

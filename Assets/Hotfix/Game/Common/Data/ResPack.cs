@@ -1,4 +1,3 @@
-using CodeStage.AntiCheat.ObscuredTypes;
 
 namespace Hotfix.Game.Common.Data
 {
@@ -11,8 +10,7 @@ namespace Hotfix.Game.Common.Data
         public int ResTypeId;
 
         /// 资源数量
-        // public long ResNum;
-        public ObscuredLong ResNum;
+         public long ResNum;
 
         /// 资源是否执行过初始化
         public bool IsInit;

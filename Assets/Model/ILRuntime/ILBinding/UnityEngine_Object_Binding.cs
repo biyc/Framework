@@ -29,51 +29,20 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("get_name", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_name_1);
             args = new Type[]{typeof(UnityEngine.Object)};
-            method = type.GetMethod("DontDestroyOnLoad", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, DontDestroyOnLoad_2);
-            Dictionary<string, List<MethodInfo>> genericMethods = new Dictionary<string, List<MethodInfo>>();
-            List<MethodInfo> lst = null;                    
-            foreach(var m in type.GetMethods())
-            {
-                if(m.IsGenericMethodDefinition)
-                {
-                    if (!genericMethods.TryGetValue(m.Name, out lst))
-                    {
-                        lst = new List<MethodInfo>();
-                        genericMethods[m.Name] = lst;
-                    }
-                    lst.Add(m);
-                }
-            }
-            args = new Type[]{typeof(UnityEngine.AudioListener)};
-            if (genericMethods.TryGetValue("FindObjectOfType", out lst))
-            {
-                foreach(var m in lst)
-                {
-                    if(m.MatchGenericParameters(args, typeof(UnityEngine.AudioListener)))
-                    {
-                        method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, FindObjectOfType_3);
-
-                        break;
-                    }
-                }
-            }
+            method = type.GetMethod("DestroyImmediate", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, DestroyImmediate_2);
             args = new Type[]{typeof(UnityEngine.Object), typeof(UnityEngine.Object)};
             method = type.GetMethod("op_Inequality", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, op_Inequality_4);
-            args = new Type[]{typeof(UnityEngine.Object)};
-            method = type.GetMethod("DestroyImmediate", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, DestroyImmediate_5);
+            app.RegisterCLRMethodRedirection(method, op_Inequality_3);
             args = new Type[]{typeof(UnityEngine.Object)};
             method = type.GetMethod("Destroy", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Destroy_6);
+            app.RegisterCLRMethodRedirection(method, Destroy_4);
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("set_name", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, set_name_7);
+            app.RegisterCLRMethodRedirection(method, set_name_5);
             args = new Type[]{typeof(UnityEngine.Object)};
             method = type.GetMethod("op_Implicit", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, op_Implicit_8);
+            app.RegisterCLRMethodRedirection(method, op_Implicit_6);
 
 
         }
@@ -116,34 +85,23 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* DontDestroyOnLoad_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* DestroyImmediate_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Object @target = (UnityEngine.Object)typeof(UnityEngine.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.Object @obj = (UnityEngine.Object)typeof(UnityEngine.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
 
-            UnityEngine.Object.DontDestroyOnLoad(@target);
+            UnityEngine.Object.DestroyImmediate(@obj);
 
             return __ret;
         }
 
-        static StackObject* FindObjectOfType_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = UnityEngine.Object.FindObjectOfType<UnityEngine.AudioListener>();
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* op_Inequality_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* op_Inequality_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -165,23 +123,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* DestroyImmediate_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Object @obj = (UnityEngine.Object)typeof(UnityEngine.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-
-            UnityEngine.Object.DestroyImmediate(@obj);
-
-            return __ret;
-        }
-
-        static StackObject* Destroy_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Destroy_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -197,7 +139,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* set_name_7(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* set_name_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -216,7 +158,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* op_Implicit_8(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* op_Implicit_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
