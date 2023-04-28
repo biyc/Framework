@@ -51,22 +51,25 @@ namespace Blaze.Bundle.PrefabBundle
 
         private void BundleAssetPackage()
         {
-            BuildTarget buildTarget = EnumConvert.RuntimeTargetToBuildTarget(ModelBundleStep1._.TargetPlatform);
-            var abmf = BuildPipeline.BuildAssetBundles(
-                ModelBundleStep1._.GetCachePath(),
-                BuildAssetBundleOptions.None,
-                buildTarget
-            );
-            Generation(abmf);
+            ModelBundleStep1._.TargetPlatform.ForEach(m =>
+            {
+                BuildTarget buildTarget = EnumConvert.RuntimeTargetToBuildTarget(m);
+                var abmf = BuildPipeline.BuildAssetBundles(
+                    ModelBundleStep1._.GetCachePath(m),
+                    BuildAssetBundleOptions.None,
+                    buildTarget
+                );
+                Generation(abmf, m);
+            });
             AssetDatabase.GetAllAssetBundleNames().ForEach(abName => AssetDatabase.RemoveAssetBundleName(abName, true));
         }
 
-        private void Generation(AssetBundleManifest abmf)
+        private void Generation(AssetBundleManifest abmf, EnumRuntimeTarget target)
         {
-            var mf = ModelBundleStep1._.ManifestInfo;
+            var mf = ModelBundleStep1._.GetManifestInfo(target);
             abmf.GetAllAssetBundles().ToList().ForEach(abName =>
             {
-                var subMfPath = PathHelper.Combine(PathHelper.GetCurrentPath(), ModelBundleStep1._.GetCachePath(),
+                var subMfPath = PathHelper.Combine(PathHelper.GetCurrentPath(), ModelBundleStep1._.GetCachePath(target),
                     abName + ".manifest");
                 var des = new ManifestDesc(File.ReadAllText(subMfPath));
                 des.Assets.ForEach(assetPath =>

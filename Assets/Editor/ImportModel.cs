@@ -24,12 +24,18 @@ namespace Company
         /// <summary>
         /// 包的类型
         /// </summary>
-        [ShowInInspector] public static EnumPackageType PackageType;
+        //[ShowInInspector] public static EnumPackageType PackageType;
+        /// <summary>
+        /// 是否打包安卓和ios
+        /// </summary>
+        [ShowInInspector] public static bool AndroidIos = true;
 
         /// <summary>
         /// 构建目标平台
         /// </summary>
-        [ShowInInspector] public static EnumRuntimeTarget TargetPlatform = EnumRuntimeTarget.Android;
+        [ShowInInspector, HideIf("AndroidIos")]
+        public static EnumRuntimeTarget TargetPlatform = EnumRuntimeTarget.Android;
+
 
         /// <summary>
         /// 输出路径
@@ -42,7 +48,7 @@ namespace Company
         [ShowInInspector] public static bool IsBuildAB = true;
 
         private static ModelABBuildConfig _abBuildConfig;
-        
+
         [MenuItem("Assets/ImportModel", false, 4)]
         private static void Import()
         {
@@ -71,10 +77,20 @@ namespace Company
             var config = new ModelABBuildConfig()
             {
                 ExtraOutPath = OutPath,
-                PackageType = PackageType,
-                RuntimeTarget = TargetPlatform
             };
-            BuildModelAB.BuildModel(names, config);
+            var list = new List<EnumRuntimeTarget>();
+            if (AndroidIos)
+                list = new List<EnumRuntimeTarget>() {EnumRuntimeTarget.Android, EnumRuntimeTarget.IOS};
+            else
+                list = new List<EnumRuntimeTarget>() {TargetPlatform};
+
+            list.ForEach(m =>
+            {
+                config.RuntimeTarget = new List<EnumRuntimeTarget>() {m};
+                BuildModelAB.BuildModel(names, config);
+                //BuildModel(names, abBuildConfig, IsBuildAllModel);
+            });
+
             AssetDatabase.Refresh();
         }
 

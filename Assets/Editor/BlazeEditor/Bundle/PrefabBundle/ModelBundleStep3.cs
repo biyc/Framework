@@ -20,21 +20,22 @@ namespace Blaze.Bundle.PrefabBundle
 {
     public class ModelBundleStep3 : Singeton<ModelBundleStep3>
     {
-        public Task<bool> Execution()
+        public void Execution()
         {
-            return Publish();
+            ModelBundleStep1._.TargetPlatform.ForEach(m => { Publish(m); });
+            //return Publish();
         }
 
-        private Task<bool> Publish()
+        private Task<bool> Publish(EnumRuntimeTarget target)
         {
-            var manifest = ModelBundleStep1._.ManifestInfo;
+            var manifest = ModelBundleStep1._.GetManifestInfo(target);
 
             Dictionary<string, string> fileToMd5 = new Dictionary<string, string>();
             manifest.ManifestList.ForEach(data =>
             {
                 if (!fileToMd5.ContainsKey(data.ABName))
                 {
-                    var filePath = PathHelper.Combine(ModelBundleStep1._.GetCachePath(), data.ABName);
+                    var filePath = PathHelper.Combine(ModelBundleStep1._.GetCachePath(target), data.ABName);
                     data.Md5 = CryptoHelper.FileMD5(filePath);
                     fileToMd5.Add(data.ABName, data.Md5);
                 }
@@ -49,7 +50,7 @@ namespace Blaze.Bundle.PrefabBundle
             {
                 if (!fileToSize.ContainsKey(data.ABName))
                 {
-                    var filePath = PathHelper.Combine(ModelBundleStep1._.GetCachePath(), data.ABName);
+                    var filePath = PathHelper.Combine(ModelBundleStep1._.GetCachePath(target), data.ABName);
                     data.Size = new FileInfo(filePath).Length;
                     fileToSize.Add(data.ABName, data.Size);
                 }
@@ -73,29 +74,30 @@ namespace Blaze.Bundle.PrefabBundle
                 }
             });
             // Debug.Log(ModelBundleStep1._.Name);
-            manifest.Config(ModelBundleStep1._.GetPublishPath());
+            manifest.Config(ModelBundleStep1._.GetPublishPath(target));
             manifest.Save();
-            PathHelper.CheckOrCreate(ModelBundleStep1._.GetPublishPath());
+            PathHelper.CheckOrCreate(ModelBundleStep1._.GetPublishPath(target));
 
             var task = new TaskCompletionSource<bool>();
             new Thread(new ThreadStart(() =>
                 {
                     foreach (var pair in fileToHash)
                     {
-                        File.Copy(PathHelper.Combine(ModelBundleStep1._.GetCachePath(), pair.Key),
-                            PathHelper.Combine(ModelBundleStep1._.GetPublishPath(), pair.Value),
+                        File.Copy(PathHelper.Combine(ModelBundleStep1._.GetCachePath(target), pair.Key),
+                            PathHelper.Combine(ModelBundleStep1._.GetPublishPath(target), pair.Value),
                             true);
                         CryptoHelper.ABOffsetEncrypt(
-                            PathHelper.Combine(ModelBundleStep1._.GetPublishPath(), pair.Value),
+                            PathHelper.Combine(ModelBundleStep1._.GetPublishPath(target), pair.Value),
                             pair.Value);
                     }
 
-                    if (!String.IsNullOrEmpty(ModelBundleStep1._.GetExtraOutPath()))
+                    if (!String.IsNullOrEmpty(ModelBundleStep1._.GetExtraOutPath(target)))
                     {
-                        var files = new DirectoryInfo(ModelBundleStep1._.GetPublishPath()).GetFiles();
+                        var files = new DirectoryInfo(ModelBundleStep1._.GetPublishPath(target)).GetFiles();
                         files.ForEach(v =>
                         {
-                            File.Copy(v.FullName, PathHelper.Combine(ModelBundleStep1._.GetExtraOutPath(), v.Name),
+                            File.Copy(v.FullName,
+                                PathHelper.Combine(ModelBundleStep1._.GetExtraOutPath(target), v.Name),
                                 true);
                         });
                     }

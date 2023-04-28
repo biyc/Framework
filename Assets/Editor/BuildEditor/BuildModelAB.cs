@@ -19,14 +19,21 @@ namespace Editor.BuildEditor
     public class BuildModelAB : OdinEditorWindow
     {
         /// <summary>
+        /// 是否打包安卓和ios
+        /// </summary>
+        [ShowInInspector] public static bool AndroidIos = true;
+
+        /// <summary>
         /// 包的类型
         /// </summary>
-        [ShowInInspector] public static EnumPackageType PackageType;
+        // [ShowInInspector, HideIf("AndroidIos")]
+        // public static EnumPackageType PackageType;
 
         /// <summary>
         /// 构建目标平台
         /// </summary>
-        [ShowInInspector] public static EnumRuntimeTarget TargetPlatform = EnumRuntimeTarget.Android;
+        [ShowInInspector, HideIf("AndroidIos")]
+        public static EnumRuntimeTarget TargetPlatform = EnumRuntimeTarget.Android;
 
         /// <summary>
         /// 模型名字
@@ -86,19 +93,30 @@ namespace Editor.BuildEditor
         [Button("BuildBundle")]
         public static void Build()
         {
-            if (!string.IsNullOrEmpty(OutPath) && !Directory.Exists(OutPath))
+            if (!string.IsNullOrEmpty(OutPath))
             {
-                EditorUtility.DisplayDialog("", "该输出路径不存在，请检查！", "Ok");
-                return;
+                if (!Directory.Exists(OutPath))
+                {
+                    EditorUtility.DisplayDialog("", "该输出路径不存在，请检查！", "Ok");
+                    return;
+                }
+
+                PathHelper.CheckOrCreate(PathHelper.Combine(OutPath, "Android"));
+                PathHelper.CheckOrCreate(PathHelper.Combine(OutPath, "Ios"));
             }
 
             _window.Close();
             var abBuildConfig = new ModelABBuildConfig()
             {
+                AndroidIos = AndroidIos,
                 ExtraOutPath = OutPath,
-                PackageType = PackageType,
-                RuntimeTarget = TargetPlatform
+                //PackageType = PackageType,
             };
+            // if (AndroidIos)
+            //     abBuildConfig.RuntimeTarget = new List<EnumRuntimeTarget>()
+            //         {EnumRuntimeTarget.Android, EnumRuntimeTarget.IOS};
+            // else
+            //     abBuildConfig.RuntimeTarget = new List<EnumRuntimeTarget>() {TargetPlatform};
             var allModelNames = Directory.GetDirectories("Assets/Projects/3d/Models").ToList()
                 .ConvertAll(m => new DirectoryInfo(m).Name);
             var names = new List<string>();
@@ -112,7 +130,19 @@ namespace Editor.BuildEditor
                     Debug.LogError($"该索引未找到模型，请确认！[>>] {m} [<<]");
             });
 
-            BuildModel(names, abBuildConfig, IsBuildAllModel);
+            var list = new List<EnumRuntimeTarget>();
+
+            if (AndroidIos)
+                list = new List<EnumRuntimeTarget>() {EnumRuntimeTarget.Android, EnumRuntimeTarget.IOS};
+            else
+                list = new List<EnumRuntimeTarget>() {TargetPlatform};
+
+            list.ForEach(m =>
+            {
+                abBuildConfig.RuntimeTarget = new List<EnumRuntimeTarget>() {m};
+                BuildModel(names, abBuildConfig, IsBuildAllModel);
+            });
+            //BuildModel(names, abBuildConfig, IsBuildAllModel);
         }
 
         public static void BuildModel(List<string> names, ModelABBuildConfig config, bool isBuildAllModel = false)
@@ -128,7 +158,7 @@ namespace Editor.BuildEditor
                 names.ForEach(async v =>
                 {
                     if (!string.IsNullOrEmpty(v))
-                        await BuildModel(v);
+                        BuildModel(v);
                 });
 
             AssetDatabase.Refresh();
@@ -138,14 +168,14 @@ namespace Editor.BuildEditor
         ///打包模型ab包
         /// </summary>
         /// <param name="name"></param>
-        private static async Task<bool> BuildModel(string name)
+        private static void BuildModel(string name)
         {
             if (!ModelPreProcess._.Execution(name))
-                return false;
+                return;
             _abBuildConfig.Name = name;
             ModelBundleStep1._.Execution(_abBuildConfig);
             ModelBundleStep2._.Execution();
-            return await ModelBundleStep3._.Execution();
+            ModelBundleStep3._.Execution();
         }
     }
 }

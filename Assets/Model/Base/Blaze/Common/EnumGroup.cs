@@ -41,7 +41,7 @@ namespace Blaze.Common
     {
         EditorOSX, // 编辑器 MacOS
         EditorWin64, // 编辑器 Win64
-        iOS, // iOS
+        IOS, // iOS
         Android, // Android
         WebGL, // H5
         Linux,
@@ -60,7 +60,7 @@ namespace Blaze.Common
                     target = EnumRuntimeTarget.Android;
                     break;
                 case RuntimePlatform.IPhonePlayer:
-                    target = EnumRuntimeTarget.iOS;
+                    target = EnumRuntimeTarget.IOS;
                     break;
                 case RuntimePlatform.OSXEditor:
                     target = EnumRuntimeTarget.EditorOSX;
@@ -100,7 +100,7 @@ namespace Blaze.Common
                 case EnumRuntimeTarget.Android:
                     platform = BuildTarget.Android;
                     break;
-                case EnumRuntimeTarget.iOS:
+                case EnumRuntimeTarget.IOS:
                     platform = BuildTarget.iOS;
                     break;
                 case EnumRuntimeTarget.EditorOSX:

@@ -11,6 +11,11 @@ namespace Blaze.Bundle
     public class ModelABBuildConfig
     {
         /// <summary>
+        /// 是否安卓ios
+        /// </summary>
+        public bool AndroidIos;
+
+        /// <summary>
         /// 模型ab包输出路径
         /// </summary>
         public string ExtraOutPath;
@@ -28,8 +33,7 @@ namespace Blaze.Bundle
         /// <summary>
         /// 打包平台
         /// </summary>
-        public EnumRuntimeTarget RuntimeTarget;
-        
+        public List<EnumRuntimeTarget> RuntimeTarget;
     }
 
     public class ModelABOutPathConfig : ScriptableObject

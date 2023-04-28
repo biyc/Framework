@@ -19,52 +19,61 @@ namespace Blaze.Bundle.PrefabBundle
 
         public string Name => _modelAbBuildConfig.Name;
 
-        public EnumRuntimeTarget TargetPlatform => _modelAbBuildConfig.RuntimeTarget;
+        public List<EnumRuntimeTarget> TargetPlatform => _modelAbBuildConfig.RuntimeTarget;
 
-        private ManifestInfo _manifestInfo;
-        public ManifestInfo ManifestInfo => _manifestInfo;
+        public Dictionary<EnumRuntimeTarget, ManifestInfo> ManifestInfos;
 
         private ModelABBuildConfig _modelAbBuildConfig;
 
+
         public void Execution(ModelABBuildConfig modelAbBuildConfig)
         {
-            _manifestInfo = new ManifestInfo();
+            ManifestInfos = new Dictionary<EnumRuntimeTarget, ManifestInfo>();
             _modelAbBuildConfig = modelAbBuildConfig;
-            PUBLISH_ROOT_PATH = PathHelper.Combine("Publish", modelAbBuildConfig.PackageType.ToString(),
-                modelAbBuildConfig.RuntimeTarget.ToString(),
-                "ModelBundles");
+            PUBLISH_ROOT_PATH = PathHelper.Combine("Publish", "ModelBundles");
             Start();
         }
 
         void Start()
         {
-            //Debug.LogError(PUBLISH_ROOT_PATH);
-            if (Directory.Exists(GetPublishPath()))
-                Directory.Delete(GetPublishPath());
-            if (!String.IsNullOrEmpty(GetExtraOutPath()))
+            _modelAbBuildConfig.RuntimeTarget.ForEach(m =>
             {
-                if (Directory.Exists(GetExtraOutPath()))
-                    Directory.Delete(GetExtraOutPath());
-                PathHelper.CheckOrCreate(GetExtraOutPath());
-            }
+                if (!ManifestInfos.ContainsKey(m))
+                    ManifestInfos.Add(m, new ManifestInfo());
 
-            PathHelper.CheckOrCreate(GetPublishPath());
-            PathHelper.CheckOrCreate(GetCachePath());
+                //Debug.LogError(PUBLISH_ROOT_PATH);
+                if (Directory.Exists(GetPublishPath(m)))
+                    Directory.Delete(GetPublishPath(m));
+                if (!String.IsNullOrEmpty(GetExtraOutPath(m)))
+                {
+                    if (Directory.Exists(GetExtraOutPath(m)))
+                        Directory.Delete(GetExtraOutPath(m));
+                    PathHelper.CheckOrCreate(GetExtraOutPath(m));
+                }
+
+                PathHelper.CheckOrCreate(GetPublishPath(m));
+                PathHelper.CheckOrCreate(GetCachePath(m));
+            });
         }
+
+        public ManifestInfo GetManifestInfo(EnumRuntimeTarget target) => ManifestInfos[target];
 
         /// <summary>
         /// 获取原始ab包的路径
         /// </summary>
         /// <returns></returns>
-        public string GetCachePath() => PathHelper.Combine(PUBLISH_ROOT_PATH, "_Cache", _modelAbBuildConfig.Name);
+        public string GetCachePath(EnumRuntimeTarget target) => PathHelper.Combine(PUBLISH_ROOT_PATH, target.ToString(),
+            "_Cache", _modelAbBuildConfig.Name);
 
         /// <summary>
         /// 发布路径  Publish+ 包的类型+目标平台
         /// </summary>
-        public string GetPublishPath() => PathHelper.Combine(PUBLISH_ROOT_PATH, _modelAbBuildConfig.Name);
+        public string GetPublishPath(EnumRuntimeTarget target) =>
+            PathHelper.Combine(PUBLISH_ROOT_PATH, target.ToString(), _modelAbBuildConfig.Name);
 
-        public string GetExtraOutPath() => String.IsNullOrEmpty(_modelAbBuildConfig.ExtraOutPath)
-            ? String.Empty
-            : PathHelper.Combine(_modelAbBuildConfig.ExtraOutPath, _modelAbBuildConfig.Name);
+        public string GetExtraOutPath(EnumRuntimeTarget target) =>
+            String.IsNullOrEmpty(_modelAbBuildConfig.ExtraOutPath)
+                ? String.Empty
+                : PathHelper.Combine(_modelAbBuildConfig.ExtraOutPath, target.ToString(), _modelAbBuildConfig.Name);
     }
 }

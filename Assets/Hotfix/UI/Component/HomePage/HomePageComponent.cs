@@ -77,7 +77,9 @@ namespace ETHotfix
             var screenYScaleFactor = Screen.height / STANDSCREENHEIGHT;
             var screenXScaleFactor = Screen.width / STANDSCREENWIDTH;
             var resultScale = Mathf.Min(screenYScaleFactor, screenXScaleFactor);
-            Debug.Log("屏幕缩放：" + resultScale);
+            Debug.Log($"当前屏幕分辨率{Screen.width}:{Screen.height}---标准分辨率{STANDSCREENWIDTH}:{STANDSCREENHEIGHT}");
+            Debug.Log($"屏幕宽缩放:{screenXScaleFactor},高缩放{screenYScaleFactor},最终缩放值：{resultScale}");
+            //Debug.Log("屏幕缩放：" + resultScale);
             _minScale *= resultScale;
 
             _curStage.GetComponent<ABModelLoad>().SetRecovery(Recovery);
@@ -91,7 +93,7 @@ namespace ETHotfix
                     return;
 
 
-                //单点拖动
+                //单指旋转
                 if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
                     Touch touch = Input.GetTouch(0);
@@ -103,11 +105,15 @@ namespace ETHotfix
                         _container.Rotate(Vector3.right * deltaPos.y, Space.World); //绕x轴
                     //Debug.Log(deltaPos.x + " : " + deltaPos.y);
                 }
-                //双指旋转  && 缩放
+                //双指移动  && 缩放
                 else if (2 == Input.touchCount)
                 {
                     newTouch1 = Input.GetTouch(0);
                     newTouch2 = Input.GetTouch(1);
+
+                    var dir1 = newTouch1.position - oldTouch1.position;
+                    var dir2 = newTouch2.position - oldTouch2.position;
+                    bool isMove = Vector2.Angle(dir1, dir2) < 100;
 
                     //移动
                     //** 如果两个手指同时按下滑动， 会同时触发began
@@ -130,7 +136,7 @@ namespace ETHotfix
                         _distance = _container.localPosition - (Vector3) pos;
                     }
 
-                    if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved)
+                    if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved && isMove)
                     {
                         var touch = Input.GetTouch(_index);
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -147,6 +153,7 @@ namespace ETHotfix
                         oldTouch1 = newTouch1;
                         return;
                     }
+
 
                     var oldDistance = Vector2.Distance(oldTouch1.position, oldTouch2.position);
                     var newDistance = Vector2.Distance(newTouch1.position, newTouch2.position);
