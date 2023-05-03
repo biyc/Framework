@@ -64,6 +64,8 @@ namespace ETHotfix
         private const float STANDSCREENHEIGHT = 1920;
         private const float STANDSCREENWIDTH = 1080;
 
+        private bool _isFirstMove = false;
+
         public override async void Awake()
         {
             base.Awake();
@@ -113,19 +115,42 @@ namespace ETHotfix
 
                     var dir1 = newTouch1.position - oldTouch1.position;
                     var dir2 = newTouch2.position - oldTouch2.position;
-                    bool isMove = Vector2.Angle(dir1, dir2) < 100;
+                    var angle = Vector2.Angle(dir1, dir2);
+                    // if (angle == 0)
+                    //     Debug.LogError(dir1 + ":" + dir2);
+
+                    bool isMove = angle <= 50 && angle > 0;
+
+                    if (isMove && _isFirstMove)
+                    {
+                        _isFirstMove = false;
+                        SetParame(newTouch2.position, 1);
+                    }
+                    else
+                    {
+                        _isFirstMove = true;
+                    }
 
                     //移动
                     //** 如果两个手指同时按下滑动， 会同时触发began
                     //如果两个手指不是同时按下，有先后，只会触发第二个手指的began,
                     //坑： a,b手指，a先按下，b再按下，此时滑动会触发b的began,而a不会触发。
                     //此时抬起a手指，b保持按着，再按下a手指，此时滑动只会触发a的began，不会触发b的
-                    if (newTouch1.phase == TouchPhase.Began && newTouch2.phase == TouchPhase.Began)
-                        SetParame(newTouch2.position, 1);
-                    else if (newTouch2.phase == TouchPhase.Began)
-                        SetParame(newTouch2.position, 1);
-                    else if (newTouch1.phase == TouchPhase.Began)
-                        SetParame(newTouch1.position, 0);
+                    // if (newTouch1.phase == TouchPhase.Began && newTouch2.phase == TouchPhase.Began)
+                    // {
+                    //     SetParame(newTouch2.position, 1);
+                    // }
+                    //
+                    // else if (newTouch2.phase == TouchPhase.Began)
+                    // {
+                    //     SetParame(newTouch2.position, 1);
+                    // }
+                    //
+                    // else if (newTouch1.phase == TouchPhase.Began)
+                    // {
+                    //     SetParame(newTouch1.position, 0);
+                    // }
+
 
                     void SetParame(Vector2 screenPoint, int index)
                     {
@@ -133,16 +158,18 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), screenPoint, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3) pos;
+                        _distance = _container.localPosition - (Vector3)pos;
                     }
+
 
                     if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved && isMove)
                     {
+            
                         var touch = Input.GetTouch(_index);
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), touch.position, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _container.localPosition = _distance + (Vector3) pos;
+                        _container.localPosition = _distance + (Vector3)pos;
                     }
 
                     //缩放
@@ -161,20 +188,25 @@ namespace ETHotfix
 
 
                     if (!(Mathf.Abs(offset) >= 3)) return;
-                    var scaleFactor = offset / 100f;
-                    Vector3 localScale = _container.localScale;
-                    Vector3 scale = new Vector3(localScale.x + scaleFactor,
-                        localScale.y + scaleFactor,
-                        localScale.z + scaleFactor);
-                    // if (scale.x > 0)
-                    // {
-                    //     _container.localScale = scale;
-                    //     Debug.Log("Scale:" + scale.x);
-                    // }
+                    if (!isMove)
+                    {
+                        var scaleFactor = offset / 100f;
+                        Vector3 localScale = _container.localScale;
+                        Vector3 scale = new Vector3(localScale.x + scaleFactor,
+                            localScale.y + scaleFactor,
+                            localScale.z + scaleFactor);
+                        // if (scale.x > 0)
+                        // {
+                        //     _container.localScale = scale;
+                        //     Debug.Log("Scale:" + scale.x);
+                        // }
 
-                    if (scale.x > _minScale)
-                        _container.localScale = scale;
-                    // _container.localScale = scale;
+                        //Debug.LogError(scale.x + ":" + _minScale);
+                        if (scale.x > _minScale)
+                            _container.localScale = scale;
+                        // _container.localScale = scale;
+                    }
+
                     oldTouch1 = newTouch1;
                     oldTouch2 = newTouch2;
                 }
