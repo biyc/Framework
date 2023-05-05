@@ -48,25 +48,4 @@ public class MiniTolls
             obj[i].name = name + i;
         }
     }
-
-    /// <summary>
-    /// 解锁全部章节，方便测试
-    /// </summary>
-    [MenuItem("Tools/Biyc/UnlockChapter")]
-    public static void UnlockChapter()
-    {
-        var path = Application.dataPath.Replace("Assets", "") + "Data/CsvData/Hotfix.Game.Common$DefaultConfig.csv";
-        var lines = File.ReadAllLines(path);
-        for (int i = 0; i < lines.Length-1; i++)
-        {
-            var v = lines[i];
-            if (v.StartsWith("8032"))
-            {
-                var s = v.Remove(v.Length - 2, 1);
-                s = s.Insert(v.Length - 2, "40");
-                lines[i] = s;
-            }
-        }
-        File.WriteAllLines(path,lines);
-    }
 }

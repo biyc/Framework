@@ -4721,7 +4721,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "b09019dda97c4372ae793f29193dc159",
     "m_Id": 0,
-    "m_DisplayName": "BaseColorMap",
+    "m_DisplayName": "MainTex",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

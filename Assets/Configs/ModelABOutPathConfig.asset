@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ModelABOutPathConfig
   m_EditorClassIdentifier: 
   OutPaths:
-  - Assets/Projects/3d/AssetBundles/Android/
+  - Assets/Projects/3d/AssetBundles/

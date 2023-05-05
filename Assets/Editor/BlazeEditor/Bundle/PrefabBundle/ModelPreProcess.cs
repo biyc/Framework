@@ -14,6 +14,14 @@ namespace Blaze.Bundle.PrefabBundle
     public class ModelPreProcess : Singeton<ModelPreProcess>
     {
         private const string SHADER_PATH = "Assets/Projects/Shader/ArnoldStandardSurfaceTransparent2.shadergraph";
+        private const string SHADERLit_PATH = "Assets/Projects/Shader/LitShaderGraph.shadergraph";
+
+        [MenuItem("Tools/规范模型")]
+        public static void ProcessModel()
+        {
+            var dirs = Directory.GetDirectories("Assets/Projects/3d/Models");
+            dirs.ForEach(m => _.Execution(new DirectoryInfo(m).Name));
+        }
 
         public bool Execution(string name)
         {
@@ -46,10 +54,8 @@ namespace Blaze.Bundle.PrefabBundle
                 var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
                 if (mat.shader.name == "Shader Graphs/ArnoldStandardSurfaceTransparent")
                     mat.shader = AssetDatabase.LoadAssetAtPath<Shader>(SHADER_PATH);
-                // if (mat.shader.name == "Universal Render Pipeline/Lit")
-                // {
-                //     mat.set
-                // }
+                if (mat.shader.name == "Universal Render Pipeline/Lit")
+                    mat.shader = AssetDatabase.LoadAssetAtPath<Shader>(SHADERLit_PATH);
             });
 
             var model = AssetDatabase.LoadAssetAtPath<GameObject>(path);
@@ -57,7 +63,7 @@ namespace Blaze.Bundle.PrefabBundle
             {
                 var newPath = PathHelper.Combine(pathDir, $"{name}.fbx");
                 File.Move(path, newPath);
-               // AssetDatabase.ImportAsset(newPath);
+                // AssetDatabase.ImportAsset(newPath);
             }
 
             AssetDatabase.Refresh();
