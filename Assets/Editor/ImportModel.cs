@@ -28,7 +28,7 @@ namespace Company
         /// <summary>
         /// 是否打包安卓和ios
         /// </summary>
-        [ShowInInspector] public static bool AndroidIos = true;
+        [ShowInInspector] public static bool AndroidIos = false;
 
         /// <summary>
         /// 构建目标平台

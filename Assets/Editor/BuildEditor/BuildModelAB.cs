@@ -21,7 +21,7 @@ namespace Editor.BuildEditor
         /// <summary>
         /// 是否打包安卓和ios
         /// </summary>
-        [ShowInInspector] public static bool AndroidIos = true;
+        [ShowInInspector] public static bool AndroidIos = false;
 
         /// <summary>
         /// 包的类型
@@ -53,7 +53,7 @@ namespace Editor.BuildEditor
         /// <summary>
         /// 是否打包所有模型
         /// </summary>
-        [ShowInInspector] public static bool IsBuildAllModel = false;
+        [HideInInspector] public static bool IsBuildAllModel = false;
 
 
         private static BuildModelAB _window;
