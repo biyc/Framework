@@ -158,18 +158,17 @@ namespace ETHotfix
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), screenPoint, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _distance = _container.localPosition - (Vector3)pos;
+                        _distance = _container.localPosition - (Vector3) pos;
                     }
 
 
                     if (newTouch1.phase == TouchPhase.Moved && newTouch2.phase == TouchPhase.Moved && isMove)
                     {
-            
                         var touch = Input.GetTouch(_index);
                         RectTransformUtility.ScreenPointToLocalPointInRectangle(
                             _container.parent.GetRectTransform(), touch.position, BUI.GetUICamera(),
                             out Vector2 pos);
-                        _container.localPosition = _distance + (Vector3)pos;
+                        _container.localPosition = _distance + (Vector3) pos;
                     }
 
                     //缩放
@@ -298,6 +297,16 @@ namespace ETHotfix
 
             netrts.ForEach(m => Btn(m.gameObject, () => Bind.inputfield_netInput.text = m.text));
             namerts.ForEach(m => Btn(m.gameObject, () => Bind.inputfield_nameInput.text = m.text));
+
+            var light = GameObject.FindObjectOfType<Light>();
+            _curStage.transform.Find("DevPanel/Light").GetComponent<InputField>().onEndEdit.AddListener(m =>
+            {
+                if (float.TryParse(m, out float result))
+                {
+                    result = Mathf.Clamp(result, 0, 1);
+                    light.intensity = result;
+                }
+            });
 
             Btn(Bind.image_devBg, () => panel.Hide());
             Btn(Bind.button_devBtn, () =>

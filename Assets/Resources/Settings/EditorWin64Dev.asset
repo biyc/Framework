@@ -25,3 +25,4 @@ MonoBehaviour:
   UseAssetBundle: 1
   IsContentAssetBundle: 0
   ProductName: EditorWin64Dev
+  IsExportProject: 0
