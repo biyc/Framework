@@ -55,8 +55,12 @@ namespace ETHotfix
             //     home.Show();
             // };
 
-            // if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-            //     UnityCallAndroid._.OnUnityInitialCompleteFun();
+            if (Define.IsExportProject)
+            {
+                if (Application.platform == RuntimePlatform.Android ||
+                    Application.platform == RuntimePlatform.IPhonePlayer)
+                    UnityCallAndroid._.OnUnityInitialCompleteFun();
+            }
 
             ProgressManager._.ReportFinish(ProgressPoint.StartHotfix);
             //

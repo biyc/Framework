@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blaze.Resource;
+using ETModel;
 using Main;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class ABModelLoad : MonoBehaviour
 
 
     private const string TARGETTAG = "TARGETTAG";
-   
+
 
     /// <summary>
     /// 当前应该显示的资源
@@ -41,14 +42,17 @@ public class ABModelLoad : MonoBehaviour
         var resPath = resFullPath.Replace(name, "");
         LoadObj(name, resPath, string.Empty, () =>
         {
-            // if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-            //     UnityCallAndroid._.OnModelLoadCompleteFun();
+            if (Define.IsExportProject)
+            {
+                if (Application.platform == RuntimePlatform.Android ||
+                    Application.platform == RuntimePlatform.IPhonePlayer)
+                    UnityCallAndroid._.OnModelLoadCompleteFun();
+            }
         });
     }
 
     public async Task LoadObj(string name, string resPath, string baseNetPath, Action cb)
     {
-    
         if (_target != null && name == _target.name)
         {
             cb?.Invoke();
@@ -93,18 +97,18 @@ public class ABModelLoad : MonoBehaviour
             _target = m.Target.transform;
             _target.name = name;
             _target.tag = TARGETTAG;
-            
+
             //模型没有合并，拿不到宽高
             // var box = _target.gameObject.AddComponent<BoxCollider>();
             // var scaleZFactor = 1 / box.size.z; //高
             // var scaleXFactor = 0.5f / box.size.x; //宽
             // var resultFactor = Mathf.Min(scaleXFactor, scaleZFactor);
             // Debug.Log($"高缩放值：{scaleZFactor},宽的缩放值：{scaleXFactor},最终缩放值：{resultFactor}");
-            
+
             //_target.localScale = new Vector3(1000, 1000, 1000) *resultFactor * Mathf.Min(screenYScaleFactor, screenXScaleFactor);
             _target.localScale = new Vector3(1000, 1000, 1000);
 
-           // GameObject.Destroy(box);
+            // GameObject.Destroy(box);
             //_target.localScale = new Vector3(1000, 1000, 1000);
             _target.GetComponentsInChildren<Transform>()
                 .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));

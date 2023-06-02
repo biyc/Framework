@@ -15,6 +15,7 @@ public class Starter : MonoBehaviour
 
         var game = GameSettings.GetSetting(commonSetting.GameSetting);
         Define.GameSettings = game;
+        Define.IsExportProject = game.IsExportProject;
 
         // 选择使用原生代码或者ILruntime 启动游戏逻辑
         ETModel.Init env = Native;
