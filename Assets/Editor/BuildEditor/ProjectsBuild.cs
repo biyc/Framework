@@ -148,7 +148,7 @@ namespace Blaze.Ci
                 case EnumPackageType.EditorOSXDev:
                 case EnumPackageType.EditorWin64Dev:
                     gameSettings.ResServerList.Add($"http://192.168.8.6:8088/{packageType.ToString()}"); //公司服务器
-                    gameSettings.ResServerList.Add($"http://192.168.1.4:8088/{packageType.ToString()}"); //家里
+                    gameSettings.ResServerList.Add($"http://192.168.1.8:8088/{packageType.ToString()}"); //家里
                     break;
             }
 

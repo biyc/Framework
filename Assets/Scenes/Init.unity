@@ -152,8 +152,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 575235020}
-  m_RootOrder: 3
+  m_Father: {fileID: 1518071807}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &68408863
 MonoBehaviour:
@@ -218,7 +218,6 @@ Transform:
   - {fileID: 962287861}
   - {fileID: 1472883029}
   - {fileID: 1518071807}
-  - {fileID: 68408862}
   - {fileID: 759804852}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -281,7 +280,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.3
+  m_Intensity: 0.6
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -374,7 +373,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 575235020}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &759804853
 MonoBehaviour:
@@ -1256,6 +1255,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1245951402}
+  - {fileID: 68408862}
   m_Father: {fileID: 575235020}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1266,15 +1266,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1203893371}
     m_Modifications:
-    - target: {fileID: 1238144306332505118, guid: afc8808cfae784e458f81ac65ac88866,
+    - target: {fileID: 1934115050682890887, guid: afc8808cfae784e458f81ac65ac88866,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4980364619722657270, guid: afc8808cfae784e458f81ac65ac88866,
+    - target: {fileID: 1934115050682890936, guid: afc8808cfae784e458f81ac65ac88866,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5972038676177992714, guid: afc8808cfae784e458f81ac65ac88866,
         type: 3}

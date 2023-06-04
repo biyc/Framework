@@ -31,6 +31,7 @@ public class ABModelLoad : MonoBehaviour
     private void Awake()
     {
         _loading = transform.Find("Loading");
+        _loading.Show();
         _container = transform.Find("Container");
     }
 
@@ -78,10 +79,7 @@ public class ABModelLoad : MonoBehaviour
         }
 
         var path = $"Assets/Projects/3d/Models/{name}/{name}.fbx";
-
-        // await LoadTarget(assetPath);
-        //.prefab  fbx
-
+        
 
         var task = Res.InstantiateAsync(path, _container);
         task.GetAwaiter().OnCompleted(() =>
@@ -93,23 +91,10 @@ public class ABModelLoad : MonoBehaviour
                 UnityEngine.Object.Destroy(m.Target);
                 return;
             }
-
             _target = m.Target.transform;
             _target.name = name;
             _target.tag = TARGETTAG;
-
-            //模型没有合并，拿不到宽高
-            // var box = _target.gameObject.AddComponent<BoxCollider>();
-            // var scaleZFactor = 1 / box.size.z; //高
-            // var scaleXFactor = 0.5f / box.size.x; //宽
-            // var resultFactor = Mathf.Min(scaleXFactor, scaleZFactor);
-            // Debug.Log($"高缩放值：{scaleZFactor},宽的缩放值：{scaleXFactor},最终缩放值：{resultFactor}");
-
-            //_target.localScale = new Vector3(1000, 1000, 1000) *resultFactor * Mathf.Min(screenYScaleFactor, screenXScaleFactor);
             _target.localScale = new Vector3(1000, 1000, 1000);
-
-            // GameObject.Destroy(box);
-            //_target.localScale = new Vector3(1000, 1000, 1000);
             _target.GetComponentsInChildren<Transform>()
                 .ForEach(tr => tr.gameObject.layer = LayerMask.NameToLayer("UI"));
             _recovery?.Invoke();
