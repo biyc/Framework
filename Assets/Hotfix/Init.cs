@@ -24,7 +24,7 @@ namespace ETHotfix
             ETModel.Game.Hotfix.OnApplicationPause += OnApplicationFocus;
             ETModel.Game.Hotfix.OnFocusChanged += OnFocusChanged;
             // 初始化热更端 blaze 框架
-            // Game.Scene.AddComponent<BlazeHotfixComponent>();
+             //Game.Scene.AddComponent<BlazeHotfixComponent>();
             // 全局UI控制器
            // Game.Scene.AddComponent<UIComponent>();
             // Game.Scene.AddComponent<CDComponent>();

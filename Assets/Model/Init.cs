@@ -24,8 +24,6 @@ namespace ETModel
 
         [Tooltip("使用ab")] public bool UseAB;
 
-        public GameObject screenConsoleGo;
-
 
         public static ICompleted<Init> InitOnLoad = new DataWatch<Init>();
         public static ICompleted<GameSettings> SettingOnLoad = new DataWatch<GameSettings>();
@@ -45,9 +43,9 @@ namespace ETModel
             Application.focusChanged += OnFocusChanged;
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             //禁用多点触控
-           // Input.multiTouchEnabled = false;
+            // Input.multiTouchEnabled = false;
             Application.targetFrameRate = 60;
-            Define.deviceId = SystemInfo.deviceUniqueIdentifier;      
+            Define.deviceId = SystemInfo.deviceUniqueIdentifier;
 
             // 开发期可能为空，走默认数据
             if (Define.GameSettings == null)
@@ -62,8 +60,6 @@ namespace ETModel
             Define.IsDev = isDev;
             // 开发模式时打开日志
             Debug.unityLogger.logEnabled = isDev;
-            // 开发模式打开命令窗
-            screenConsoleGo.SetActive(isDev);
             DontDestroyOnLoad(gameObject);
             try
             {
@@ -75,87 +71,13 @@ namespace ETModel
 
                 TaskQueue taskQueue = new TaskQueue();
                 taskQueue.OnFinish = () => { Debug.Log("母包启动完成"); };
-                // 检查网络中是否有强制下线信息
-                // taskQueue.AddTask(delegate(Action scb)
-                // {
-                //     scb();
-                //     return;
-                //     // 其它渠道直接跳过
-                //     // if (Define.GameSettings.Channel != "AndroidBusinessPreview")
-                //     // {
-                //     //     scb();
-                //     //     return;
-                //     // }
-                //     //
-                //     //
-                //     // var curtime = TimeHelper.CurrentMillis();
-                //     // // 超出指定日期，游戏直接退出
-                //     // if (curtime > 1669305600000)
-                //     // {
-                //     //     // 2022-11-25 00:00:00
-                //     //     // 1669305600000
-                //     //     Tuner.Log("超出指定日期，退出应用");
-                //     //     Application.Quit();
-                //     //     return;
-                //     // }
-                //     //
-                //     // ObservableWebRequest.Get("http://lovinhouse2.iyloft.com/Config/Start.conf")
-                //     //     .Subscribe(delegate(string data)
-                //     //     {
-                //     //         var conf = SafetyStartData.LoadFromData(data);
-                //     //         if (conf.IsOpen && curtime < conf.DeadlineTime)
-                //     //         {
-                //     //             // 可以进行下一步
-                //     //             scb();
-                //     //         }
-                //     //         else
-                //     //         {
-                //     //             Observable.Timer(TimeSpan.FromSeconds(8)).Subscribe(_ => { Application.Quit(); });
-                //     //             UpDatePop.Instans.OnCompleted += delegate(UpDatePop pop)
-                //     //             {
-                //     //                 pop.Message(delegate { Application.Quit(); },
-                //     //                     delegate { Application.Quit(); });
-                //     //                 pop.ShowVersionUpdate("应用已过期。");
-                //     //             };
-                //     //         }
-                //     //     }, delegate(Exception exception)
-                //     //     {
-                //     //         Observable.Timer(TimeSpan.FromSeconds(8)).Subscribe(_ => { Application.Quit(); });
-                //     //         UpDatePop.Instans.OnCompleted += delegate(UpDatePop pop)
-                //     //         {
-                //     //             pop.Message(delegate { Application.Quit(); },
-                //     //                 delegate { Application.Quit(); });
-                //     //             pop.ShowVersionUpdate("应用验证失败。");
-                //     //         };
-                //     //     });
-                // });
 
-                // 初始化强更SDK
-                taskQueue.AddTask(delegate(Action scb)
-                {
-                    MonoScheduler.DispatchMain(scb);
-                });
+                taskQueue.AddTask(delegate(Action scb) { MonoScheduler.DispatchMain(scb); });
                 // 第一步资源检查并下载
                 taskQueue.AddTask(delegate(Action scb)
                 {
                     ResManager._.WatchProvidComplete.OnCompleted += delegate(IAssetProvider provider) { scb(); };
                 });
-
-                // 第二步，用户登录与存档更新
-                // taskQueue.AddTask(delegate(Action scb)
-                // {
-                //     // 报告进度开始登录
-                //    // ProgressManager._.ReportStart(ProgressPoint.Login);
-                //     // 初始化存档
-                //     //ArchiveManager._.Load("biyc");
-                //
-                //     // ArchiveManager._.OnLoad.OnCompleted += delegate(ArchiveData data)
-                //     // {
-                //     //     // 存档拉取完成，登录成功
-                //     //     ProgressManager._.ReportFinish(ProgressPoint.Login);
-                //     //     scb();
-                //     // };
-                // });
                 // 第三步，启动热更新代码
                 taskQueue.AddTask(delegate(Action scb)
                 {

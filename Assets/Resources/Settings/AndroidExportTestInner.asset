@@ -17,7 +17,7 @@ MonoBehaviour:
   Channel: AndroidExportTestInner
   MotherVersion: 1
   FixVersion: 0
-  BuildNum: 4
+  BuildNum: 6
   IsForceCheckVersion: 0
   UseILRuntime: 1
   UseDev: 1

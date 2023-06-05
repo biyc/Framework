@@ -167,7 +167,6 @@ namespace ILRuntime.Runtime.Generated
             System_Threading_Tasks_TaskCompletionSource_1_Boolean_Binding.Register(app);
             System_Threading_CancellationToken_Binding.Register(app);
             System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.Register(app);
-            IngameDebugConsole_DebugLogConsole_Binding.Register(app);
             Blaze_Resource_ResManager_Binding.Register(app);
             Blaze_Resource_AssetBundles_AssetProviderBundle_Binding.Register(app);
             Blaze_Utility_Co_Binding.Register(app);
