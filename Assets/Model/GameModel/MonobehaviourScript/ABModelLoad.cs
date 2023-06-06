@@ -70,7 +70,6 @@ public class ABModelLoad : MonoBehaviour
         _loading.Show();
 
         _currentName = name;
-
         if (!await Res.DownLoadModelAsset(name, resPath, baseNetPath))
         {
             _loading.Hide();

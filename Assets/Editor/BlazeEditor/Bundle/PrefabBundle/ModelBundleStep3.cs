@@ -65,7 +65,8 @@ namespace Blaze.Bundle.PrefabBundle
             {
                 if (!fileToHash.ContainsKey(data.ABName))
                 {
-                    data.Hash = CryptoHelper.MD5Encode(data.ABName + data.Md5) + ".ab";
+                    // data.Hash = CryptoHelper.MD5Encode(data.ABName + data.Md5) + ".ab";
+                    data.Hash = CryptoHelper.MD5Encode(data.AssetPath) + ".ab";
                     fileToHash.Add(data.ABName, data.Hash);
                 }
                 else

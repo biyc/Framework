@@ -26,7 +26,7 @@ namespace ETHotfix
             // 初始化热更端 blaze 框架
             // Game.Scene.AddComponent<BlazeHotfixComponent>();
             // 全局UI控制器
-           // Game.Scene.AddComponent<UIComponent>();
+             Game.Scene.AddComponent<UIComponent>();
             // Game.Scene.AddComponent<CDComponent>();
             // 启动游戏逻辑
             //CommonManager._.Initialize();
@@ -42,20 +42,12 @@ namespace ETHotfix
                 DefaultDebug.DisableCsvDataCache = true;
             }
 
-            GameObject.FindObjectOfType<HomePageMonoComponent>().Init();
-            
+            //  GameObject.FindObjectOfType<HomePageMonoComponent>().Init();
             //主页
-            // var home = await BUI.Create(HomePageComponent.Args);
-            // var isStart = false;
-            // home.Show();
-            // StartUIComponent._.OnStartGame += delegate
-            // {
-            //     if (isStart) return;
-            //     isStart = true;
-            //     //播放背景音乐
-            //     AudioManager._.Play(500004, true);
-            //     home.Show();
-            // };
+            var home = await BUI.Create(HomePageComponent.Args);
+            var isStart = false;
+            home.Show();
+
 
             // if (Define.IsExportProject)
             // {

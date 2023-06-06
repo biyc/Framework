@@ -38,6 +38,7 @@ public class HomePageMonoComponent : MonoBehaviour
 
     public void Awake()
     {
+        Init();
     }
 
 
@@ -268,7 +269,7 @@ public class HomePageMonoComponent : MonoBehaviour
             PlayerPrefs.SetString("net", strNet);
 
             // var path=""
-            transform.GetComponent<ABModelLoad>().LoadObj(inputName, inputNetPath, inputNetPath, null);
+            transform.GetComponent<ABModelLoad>().LoadObj(inputName, String.Empty, inputNetPath, null);
             // transform.GetComponent<ABModelLoad>().LoadObj(inputName, String.Empty, inputNetPath, null);
             panel.gameObject.SetActive(false);
         });
