@@ -27,10 +27,10 @@ namespace Blaze.Common
         /// 核心下载服务器
         /// </summary>
         // public static string ServerURI = $"http://192.168.8.199:8088/";
-        public static string ServerURI = $"http://127.0.0.1:8088/";
+        public static string ServerURI = $"http://127.0.0.1:8088/EditorWin64Dev";
 
         public static List<string> ServerURIList = new List<string>()
-            {"http://127.0.0.1:8088/", "http://192.168.8.6:8088/"};
+            {"http://127.0.0.1:8088/EditorWin64Dev", "http://192.168.1.6:8088/"};
 
 
         /// <summary>

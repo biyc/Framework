@@ -27,6 +27,14 @@ namespace ILRuntime.Runtime.Generated
             app.RegisterCLRFieldGetter(field, get_IsDev_0);
             app.RegisterCLRFieldSetter(field, set_IsDev_0);
             app.RegisterCLRFieldBinding(field, CopyToStack_IsDev_0, AssignFromStack_IsDev_0);
+            field = type.GetField("GameSettings", flag);
+            app.RegisterCLRFieldGetter(field, get_GameSettings_1);
+            app.RegisterCLRFieldSetter(field, set_GameSettings_1);
+            app.RegisterCLRFieldBinding(field, CopyToStack_GameSettings_1, AssignFromStack_GameSettings_1);
+            field = type.GetField("AssetBundleVersion", flag);
+            app.RegisterCLRFieldGetter(field, get_AssetBundleVersion_2);
+            app.RegisterCLRFieldSetter(field, set_AssetBundleVersion_2);
+            app.RegisterCLRFieldBinding(field, CopyToStack_AssetBundleVersion_2, AssignFromStack_AssetBundleVersion_2);
 
 
         }
@@ -56,6 +64,54 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Boolean @IsDev = ptr_of_this_method->Value == 1;
             ETModel.Define.IsDev = @IsDev;
+            return ptr_of_this_method;
+        }
+
+        static object get_GameSettings_1(ref object o)
+        {
+            return ETModel.Define.GameSettings;
+        }
+
+        static StackObject* CopyToStack_GameSettings_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ETModel.Define.GameSettings;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static void set_GameSettings_1(ref object o, object v)
+        {
+            ETModel.Define.GameSettings = (Blaze.Common.GameSettings)v;
+        }
+
+        static StackObject* AssignFromStack_GameSettings_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            Blaze.Common.GameSettings @GameSettings = (Blaze.Common.GameSettings)typeof(Blaze.Common.GameSettings).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.Define.GameSettings = @GameSettings;
+            return ptr_of_this_method;
+        }
+
+        static object get_AssetBundleVersion_2(ref object o)
+        {
+            return ETModel.Define.AssetBundleVersion;
+        }
+
+        static StackObject* CopyToStack_AssetBundleVersion_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ETModel.Define.AssetBundleVersion;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static void set_AssetBundleVersion_2(ref object o, object v)
+        {
+            ETModel.Define.AssetBundleVersion = (System.String)v;
+        }
+
+        static StackObject* AssignFromStack_AssetBundleVersion_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.String @AssetBundleVersion = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.Define.AssetBundleVersion = @AssetBundleVersion;
             return ptr_of_this_method;
         }
 

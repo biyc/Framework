@@ -100,7 +100,7 @@ namespace ETHotfix
 
                     var nowScreenRate = (float) Screen.height / (float) Screen.width;
                     var deviceSplit = 1.77; // 16f / 9f;
-                    Tuner.Log("now: " + nowScreenRate + "  16:9: " + deviceSplit);
+                  //  Tuner.Log("now: " + nowScreenRate + "  16:9: " + deviceSplit);
                     if (nowScreenRate < deviceSplit)
                     {
                         // PAD 模式

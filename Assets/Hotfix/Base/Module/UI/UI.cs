@@ -106,29 +106,6 @@ namespace ETHotfix
         public Action<UIArgs> OnFinish;
         public DataWatch<bool> WatchUIShowed = new DataWatch<bool>();
         
-        /// <summary>
-        /// 是否是16：9的屏幕，近似值
-        /// </summary>
-        /// <returns></returns>
-        public bool Is16Rotio9()
-        {
-            var rotio = Screen.height / (float)Screen.width;
-            //16:9  与17:9 之间
-            return (rotio >= 1.77f) && (rotio <= 1.89f);
-        }
-
-        /// <summary>
-        /// 是否是平板
-        /// </summary>
-        /// <returns></returns>
-        public bool IsPad()
-        {
-            var nowScreenRate = (float) Screen.height / (float) Screen.width;
-            var deviceSplit = 1.77; // 16f / 9f;
-            return nowScreenRate < deviceSplit;
-        }
-        
-        
         #region 资源生命周期
 
         /// <summary>

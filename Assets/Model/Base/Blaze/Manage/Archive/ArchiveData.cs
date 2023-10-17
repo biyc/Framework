@@ -67,15 +67,9 @@ namespace Model.Base.Blaze.Manage.Archive
             {
                 var content = File.ReadAllText(path);
                 var decodeContent = CryptoHelper.XxteaDecryptByString(content);
-                // var decodeContent = content;
                 // 存档信息读取到当前存档节点
                 var data = JsonConvert.DeserializeObject<ArchiveData>(decodeContent);
                 data._isLoad = true;
-                // this.ArchiveName = data.ArchiveName;
-                // this.Storage = data.Storage;
-                // this.CreateDate = data.CreateDate;
-                // this.SlotVersion = data.SlotVersion;
-                // this._isLoad = true;
                 return data;
             }
             catch (Exception e)
@@ -95,37 +89,7 @@ namespace Model.Base.Blaze.Manage.Archive
 
             return null;
         }
-
-
-        /// <summary>
-        /// 从源存档信息加载存档
-        /// </summary>
-        /// <param name="slotJson"></param>
-        /// <returns></returns>
-        public static ArchiveData LoadFromOrigin(string slotJson)
-        {
-            try
-            {
-                var decodeContent = CryptoHelper.XxteaDecryptByString(slotJson);
-                // var decodeContent = slotJson;
-                // 存档信息读取到当前存档节点
-                var data = JsonConvert.DeserializeObject<ArchiveData>(decodeContent);
-                data._isLoad = true;
-                // this.ArchiveName = data.ArchiveName;
-                // this.Storage = data.Storage;
-                // this.CreateDate = data.CreateDate;
-                // this.SlotVersion = data.SlotVersion;
-                // this._isLoad = true;
-                if (data.CreateDate > 0)
-                    return data;
-            }
-            catch (Exception e)
-            {
-            }
-
-            return null;
-        }
-
+        
         /// <summary>
         /// 保存一个字符串
         /// </summary>
@@ -159,7 +123,6 @@ namespace Model.Base.Blaze.Manage.Archive
         /// <returns></returns>
         public string Get(string key)
         {
-            // Load();
             if (Storage.ContainsKey(key))
                 return Storage[key];
             return null;
@@ -169,7 +132,6 @@ namespace Model.Base.Blaze.Manage.Archive
         // 保存存档信息到文件中
         public void Save()
         {
-            // if (!_isLoad) return;
             // 更新存档版本
             SlotVersion = TimeNow();
             var path = GetSavePath(ArchiveName);
@@ -179,24 +141,6 @@ namespace Model.Base.Blaze.Manage.Archive
             File.WriteAllText(path, CryptoHelper.XxteaEncryptToString(jsonContent));
             // File.WriteAllText(path, jsonContent);
         }
-
-        public ArchiveData Save(string archiveName)
-        {
-            // if (!_isLoad) return;
-            // 更新存档版本
-            SlotVersion = TimeNow();
-            var path = GetSavePath(archiveName);
-            if (!File.Exists(path))
-                File.Create(path).Dispose();
-            var data = (ArchiveData) MemberwiseClone();
-            data.ArchiveName = archiveName;
-
-            File.WriteAllText(path, CryptoHelper.XxteaEncryptToString(JsonConvert.SerializeObject(data)));
-            // File.WriteAllText(path, JsonConvert.SerializeObject(data));
-            return data;
-        }
-
-
         private static long TimeNow()
         {
             long time = TimeHelper.ClientNow();
@@ -208,13 +152,7 @@ namespace Model.Base.Blaze.Manage.Archive
             {
                 time = TimeHelper.ClientNow();
             }
-
-            //Debug.Log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            //Debug.Log(time);
-            //Debug.Log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            // return TimeHelper.CurrentMillis();
             return time;
-
         }
 
 
@@ -225,16 +163,6 @@ namespace Model.Base.Blaze.Manage.Archive
         public string ReadOrigin()
         {
             return JsonConvert.SerializeObject(this);
-        }
-
-
-        /// <summary>
-        /// 读取加密后的存档
-        /// </summary>
-        /// <returns></returns>
-        public string ReadEncryption()
-        {
-            return CryptoHelper.XxteaEncryptToString(JsonConvert.SerializeObject(this));
         }
     }
 }

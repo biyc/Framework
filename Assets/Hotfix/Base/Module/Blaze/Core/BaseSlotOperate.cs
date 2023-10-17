@@ -77,37 +77,7 @@ namespace Blaze.Utility.Base
 
             return _slot;
         }
-
-
-        /// <summary>
-        /// 读取 Data/Dev/Slots 下的指定存档
-        /// </summary>
-        /// <returns></returns>
-        public T DevReadSlot(ArchiveData archiveData)
-        {
-            try
-            {
-                var data = archiveData.Get(SlotName());
-                if (data.IsNullOrWhitespace())
-                    return null;
-                _slot = LitJson.JsonMapper.ToObject<T>(data);
-                return _slot;
-            }
-            catch (Exception e)
-            {
-                Tuner.Log(e.StackTrace);
-            }
-
-
-            return null;
-        }
-
-        public void DevSaveSlot(ArchiveData archiveData)
-        {
-            Tuner.Log(SlotName());
-            archiveData.Save(SlotName(), LitJson.JsonMapper.ToJson(_slot));
-        }
-
+        
         /// <summary>
         /// 写入存档文件
         /// </summary>
@@ -115,10 +85,6 @@ namespace Blaze.Utility.Base
         {
             try
             {
-                // ArchiveManager._.OnLoad.OnCompleted+= delegate(ArchiveData archiveData)
-                // {
-                //     archiveData.Save(SlotName(),LitJson.JsonMapper.ToJson(_slot));
-                // };
                 ArchiveManager._.Archive.Save(SlotName(), LitJson.JsonMapper.ToJson(_slot));
             }
             catch (Exception e)
@@ -137,18 +103,7 @@ namespace Blaze.Utility.Base
             _slot = slot;
             Save();
         }
-
-
-        // /// <summary>
-        // /// 删除存档
-        // /// </summary>
-        // /// <param name="slot"></param>
-        // public void DelSlots()
-        // {
-        //     Storage.Del(SlotName());
-        //     _slot = null;
-        // }
-
+        
 
         /// <summary>
         /// 存档名称

@@ -44,7 +44,7 @@ namespace Blaze.Ci
         public static void BuildAssetBundleMenm()
         {
             BuildAssetBundle(ThorSettings._.PackageType);
-            PushToDingding($"{ThorSettings._.PackageType}AssetBundle 打包成功");
+           // PushToDingding($"{ThorSettings._.PackageType}AssetBundle 打包成功");
         }
 
 

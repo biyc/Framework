@@ -9,8 +9,6 @@ namespace Hotfix.Game.Reddot.Slots
     public class SlotRed : BaseSlotOperate<URed>
     {
     }
-
-
     /// <summary>
     /// 存档结构
     /// </summary>
