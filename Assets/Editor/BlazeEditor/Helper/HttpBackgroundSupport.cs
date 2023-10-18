@@ -23,9 +23,6 @@ namespace Blaze.Helper
     public class HttpBackgroundSupport
     {
         private static bool debug = true;
-
-
-        private static Process _processData;
         private static Process _processAB;
         private static bool _isRefresh;
 
@@ -36,27 +33,11 @@ namespace Blaze.Helper
             // if (debug) Debug.Log("[>>] " + winpath);
 #if UNITY_EDITOR_OSX
             var filename = winpath + "/bin/abhttpd";
-            var datafilename = winpath + "/bin/datahttpd";
 #else
-			var filename = winpath + @"\bin\abhttpd.exe";
-			var datafilename = winpath + @"\bin\datahttpd.exe";
+            var filename = winpath + @"\bin\abhttpd.exe";
 #endif
 
             var windowStyle = ProcessWindowStyle.Hidden;
-
-            var dataInfo = new ProcessStartInfo
-            {
-                FileName = datafilename,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                CreateNoWindow = true,
-                WindowStyle = windowStyle,
-#if UNITY_EDITOR_OSX
-                Arguments = string.Format(@" -p 8087 -w {0}/Data -n datahttpd", winpath),
-#else
-                Arguments = string.Format(@" -p 8087 -w {0}\Data -n datahttpd", winpath),
-#endif
-            }; 
 
             var abInfo = new ProcessStartInfo
             {
@@ -66,24 +47,14 @@ namespace Blaze.Helper
                 CreateNoWindow = true,
                 WindowStyle = windowStyle,
 #if UNITY_EDITOR_OSX
-                Arguments = string.Format(@" -p 8088 -w {0}/Publish -n abhttpd", winpath),
+                Arguments = string.Format(@" -p 8089 -w {0}/Publish -n abhttpd", winpath),
 #else
-                Arguments = string.Format(@" -p 8088 -w {0}\Publish -n abhttpd", winpath),
+                Arguments = string.Format(@" -p 8089 -w {0}\Publish -n abhttpd", winpath),
 #endif
             };
-
-
-            if (ThorSettings._.IsUseAbHttp)
-            {
-                _processAB = Process.Start(abInfo);
-                _processAB.BeginOutputReadLine();
-            }
-
-            if (ThorSettings._.IsUseDataHttp)
-            {
-                _processData = Process.Start(dataInfo);
-                _processData.BeginOutputReadLine();
-            }
+            
+            _processAB = Process.Start(abInfo);
+            _processAB.BeginOutputReadLine();
 
             EditorApplication.quitting += OnQuit;
         }
@@ -91,7 +62,6 @@ namespace Blaze.Helper
         private static void OnQuit()
         {
             DisposeAB();
-            DisposeData();
         }
 
         public static void Restart()
@@ -112,18 +82,6 @@ namespace Blaze.Helper
             _processAB.Dispose();
             _processAB = null;
         }
-
-        private static void DisposeData()
-        {
-            if (_processData == null) return;
-
-            if (!_processData.HasExited)
-            {
-                _processData.Kill();
-            }
-
-            _processData.Dispose();
-            _processData = null;
-        }
+        
     }
 }

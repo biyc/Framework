@@ -71,7 +71,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_List_1_Int32_Binding.Register(app);
-            CodeStage_AntiCheat_ObscuredTypes_ObscuredLong_Binding.Register(app);
             ETModel_Game_Binding.Register(app);
             ETModel_Hotfix_Binding.Register(app);
             System_Reflection_Assembly_Binding.Register(app);

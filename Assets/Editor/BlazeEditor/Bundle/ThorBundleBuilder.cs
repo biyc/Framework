@@ -24,32 +24,6 @@ namespace Blaze.Bundle
     public class ThorBundleBuilder : Singeton<ThorBundleBuilder>
     {
         /// <summary>
-        /// 构建器入口
-        /// </summary>
-        public void Builder()
-        {
-            if (EditorUtility.DisplayDialog("Confirm", "Sure Start The Build?", "Start",
-                "Cancel"))
-            {
-                // 配置构建信息
-                var conf = Config();
-                // 执行构建
-                Execution(conf);
-                // 完成
-                Tuner.Log(Co._("     -= Builder Package Pipeline Done =-:green:b;"));
-            }
-        }
-
-        private BundleBuilderConf Config()
-        {
-            var conf = new BundleBuilderConf();
-            conf.TargetMode = ThorSettings._.BuildTargetMode;
-            conf.IsPublishStreaming = ThorSettings._.IsPublishStreaming;
-            conf.BuildOperator = ThorSettings._.BuildOperator;
-            return conf;
-        }
-
-        /// <summary>
         /// 执行构建
         /// </summary>
         public Task<bool> Execution(BundleBuilderConf conf)

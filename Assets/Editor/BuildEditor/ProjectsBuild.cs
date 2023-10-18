@@ -44,30 +44,8 @@ namespace Blaze.Ci
         public static void BuildAssetBundleMenm()
         {
             BuildAssetBundle(ThorSettings._.PackageType);
-           // PushToDingding($"{ThorSettings._.PackageType}AssetBundle 打包成功");
+            // PushToDingding($"{ThorSettings._.PackageType}AssetBundle 打包成功");
         }
-
-
-        // [MenuItem("Tools/Build/创建所有配置文件")]
-        // public static void CreateGameSettings()
-        // {
-        //     foreach (EnumPackageType item in Enum.GetValues(typeof(EnumPackageType)))
-        //     {
-        //         GetGameSettings(item);
-        //     }
-        // }
-        //
-        //
-        // [MenuItem("Tools/Build/创建所有ab")]
-        // public static async void CreateAllAb()
-        // {
-        //     foreach (EnumPackageType item in Enum.GetValues(typeof(EnumPackageType)))
-        //     {
-        //         Tuner.Log("开始构建" + item);
-        //         await BuildAssetBundle(item);
-        //         Tuner.Log("结束构建" + item);
-        //     }
-        // }
 
         /// <summary>
         /// 
@@ -92,15 +70,8 @@ namespace Blaze.Ci
             // 初始安装包中是否包含 AB 资源
             switch (packageType)
             {
-                 case EnumPackageType.AndroidRelease:
+                case EnumPackageType.AndroidRelease:
                 case EnumPackageType.IOSRelease:
-                case EnumPackageType.AndroidTestOnline:
-                case EnumPackageType.IOSTestOnline:
-                case EnumPackageType.AndroidTestInner:
-                case EnumPackageType.IOSTestInner:
-                case EnumPackageType.AndroidVerify:
-                case EnumPackageType.IOSVerify:
-                    // case EnumPackageType.AndroidM3839FirstTest:
                     gameSettings.IsContentAssetBundle = true;
                     break;
                 default:
@@ -108,35 +79,14 @@ namespace Blaze.Ci
                     break;
             }
 
-            // 强制版本检测 IsForceCheckVersion
             gameSettings.IsForceCheckVersion = false;
-            // switch (packageType)
-            // {
-            //     case EnumPackageType.AndroidRelease:
-            //     case EnumPackageType.IOSRelease:
-            //         // case EnumPackageType.AndroidTestOnline:
-            //         // case EnumPackageType.IOSTestOnline:
-            //         // case EnumPackageType.AndroidTestInner:
-            //         // case EnumPackageType.IOSTestInner:
-            //         // 开启强制版本检测
-            //         gameSettings.IsForceCheckVersion = true;
-            //         break;
-            //     default:
-            //         // 关闭强制版本检测
-            //         gameSettings.IsForceCheckVersion = false;
-            //         break;
-            // }
 
             // 是否开启调试模式 UseDev
             switch (packageType)
             {
                 case EnumPackageType.AndroidDev:
-                case EnumPackageType.IOSDev:
                 case EnumPackageType.EditorOSXDev:
                 case EnumPackageType.EditorWin64Dev:
-                case EnumPackageType.AndroidTestInner:
-                case EnumPackageType.IOSTestInner:
-                case EnumPackageType.AndroidRelease:
                     gameSettings.UseDev = true;
                     break;
                 default:
@@ -145,60 +95,22 @@ namespace Blaze.Ci
                     break;
             }
 
-            // 是否使用 ilruntime IsILRuntime
-            switch (packageType)
-            {
-                case EnumPackageType.AndroidVerify:
-                case EnumPackageType.IOSVerify:
-                    // case EnumPackageType.AndroidM3839Dev:
-                    gameSettings.UseILRuntime = false;
-                    break;
-                default:
-                    gameSettings.UseILRuntime = true;
-                    break;
-            }
+            gameSettings.UseILRuntime = true;
 
 
             // 资源服务器地址列表
             gameSettings.ResServerList = new List<string>();
             switch (packageType)
             {
-                case EnumPackageType.AndroidRelease:
-                case EnumPackageType.IOSRelease:
-                case EnumPackageType.AndroidTestOnline:
-                case EnumPackageType.IOSTestOnline:
-                    //https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/AndroidRelease/Android/VersionCheck.json
-                    // gameSettings.ResServerList.Add($"https://lv2m3839first.oss-cn-chengdu.aliyuncs.com/zhongyao/{packageType.ToString()}");
-                    gameSettings.ResServerList.Add(
-                        $"https://zhiyuanzhongyi.obs.cn-east-3.myhuaweicloud.com/3d/{packageType.ToString()}");
-                    break;
-                case EnumPackageType.AndroidTestInner:
-                case EnumPackageType.IOSTestInner:
                 case EnumPackageType.AndroidDev:
-                case EnumPackageType.IOSDev:
                 case EnumPackageType.EditorOSXDev:
                 case EnumPackageType.EditorWin64Dev:
-                    gameSettings.ResServerList.Add($"http://192.168.8.6:8088/{packageType.ToString()}"); //公司服务器
-                    gameSettings.ResServerList.Add($"http://192.168.1.7:8088/{packageType.ToString()}"); //家里
+                    gameSettings.ResServerList.Add($"http://192.168.8.6:8089/{packageType.ToString()}"); //公司服务器
+                    gameSettings.ResServerList.Add($"http://192.168.1.6:8089/{packageType.ToString()}"); //家里
                     break;
             }
 
-            // 应用名称
-            switch (packageType)
-            {
-                case EnumPackageType.AndroidRelease:
-                case EnumPackageType.IOSRelease:
-                case EnumPackageType.AndroidTestOnline:
-                case EnumPackageType.IOSTestOnline:
-                case EnumPackageType.AndroidVerify:
-                case EnumPackageType.IOSVerify:
-                    gameSettings.ProductName = "中药";
-                    break;
-                default:
-                    gameSettings.ProductName = packageType.ToString();
-                    break;
-            }
-
+            gameSettings.ProductName = packageType.ToString();
 
             // 保存配置文件
             EditorUtility.SetDirty(gameSettings);
@@ -227,7 +139,6 @@ namespace Blaze.Ci
             // 切换到 对应 平台
             EditorUserBuildSettings.SwitchActiveBuildTarget(buildTarget);
 
-
             // 设置配置文件
             var gameSettings = GetGameSettings(packageType);
             // build 号自增
@@ -245,20 +156,17 @@ namespace Blaze.Ci
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            PlayerSettings.companyName = "XXXCompany"; //公司名称
+            PlayerSettings.companyName = "ArrowNet"; //公司名称
             // 应用名称
             PlayerSettings.productName = gameSettings.ProductName; //
 
+            PlayerSettings.applicationIdentifier = "com.ArrowNet.Biyc" + packageType;
 
-            if (packageType == EnumPackageType.AndroidRelease)
-                PlayerSettings.applicationIdentifier = "com.nineton.tcm";
-            else
-                PlayerSettings.applicationIdentifier = "com.XXXCompany.Biyc" + packageType;
-            if (packageType.ToString().ToLower().Contains("android"))
+            if (buildTarget == BuildTarget.Android)
             {
                 PlayerSettings.bundleVersion = gameSettings.GetVersion();
             }
-            else if (packageType.ToString().ToLower().Contains("ios"))
+            else if (buildTarget == BuildTarget.iOS)
             {
                 PlayerSettings.bundleVersion = gameSettings.GetVersionIos();
             }
@@ -272,17 +180,8 @@ namespace Blaze.Ci
             // 关闭启动页unity logo显示
             PlayerSettings.SplashScreen.show = false;
 
-
             if (buildTarget == BuildTarget.Android)
             {
-                // if (packageType == EnumPackageType.AndroidM3839Dev)
-                // {
-                //     PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.Mono2x);
-                // }
-                // else
-                // {
-                //     
-                // }
                 PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android,
                     Il2CppCompilerConfiguration.Release);
@@ -292,8 +191,6 @@ namespace Blaze.Ci
             // 执行AB 打包
             switch (packageType)
             {
-                case EnumPackageType.IOSTestInner:
-                    break;
                 default:
                     // 删除 StreamingAsset
                     if (Directory.Exists(PathHelper.GetStreamingPath()))
@@ -331,11 +228,10 @@ namespace Blaze.Ci
             BuildReport buildReport =
                 BuildPipeline.BuildPlayer(levels.ToArray(), outPath, buildTarget, BuildOptions.None);
 
-
             Debug.Log("开发版 APK 打包完成");
 
             // 推送打包成功信息
-            PushToDingding($"打包成功 http://192.168.8.16:8088/Install/{apkName}");
+           // PushToDingding($"打包成功 http://192.168.8.16:8088/Install/{apkName}");
         }
 
         private static Task<bool> BuildAssetBundle(EnumPackageType target)

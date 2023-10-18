@@ -14,18 +14,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using Blaze.Bundle.Data;
 using Blaze.Common;
 using Blaze.Core;
 using Blaze.Resource.AssetBundles.Data;
-using Blaze.Resource.AssetBundles.Logic;
-using Blaze.Resource.Poco;
 using Blaze.Utility;
 using Blaze.Utility.Helper;
 using ICSharpCode.SharpZipLib.Zip;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace Blaze.Bundle.Step
@@ -81,7 +76,7 @@ namespace Blaze.Bundle.Step
             if (filename.EndsWith(".DS_Store")
                 || filename.EndsWith(".meta")
                 || filename.EndsWith(".MD")
-            ) return true;
+               ) return true;
             return false;
         }
 
@@ -247,72 +242,23 @@ namespace Blaze.Bundle.Step
         /// </summary>
         void Generation(AssetBundleManifest abmf)
         {
-            // Publish/iOS/_Cache/1.1/ 1.1    文件
-            // var path = PathHelper.Combine(
-            //     PathHelper.GetCurrentPath(),
-            //     BuilderStep2._.VersionCachePath(),
-            //     BuilderStep1._.VersionStr());
-            // Debug.Log(path);
-            // AssetBundle.UnloadAllAssetBundles(false);
-            // AssetBundle ab = AssetBundle.LoadFromFile(path); // 加载总ManifestAssetBundle
-            // AssetBundleManifest abmf = (AssetBundleManifest) ab.LoadAsset("AssetBundleManifest");
-
             // 根据官方装配文件，生成自己的装配文件
             var mf = BuilderStep1._.GetManifest();
             abmf.GetAllAssetBundles().ToList().ForEach(delegate(string abName)
             {
-                // Publish/iOS/_Cache/1.1/1.1.manifest
-                var subMfPath =
-                    PathHelper.Combine(PathHelper.GetCurrentPath(), VersionCachePath(), abName + ".manifest");
-
-                var desc = new ManifestDesc(File.ReadAllText(subMfPath));
-                desc.Assets.ForEach(delegate(string asstePath)
+                var assets = AssetDatabase.GetAssetPathsFromAssetBundle(abName).ToList();
+                assets.ForEach(delegate(string asstePath)
                 {
                     var data = new ManifestData();
                     data.AssetPath = asstePath;
                     data.Type = BundleType.AssetBundle;
                     data.File = abName;
-                    data.Checksum = desc.CRC.ToString();
+                    BuildPipeline.GetCRCForAssetBundle(abName, out var crc);
+                    data.Checksum = crc.ToString();
                     data.Dependencies = abmf.GetAllDependencies(abName).ToList();
-                    if (IsContent(data))
-                        mf.ManifestList.Add(data);
+                    mf.ManifestList.Add(data);
                 });
             });
-        }
-
-
-        private bool IsContent(ManifestData data)
-        {
-            // int filterStart = 10;
-            // // 第七章之后的内容不打包
-            // if (data.AssetPath.Contains("Assets/Projects/UI/Chapter/Chapter"))
-            // {
-            //     for (int i = filterStart; i < 20; i++)
-            //     {
-            //         if (data.AssetPath.Contains($"Assets/Projects/UI/Chapter/Chapter{i}"))
-            //             return false;
-            //     }
-            // }
-            //
-            // // "Assets/Projects/Audio/Dubbing/voice_ch10_104_01.wav"
-            // if (data.AssetPath.Contains("Assets/Projects/Audio/Dubbing/voice"))
-            // {
-            //     // for (int i = filterStart; i < 10; i++)
-            //     // {
-            //     //     if (data.AssetPath.Contains($"Assets/Projects/Audio/Dubbing/voice_ch0{i}"))
-            //     //         return false;
-            //     // }
-            //
-            //     // for (int i = filterStart; filterStart >= 10 && i < 15; i++)
-            //     // {
-            //         // if (data.AssetPath.Contains($"Assets/Projects/Audio/Dubbing/voice_ch{i}"))
-            //         // 开放前9章音频
-            //         if (data.AssetPath.Contains($"Assets/Projects/Audio/Dubbing/voice_ch1"))
-            //             return false;
-            //     // }
-            // }
-
-            return true;
         }
     }
 }

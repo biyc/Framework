@@ -27,26 +27,10 @@ public class ThorSettings : ScriptableObject
     const string TplSettingsAssetPath = "Assets/Configs/ThorSettings.asset";
 
 #pragma warning disable
-
-    [Tooltip("XLSX自动转CSV"), SerializeField]
-    public bool IsAutoXlsxToCsv = false;
-
-    [Tooltip("启动DATA HTTP服务端口8087"), SerializeField]
-    public bool IsUseDataHttp = false;
-
-    [Tooltip("启动AB HTTP服务端口8088"), SerializeField]
-    public bool IsUseAbHttp = true;
-
-
+    
     [FormerlySerializedAs("CurrentTargetMode")] [Tooltip("目标资源类型"), SerializeField]
     public EnumRuntimeTarget BuildTargetMode = EnumRuntimeTarget.EditorOSX;
-
-    [Tooltip("构建发布人"), SerializeField] public string BuildOperator = "";
-
-    [Tooltip("发布到StreamingAsset目录"), SerializeField]
-    public bool IsPublishStreaming = false;
-
-
+    
     [Tooltip("指定版本安装包"), SerializeField]
     public EnumPackageType PackageType = EnumPackageType.AndroidDev;
 

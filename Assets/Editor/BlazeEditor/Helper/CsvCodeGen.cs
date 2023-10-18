@@ -19,7 +19,6 @@ using Blaze.Utility;
 using Blaze.Utility.Extend;
 using CsCodeGenerator;
 using CsCodeGenerator.Enums;
-using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -35,20 +34,8 @@ namespace Blaze.Helper
         public static string _genPath = Application.dataPath + "/";
         public static string _Poco = "Poco/";
         public static string _Enum = "Enum/";
-
-        public static void Clean()
-        {
-            // var path = _genPath + "/Csv/";
-            // if (Directory.Exists(path))
-            // {
-            //     Directory.Delete(path, true);
-            //     AssetDatabase.DeleteAsset(path.Substring(path.IndexOf("Assets") + "Assets".Length));
-            //
-            //     AssetDatabase.Refresh();
-            // }
-            Tuner.Log(Co._("     -= Clean Csv Code Done =-:green:b;"));
-        }
-
+        
+        
         private static Dictionary<string, string> csvPaths = new Dictionary<string, string>();
 
         /// <summary>
@@ -250,16 +237,14 @@ namespace Blaze.Helper
                         content += string.Format($"        name = \"{row.Key}\";\n") +
                                    string.Format(
                                        "                    row.{0} = CsvTypeHelper.{1}(parts[{2}]);\n            ",
-                                       row.Key,
-                                       CsvTypeHelper.GetTransFunc(row.Type), row.Index);
+                                       row.Key, CsvTypeHelper.GetTransFunc(row.Type), row.Index);
                     }
                     else
                     {
                         // 使用外部解析器来创建类型
                         content += string.Format($"        name = \"{row.Key}\";\n") +
                                    string.Format("                    row.{0} = {1}.Create(parts[{2}]);\n            ",
-                                       row.Key,
-                                       row.Type.Replace(":", ""), row.Index);
+                                       row.Key, row.Type.Replace(":", ""), row.Index);
                     }
                 });
                 return content;

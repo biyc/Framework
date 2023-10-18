@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: AndroidDev
   m_EditorClassIdentifier: 
   ResServerList:
-  - http://192.168.8.6:8088/AndroidDev
-  - http://192.168.1.7:8088/AndroidDev
+  - http://192.168.8.6:8089/AndroidDev
+  - http://192.168.1.6:8089/AndroidDev
   Channel: AndroidDev
   MotherVersion: 1
   FixVersion: 0
-  BuildNum: 63
+  BuildNum: 64
   IsForceCheckVersion: 0
   UseILRuntime: 1
   UseDev: 1

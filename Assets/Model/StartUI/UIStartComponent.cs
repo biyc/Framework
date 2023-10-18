@@ -2,6 +2,8 @@
 using Blaze.Common;
 using Blaze.Manage.Progress;
 using Blaze.Utility.Base;
+using Model;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,20 +13,22 @@ namespace ETModel
     {
         private Slider _hotfixSlider;
         private Text _des;
+        private Button _loginBtn;
 
         private void Start()
         {
             _hotfixSlider = transform.Find("HotSlider").GetComponent<Slider>();
             _des = transform.Find("Des").GetComponent<Text>();
+            _loginBtn = transform.Find("Login").GetComponent<Button>();
+            _loginBtn.gameObject.SetActive(false);
+            _loginBtn.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                LoginComponent._.Login(-1,"");
+            });
+            
             TaskQueue taskQueue = new TaskQueue();
-            // // 闪烁 logo1
-            // taskQueue.AddTask(delegate(Action scb)
-            // {
-            //     // 开始 logo 页面
-            //     Statistic._.Report(AnPointModel.start_logo, StatisticParam.Succeed.ToString());
-            //     scb();
-            // });
-            // // 开始启动游戏逻辑
+
+            // 开始启动游戏逻辑
             taskQueue.AddTask(delegate(Action scb)
             {
                 Init.InitOnLoad.OnCompleted += delegate(Init init)
@@ -33,12 +37,7 @@ namespace ETModel
                     scb();
                 };
             });
-            // taskQueue.AddTask(m =>
-            // {
-            //     StartUIComponent._.Start();
-            //     m();
-            // });
-             taskQueue.Start();
+            taskQueue.Start();
 
 
             ProgressManager._.OnStart += delegate(ProgressPoint point)
@@ -49,6 +48,7 @@ namespace ETModel
                     case ProgressPoint.DownLoadAb:
                         break;
                     case ProgressPoint.Login:
+                        _loginBtn.gameObject.SetActive(true);
                         break;
                     case ProgressPoint.StartHotfix:
                         break;
@@ -70,7 +70,6 @@ namespace ETModel
                         case ProgressPoint.DownLoadAb:
                             _des.text = $"正在为您下载更新资源包 {Math.Round(per * 100)}%";
                             _hotfixSlider.value = per;
-                            // Debug.LogError($"正在为您下载更新资源包 {Math.Round(per * 100)}%");
                             break;
                     }
                 };
@@ -83,20 +82,16 @@ namespace ETModel
                 {
                     case ProgressPoint.CheckVersion:
                     case ProgressPoint.DownLoadAb:
+                        _hotfixSlider.gameObject.SetActive(false);
+                        _des.gameObject.SetActive(false);
                         break;
                     case ProgressPoint.Login:
-                        //  view.text_txt_wait.text = $"登录成功";
                         break;
                     case ProgressPoint.StartHotfix:
-                        //  view.text_txt_wait.text = $"启动成功";
                         break;
                     case ProgressPoint.Finish:
-                        // view.txt_a4_10.text = $"加载完成";
-                        // 所有启动过程结束后，显示启动游戏大按钮
-                        //  view.text_txt_wait.gameObject.SetActive(false);
-                        // 显示 开始游戏 按钮
-                        //   view.go_m_beginGame.SetActive(true);
-                        //    Show(view.go_m_beginGame);
+                        Observable.Timer(TimeSpan.FromSeconds(0.5f))
+                            .Subscribe(_ => Destroy(gameObject));
                         break;
                 }
             };

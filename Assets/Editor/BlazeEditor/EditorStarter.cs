@@ -31,9 +31,6 @@ namespace Blaze
                 $"[>>] Application platform is; [{Application.platform.ToString().ToUpper()}] :lightred:b;"));
             // 配置系统初始化
             ThorSettings._.Initialize();
-
-            if (ThorSettings._.IsAutoXlsxToCsv)
-                CsvSupport.EnableAutoXlsxToCsv();
         }
 
 
@@ -43,12 +40,6 @@ namespace Blaze
             var setting = ThorSettings._;
             EditorGUIUtility.PingObject(setting);
             Selection.activeObject = setting;
-        }
-
-        [MenuItem("Tools/Thor/BuildBundles")]
-        internal static void ShowThorBundleBuilderDialog()
-        {
-            ThorBundleBuilder._.Builder();
         }
     }
 }

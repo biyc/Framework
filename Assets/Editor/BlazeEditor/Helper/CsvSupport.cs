@@ -49,33 +49,7 @@ namespace Blaze.Helper
             xlsxDataPath = dataPath + "XlsxData";
             csvDataPath = dataPath + "CsvData";
         }
-
-        public static void EnableAutoXlsxToCsv()
-        {
-            _isXlsxAuto = true;
-            // 清除已开启的任务
-            Clean();
-            InitPath();
-            EditorApplication.quitting += Dispose;
-
-            new Thread(Init).Start();
-        }
-
-        public static void DisableAutoXlsxToCsv()
-        {
-            _isXlsxAuto = false;
-            Clean();
-        }
-
-        public static void Clean()
-        {
-            foreach (Process process in Process.GetProcessesByName("fswatch"))
-            {
-                Tuner.Log("kill fswatch");
-                process.Kill();
-            }
-        }
-
+        
         /// <summary>
         /// 启动 fswatch 观察CSV文件变化
         /// </summary>

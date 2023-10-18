@@ -406,13 +406,3 @@ public class GameUtility
         }
     }
 }
-
-#if UNITY_EDITOR
-public static class GameUtilityExporter
-{
-    // [LuaCallCSharp] public static List<Type> LuaCallCSharp = new List<Type>()
-    // {
-    //     typeof(GameUtility),
-    // };
-}
-#endif

@@ -13,32 +13,15 @@
 using System.IO;
 using Blaze.Core;
 using Newtonsoft.Json;
-using SharpYaml.Serialization;
 
 namespace Blaze.Utility.Extend
 {
     /// <summary>
-    /// 静态扩充类,主要对于Json和Protobuf和Yaml的扩展
+    /// 静态扩充类,主要对于Json的扩展
     /// </summary>
     public static class PersistExtension
     {
         #region JSON
-
-        private static SerializerSettings settings = new SerializerSettings();
-
-        static PersistExtension()
-        {
-            settings.EmitAlias = false;
-            settings.EmitTags = false;
-            settings.IndentLess = false;
-            settings.EmitDefaultValues = false;
-            settings.EmitJsonComptible = false;
-            settings.EmitCapacityForList = false;
-            settings.EmitShortTypeName = false;
-            settings.SortKeyForMapping = false;
-            settings.SerializeDictionaryItemsAsMembers = true;
-        }
-
         public static string ToJson<T>(this T obj) where T : IPersistable
         {
             return JsonConvert.SerializeObject(obj, Formatting.Indented);
@@ -57,23 +40,6 @@ namespace Blaze.Utility.Extend
         }
 
         #endregion
-
-        #region YAML
-
-        public static string ToYaml<T>(this T obj) where T : IPersistable
-        {
-            var serializer = new Serializer(settings);
-            return serializer.Serialize(obj);
-        }
-
-        public static string SaveYaml<T>(this T obj, string path) where T : IPersistable
-        {
-            var serializer = new Serializer(settings);
-            var yaml = serializer.Serialize(obj);
-            File.WriteAllText(path, yaml);
-            return yaml;
-        }
-
-        #endregion
+        
     }
 }

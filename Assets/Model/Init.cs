@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using Blaze.Common;
 using Blaze.Manage.Data;
 using Blaze.Manage.Progress;
-using Blaze.Manage.Safety;
 using Blaze.Resource;
 using Blaze.Resource.Common;
 using Blaze.Resource.Task;
-using Blaze.Utility;
 using Blaze.Utility.Base;
-using Blaze.Utility.Helper;
-using Game.Sdk;
+using Model;
 using Model.Base.Blaze.Manage.Archive;
-using UniRx;
-using UniRx.WebRequest;
 using UnityEngine;
 
 namespace ETModel
@@ -33,7 +28,7 @@ namespace ETModel
         public void Start()
         {
             InitOnLoad.Complet(this);
-          //  StartGame();
+            //  StartGame();
         }
 
         // public async void Start()
@@ -47,7 +42,7 @@ namespace ETModel
             //禁用多点触控
             Input.multiTouchEnabled = false;
             Application.targetFrameRate = 60;
-            Define.deviceId = SystemInfo.deviceUniqueIdentifier;      
+            Define.deviceId = SystemInfo.deviceUniqueIdentifier;
 
             // 开发期可能为空，走默认数据
             if (Define.GameSettings == null)
@@ -76,23 +71,23 @@ namespace ETModel
                 TaskQueue taskQueue = new TaskQueue();
                 taskQueue.OnFinish = () => { Debug.Log("母包启动完成"); };
                 // 初始化强更SDK
-                taskQueue.AddTask(delegate(Action scb)
-                {
-                    MonoScheduler.DispatchMain(scb);
-                });
+                taskQueue.AddTask(delegate(Action scb) { MonoScheduler.DispatchMain(scb); });
                 // 等待资源检查下载完成
                 taskQueue.AddTask(delegate(Action scb)
                 {
                     ResManager._.WatchProvidComplete.OnCompleted += delegate(IAssetProvider provider) { scb(); };
                 });
-                
+
                 // 第二步，用户登录与存档更新
                 taskQueue.AddTask(delegate(Action scb)
                 {
                     // 报告进度开始登录
                     ProgressManager._.ReportStart(ProgressPoint.Login);
-                    // 初始化存档
-                    ArchiveManager._.Load("slot");
+                    LoginComponent._.WatchLogin.OnCompleted += account =>
+                    {
+                        // 初始化存档
+                        ArchiveManager._.Load(account);
+                    };
                     ArchiveManager._.OnLoad.OnCompleted += delegate(ArchiveData data)
                     {
                         // 存档拉取完成，登录成功

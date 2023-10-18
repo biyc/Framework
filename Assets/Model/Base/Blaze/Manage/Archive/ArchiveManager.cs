@@ -36,20 +36,11 @@ namespace Model.Base.Blaze.Manage.Archive
         /// <summary>
         /// 根据存档名称加载存档
         /// </summary>
-        /// <param name="userName"></param>
-        public async void Load(string userName)
+        /// <param name="account"></param>
+        public async void Load(int account)
         {
-            // 登录成功后，检查存档
-            if (userName == null)
-            {
-                Tuner.Log("用户名为空");
-                userName = "slot";
-            }
-            else
-            {
-                Tuner.Log("user: " + userName);
-            }
-
+            Tuner.Log("user: " + account);
+            var userName = "Slot" + account;
             var local = ArchiveData.LoadLocal(userName);
             if (local == null)
             {
@@ -57,6 +48,7 @@ namespace Model.Base.Blaze.Manage.Archive
                 Archive = ArchiveData.Create(userName);
                 Archive.Save();
             }
+
             OnLoad.Complet(Archive);
         }
 
@@ -68,6 +60,5 @@ namespace Model.Base.Blaze.Manage.Archive
         {
             return Archive;
         }
-
     }
 }

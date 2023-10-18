@@ -157,8 +157,6 @@ namespace Blaze.Core
             {
                 case EnumPersistType.JSON:
                     return this.SaveJson(_fullPathFile);
-                case EnumPersistType.YAML:
-                    return this.SaveYaml(_fullPathFile);
             }
 
             return null;
@@ -180,10 +178,6 @@ namespace Blaze.Core
                             var json = PersistHelper.LoadJson<T>(_fullPathFile) as Persistable<T>;
                             json.Config(_fullPathFile);
                             return json as T;
-                        case EnumPersistType.YAML:
-                            var yaml = PersistHelper.LoadYaml<T>(_fullPathFile) as Persistable<T>;
-                            yaml.Config(_fullPathFile);
-                            return yaml as T;
                     }
                 }
                 catch (Exception e)
@@ -225,10 +219,6 @@ namespace Blaze.Core
                             var json = PersistHelper.LoadJson<T>(fullFilePa) as Persistable<T>;
                             json.Config(filePath);
                             return json as T;
-                        case EnumPersistType.YAML:
-                            var yaml = PersistHelper.LoadYaml<T>(fullFilePa) as Persistable<T>;
-                            yaml.Config(filePath);
-                            return yaml as T;
                     }
                 }
                 catch (Exception e)
@@ -261,10 +251,6 @@ namespace Blaze.Core
                             var json = PersistHelper.LoadJson<T>(fileNamePath) as Persistable<T>;
                             json.Config(fileNamePath);
                             return json as T;
-                        case EnumPersistType.YAML:
-                            var yaml = PersistHelper.LoadYaml<T>(fileNamePath) as Persistable<T>;
-                            yaml.Config(fileNamePath);
-                            return yaml as T;
                     }
                 }
                 catch (Exception e)
